@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import CesiumMap from './CesiumMap/CesiumMap';
 // import 'cesium/Build/Cesium/Widgets/'
-import 'cesium/Source/Widgets/widgets.css'
+import 'cesium/Source/Widgets/widgets.css';
+import Toolbar from './pages/Toolbar';
 
 function App() {
 
@@ -13,20 +13,7 @@ function App() {
 
   return (
     <div id="cesium-container">
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
+      <Toolbar />
     </div>
   );
 }

@@ -1,0 +1,22 @@
+
+.toolbar-container {
+    position: fixed;
+    right: 50px;
+    top: 200px;
+    z-index: 999;
+}
+
+.toolbar-container > .toolbar-item {
+    margin: 10px;
+}
+
+.toolbar-button {
+    color: #3491FA;
+    border-color: #3491FA;
+}
+
+.toolbar-button:hover {
+    color: white;
+    background-color: #3491FA;
+    border-color: rgba(255,255,255)
+}
