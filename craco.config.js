@@ -1,13 +1,11 @@
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const path = require('path');
-// import path from 'path';
 const path = require('path')
-const webpack = require('webpack');
-// const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
-// import webpack from 'webpack'
+const webpack = require('webpack');
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const {whenDev} = require("@craco/craco");
+
+import * as craco from '@craco/craco'
 
 // The path to the CesiumJS source code
 const cesiumSource = 'node_modules/cesium/Source';
@@ -21,9 +19,9 @@ module.exports = {
         alias: {
             "@": path.join(__dirname, "src")
         },
-        configure:  (webpackConfig, { env, paths }) => { 
-            // console.log(webpackConfig.module.rules[0])
-            // console.log(webpackConfig.module.rules[1])
+        configure: (webpackConfig, {env, paths}) => {
+
+            console.log(env)
 
             webpackConfig.ignoreWarnings = [
                 function ignoreSourcemapsloaderWarnings(warning) {
@@ -48,7 +46,6 @@ module.exports = {
                 assert: false
             }
 
-            // rules
             webpackConfig.module.rules[1].oneOf = [
                 ...[
                     {
@@ -66,7 +63,7 @@ module.exports = {
                 ],
                 ...webpackConfig.module.rules[1].oneOf
             ]
-            return webpackConfig; 
+            return webpackConfig;
         },
         plugins: {
             add: [
@@ -80,7 +77,7 @@ module.exports = {
                 }),
                 new webpack.DefinePlugin({
                     // Define relative base path in cesium for loading assets
-                    CESIUM_BASE_URL: JSON.stringify('/')
+                    CESIUM_BASE_URL: JSON.stringify(whenDev(() => '/', '/clab'))
                 })
             ],
         },
