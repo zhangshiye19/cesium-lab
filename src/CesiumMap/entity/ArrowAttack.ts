@@ -16,7 +16,7 @@ export default class ArrowAttack extends CEntity {
         options = {
             polygon: {
                 hierarchy: new Cesium.PolygonHierarchy(options.coordinates),
-                material: new Cesium.ColorMaterialProperty(Cesium.Color.fromCssColorString('#91caff').withAlpha(0.5)),
+                material: new Cesium.ColorMaterialProperty(Cesium.Color.fromCssColorString('#91caff').withAlpha(0.8)),
                 // outline: true,
                 // outlineColor: Cesium.Color.fromCssColorString('#91caff'),
                 // outlineWidth: 10,
@@ -40,22 +40,40 @@ export default class ArrowAttack extends CEntity {
         // super.updateChildren(positions);
         if (Cesium.defined(this.entityCollection)) { // 需要更新
             // 移除原有 children
-            this.children.forEach(entity => {
-                this.entityCollection.remove(entity)
-            })
-            // 构建新 this.children
-            this.children = positions.map((position) => {
-                return new CEntity({
-                    coordinates: [position],
-                    parent: this,
-                    point: {
-                        disableDepthTestDistance: Number.MAX_VALUE
-                    }
-                })
-            })
-            // 加入collection
-            this.children.forEach(entity => {
-                this.entityCollection.add(entity)
+            // this.children.forEach(entity => {
+            //     this.entityCollection.remove(entity)
+            // })
+            // // 构建新 this.children
+            // this.children = positions.map((position) => {
+            //     return new CEntity({
+            //         coordinates: [position],
+            //         parent: this,
+            //         point: {
+            //             disableDepthTestDistance: Number.MAX_VALUE,
+            //             pixelSize: 10
+            //         }
+            //     })
+            // })
+            // // 加入collection
+            // this.children.forEach(entity => {
+            //     this.entityCollection.add(entity)
+            // })
+            // console.log(positions)
+            positions.forEach((position,index) => {
+                if(this.children[index]) {
+                    this.children[index].coordinatesVirtual = [position]
+                }else {
+                    const entity = new CEntity({
+                        coordinates: [position],
+                        parent: this,
+                        point: {
+                            disableDepthTestDistance: Number.MAX_VALUE,
+                            pixelSize: 10
+                        }
+                    })
+                    this.children.push(entity)
+                    this.entityCollection.add(entity)
+                }
             })
         }
     }

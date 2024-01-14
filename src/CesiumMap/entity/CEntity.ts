@@ -22,7 +22,7 @@ export default class CEntity extends Cesium.Entity {
         this.updatePosition(Cesium.defaultValue(options.coordinates, []))
     }
 
-    updateChildren(positions: Cesium.Cartesian3[]) {
+    protected updateChildren(positions: Cesium.Cartesian3[]) {
     }
 
     set coordinatesVirtual(coordinates: Cesium.Cartesian3[]) {

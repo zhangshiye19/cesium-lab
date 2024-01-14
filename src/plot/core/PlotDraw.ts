@@ -46,7 +46,8 @@ export default class PlotDraw {
             }
             this.positions.push(cartesian)
             if (this.plottingEntity) {
-                this.plottingEntity.coordinatesVirtual = [...this.positions, cartesian]
+                this.plottingEntity.coordinatesVirtual = this.positions
+                // this.plottingEntity.coordinatesVirtual = [...this.positions, cartesian]
                 // this.plottingEntity?.updatePosition([...this.positions, cartesian])
             } else {
                 this.positions.length >= 2 && this.plot(PlotType.AttackArrow, this.positions)
@@ -58,11 +59,12 @@ export default class PlotDraw {
             if (!Cesium.defined(cartesian)) return;
             if (!Cesium.Cartesian3.equals(this.positions.slice(-1)[0], cartesian)) {   // 如果不相等才做处理
                 this.positions.push(cartesian)
-                if (this.plottingEntity) this.plottingEntity.coordinatesVirtual = [...this.positions, cartesian]
+                if (this.plottingEntity) this.plottingEntity.coordinatesVirtual = this.positions
                 // if (this.plottingEntity) this.plottingEntity.updatePosition([...this.positions, cartesian])
             }
+            console.log(this.plottingEntity?.coordinatesVirtual)
             this.stopPlot()
-        }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK)
+        }, Cesium.ScreenSpaceEventType.RIGHT_CLICK)
         // 移动更新
         this.handleScreenSpaceEvent.setInputAction((event: Cesium.ScreenSpaceEventHandler.MotionEvent) => {
             const cartesian = PlotUtils.getCartesianFromScreen(this.viewer, event.endPosition);
@@ -82,6 +84,16 @@ export default class PlotDraw {
     static getInstance() {
         if (!this.instance) {
             this.instance = new PlotDraw(CesiumMap.getViewer())
+            const handle = new Cesium.ScreenSpaceEventHandler()
+            handle.setInputAction((event: Cesium.ScreenSpaceEventHandler.PositionedEvent) => {
+                const entity = CesiumMap.getViewer().scene.pick(event.position).id;
+                // console.log(entity.parent)
+                // const cartesian = PlotUtils.getCartesianFromScreen(CesiumMap.getViewer(),event.endPosition)
+                if(entity instanceof CEntity) {
+                    // @ts-ignore
+                    PlotEdit.getInstance().active(entity.parent || entity)
+                }
+            },Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK)
         }
         return this.instance;
     }
