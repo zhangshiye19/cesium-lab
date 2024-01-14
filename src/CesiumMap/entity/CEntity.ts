@@ -64,6 +64,7 @@ export default class CEntity extends Cesium.Entity {
 
     makeConstant() {
         this.position = new Cesium.ConstantPositionProperty(this.coordinatesReal[0])
+        this.children.forEach(child => child.makeConstant())
     }
 
     makeSampled() {

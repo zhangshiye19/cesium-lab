@@ -33,6 +33,8 @@ export default class ArrowAttack extends CEntity {
         this.polygon!.hierarchy = new Cesium.CallbackProperty(time => {
             return new Cesium.PolygonHierarchy(this.coordinatesReal)
         }, false)
+        this.children.forEach(child => child.makeCallback())
+
         // super.makeCallback();
     }
 
