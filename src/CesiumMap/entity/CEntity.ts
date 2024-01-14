@@ -18,6 +18,7 @@ export default class CEntity extends Cesium.Entity {
         this.children = [];
         this._coordinatesVirtual = [];
         this.coordinatesReal = options.coordinates;
+
         options.makeCallback && this.makeCallback()
         this.updatePosition(Cesium.defaultValue(options.coordinates, []))
     }
@@ -58,6 +59,7 @@ export default class CEntity extends Cesium.Entity {
         this.position = new Cesium.CallbackProperty(time => {
             return this.coordinatesReal[0]
         }, false)
+        this.children.forEach(child => child.makeCallback())
     }
 
     makeConstant() {

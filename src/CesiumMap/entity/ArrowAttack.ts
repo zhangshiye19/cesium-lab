@@ -39,30 +39,10 @@ export default class ArrowAttack extends CEntity {
     updateChildren(positions: Cesium.Cartesian3[]) {    // 更新 children
         // super.updateChildren(positions);
         if (Cesium.defined(this.entityCollection)) { // 需要更新
-            // 移除原有 children
-            // this.children.forEach(entity => {
-            //     this.entityCollection.remove(entity)
-            // })
-            // // 构建新 this.children
-            // this.children = positions.map((position) => {
-            //     return new CEntity({
-            //         coordinates: [position],
-            //         parent: this,
-            //         point: {
-            //             disableDepthTestDistance: Number.MAX_VALUE,
-            //             pixelSize: 10
-            //         }
-            //     })
-            // })
-            // // 加入collection
-            // this.children.forEach(entity => {
-            //     this.entityCollection.add(entity)
-            // })
-            // console.log(positions)
             positions.forEach((position,index) => {
-                if(this.children[index]) {
+                if(this.children[index]) {  // 没有child创建child 有child更新位置就行
                     this.children[index].coordinatesVirtual = [position]
-                }else {
+                }else { //
                     const entity = new CEntity({
                         coordinates: [position],
                         parent: this,

@@ -60,7 +60,7 @@ export default class PlotEdit {
             if (this.pressed && cartesian && this.editingEntity && this.selectedAnchorPoint) {  // 鼠标按下
                 const coordV = this.editingEntity.coordinatesVirtual;
                 const index = this.editingEntity.children.findIndex(entity => entity.id === this.selectedAnchorPoint?.id);
-                if(index != -1) {
+                if(index !== -1) {
                     coordV[index] = cartesian;
                     this.editingEntity.coordinatesVirtual = coordV;
                 }

@@ -62,7 +62,7 @@ export default class PlotDraw {
                 if (this.plottingEntity) this.plottingEntity.coordinatesVirtual = this.positions
                 // if (this.plottingEntity) this.plottingEntity.updatePosition([...this.positions, cartesian])
             }
-            console.log(this.plottingEntity?.coordinatesVirtual)
+            // console.log(this.plottingEntity?.coordinatesVirtual)
             this.stopPlot()
         }, Cesium.ScreenSpaceEventType.RIGHT_CLICK)
         // 移动更新
