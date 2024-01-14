@@ -15,7 +15,7 @@ export default class ArrowAttack extends CEntity {
     constructor(options: CEntityOption) {
         options = {
             polygon: {
-                hierarchy: new Cesium.PolygonHierarchy(options.coordinates),
+                // hierarchy: new Cesium.PolygonHierarchy(options.coordinates),
                 material: new Cesium.ColorMaterialProperty(Cesium.Color.fromCssColorString('#91caff').withAlpha(0.8)),
                 // outline: true,
                 // outlineColor: Cesium.Color.fromCssColorString('#91caff'),
@@ -26,14 +26,16 @@ export default class ArrowAttack extends CEntity {
             ...options
         }
         super(options);
-        this.updatePosition(options.coordinates)
+        // this.updatePosition(options.coordinates)
+        this.coordinatesVirtual = options.coordinates;
     }
 
     makeCallback() {
+        super.makeCallback()
         this.polygon!.hierarchy = new Cesium.CallbackProperty(time => {
             return new Cesium.PolygonHierarchy(this.coordinatesReal)
         }, false)
-        this.children.forEach(child => child.makeCallback())
+        // this.children.forEach(child => child.makeCallback())
 
         // super.makeCallback();
     }
@@ -51,7 +53,8 @@ export default class ArrowAttack extends CEntity {
                         point: {
                             disableDepthTestDistance: Number.MAX_VALUE,
                             pixelSize: 10
-                        }
+                        },
+                        makeCallback: (this.polygon?.hierarchy instanceof Cesium.CallbackProperty)
                     })
                     this.children.push(entity)
                     this.entityCollection.add(entity)
