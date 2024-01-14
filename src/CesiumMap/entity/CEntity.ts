@@ -10,23 +10,44 @@ export type CEntityOption = Cesium.Entity.ConstructorOptions & {
 export default class CEntity extends Cesium.Entity {
 
     children: CEntity[];
-    protected coordinates: Cesium.Cartesian3[]; // 自定义位置坐标，统一类型
+    protected coordinatesReal: Cesium.Cartesian3[]; // 自定义位置坐标，统一类型，不能用_coordinates，entity自己也会进行属性劫持
+    private _coordinatesVirtual: Cesium.Cartesian3[];
 
     constructor(options: CEntityOption) {
         super(options);
         this.children = [];
-        this.coordinates = options.coordinates;
+        this._coordinatesVirtual = [];
+        this.coordinatesReal = options.coordinates;
         options.makeCallback && this.makeCallback()
+        this.updatePosition(Cesium.defaultValue(options.coordinates, []))
+    }
+
+    updateChildren(positions: Cesium.Cartesian3[]) {
+    }
+
+    set coordinatesVirtual(coordinates: Cesium.Cartesian3[]) {
+        this.updateChildren(coordinates)
+        this.updatePosition(coordinates)
+        this._coordinatesVirtual = coordinates
+    }
+
+    get coordinatesVirtual() {
+        return this._coordinatesVirtual
     }
 
     /**
      * 更新位置
      */
-    updatePosition(positions: Cesium.Cartesian3[]) {
+    protected updatePosition(positions: Cesium.Cartesian3[]) {
+        if (!Cesium.defined(this.position)) {    // 未定义，直接赋予ConstantPositionProperty
+            this.position = new Cesium.ConstantPositionProperty(positions[0])
+            return;
+        }
+
         if (this.position instanceof Cesium.ConstantPositionProperty) {
             this.position = new Cesium.ConstantPositionProperty(positions[0])
         } else if (this.position instanceof Cesium.CallbackProperty) {
-            this.coordinates = positions;
+            this.coordinatesReal = positions;
         } else if (this.position instanceof Cesium.SampledPositionProperty) {
             this.position.addSample(Cesium.JulianDate.addSeconds(Cesium.JulianDate.now(), 1, new Cesium.JulianDate()), positions[0])
         }
@@ -35,12 +56,12 @@ export default class CEntity extends Cesium.Entity {
     makeCallback() {
         // @ts-ignore
         this.position = new Cesium.CallbackProperty(time => {
-            return this.coordinates[0]
+            return this.coordinatesReal[0]
         }, false)
     }
 
     makeConstant() {
-        this.position = new Cesium.ConstantPositionProperty(this.coordinates[0])
+        this.position = new Cesium.ConstantPositionProperty(this.coordinatesReal[0])
     }
 
     makeSampled() {

@@ -8,7 +8,8 @@ export default class CesiumMap {
 
     constructor() {
         this.viewer = new Cesium.Viewer('cesium-container',{
-            infoBox: false
+            infoBox: false,
+            msaaSamples: 8  // 抗锯齿
         });
 
         (this.viewer.cesiumWidget.creditContainer as HTMLElement).style.display = "none";
@@ -25,6 +26,12 @@ export default class CesiumMap {
         }).then(terrainProvider => {
             this.viewer.terrainProvider = terrainProvider
         })
+
+        // 抗锯齿
+        this.viewer.postProcessStages.fxaa.enabled = true
+
+        // 默认双击事件
+        this.viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK)
 
         // console.log(this.viewer.screenSpaceEventHandler.getInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK))
     }

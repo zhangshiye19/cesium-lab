@@ -576,6 +576,31 @@ export const cartesian2point3d = (cartesian: Cesium.Cartesian3): Point3D => {
     ]
 }
 
+
+export const getCartesianFromScreen = (viewer: Cesium.Viewer,wPosition: Cesium.Cartesian2) => {
+    let cartesian;
+    // if(viewer.scene.pickPositionSupported) {
+    //     cartesian = viewer.scene.pickPosition(wPosition)
+    // }else {
+    //     if(Cesium.defined(viewer.terrainProvider)) {
+    //         const ray = viewer.camera.getPickRay(wPosition);
+    //         if(ray) {
+    //             cartesian = viewer.scene.globe.pick(ray,viewer.scene)
+    //         }
+    //     }else {
+    //         cartesian = viewer.camera.pickEllipsoid(wPosition)
+    //     }
+    // }
+
+    // pickPosition不管用了
+    const ray = viewer.camera.getPickRay(wPosition);
+    if(ray) {
+        cartesian = viewer.scene.globe.pick(ray,viewer.scene)
+    }
+    // console.log('事件结果',cartesian)
+    return cartesian;
+}
+
 // /**
 //  * merge
 //  * @param a

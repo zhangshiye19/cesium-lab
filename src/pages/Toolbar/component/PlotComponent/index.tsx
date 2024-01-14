@@ -32,7 +32,7 @@ const PlottingPopoverTitle = () => {
 export default function PlottingComponent() {
 
     return (
-        <Popover trigger={'click'} placement={'leftTop'} title={<PlottingPopoverTitle />} content={<PlottingPanel />}>
+        <Popover trigger={'hover'} placement={'leftTop'} title={<PlottingPopoverTitle />} content={<PlottingPanel />}>
             <Button title={'标绘工具'} type='default' size='large' icon={<IconDraw />}></Button>
         </Popover>
     )

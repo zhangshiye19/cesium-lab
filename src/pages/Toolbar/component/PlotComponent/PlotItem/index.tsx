@@ -1,18 +1,28 @@
 import styles from './index.module.css'
 import {Button} from "antd";
-import React from "react";
+import React, {useEffect} from "react";
+import PlotType from "@/plot/core/PlotType";
+import PlotDraw from "@/plot/core/PlotDraw";
 
 type PlotItemProps = {
     icon: React.ReactNode,
-    plotType: string,
+    plotType: PlotType,
     title: string
 }
 
 export default function PlotItem({icon, plotType, title}: PlotItemProps) {
 
+    useEffect(() => {
+
+    }, []);
+
     return (
         <div className={styles['plot-item-container']}>
-            <Button size={'large'} title={title} icon={icon} onClick={e => console.log(plotType)}/>
+            <Button size={'large'} title={title} icon={icon} onClick={e => {
+                PlotDraw.getInstance().startPlot();
+                // e.stopPropagation();
+                // e.preventDefault();
+            }}/>
             <div>{title}</div>
         </div>
     )

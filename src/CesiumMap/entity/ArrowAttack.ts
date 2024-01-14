@@ -3,7 +3,6 @@ import * as PlotUtils from "@/plot/utils/utils";
 import {Point} from "@/plot/utils/utils";
 import * as Constants from "@/plot/utils/constant";
 import * as Cesium from "cesium";
-import {ClassificationType} from "cesium";
 
 
 export default class ArrowAttack extends CEntity {
@@ -32,20 +31,48 @@ export default class ArrowAttack extends CEntity {
 
     makeCallback() {
         this.polygon!.hierarchy = new Cesium.CallbackProperty(time => {
-            return new Cesium.PolygonHierarchy(this.coordinates)
-        },false)
+            return new Cesium.PolygonHierarchy(this.coordinatesReal)
+        }, false)
         // super.makeCallback();
+    }
+
+    updateChildren(positions: Cesium.Cartesian3[]) {    // 更新 children
+        // super.updateChildren(positions);
+        if (Cesium.defined(this.entityCollection)) { // 需要更新
+            // 移除原有 children
+            this.children.forEach(entity => {
+                this.entityCollection.remove(entity)
+            })
+            // 构建新 this.children
+            this.children = positions.map((position) => {
+                return new CEntity({
+                    coordinates: [position],
+                    parent: this,
+                    point: {
+                        disableDepthTestDistance: Number.MAX_VALUE
+                    }
+                })
+            })
+            // 加入collection
+            this.children.forEach(entity => {
+                this.entityCollection.add(entity)
+            })
+        }
     }
 
     updatePosition(positions: Cesium.Cartesian3[]) {
         // super.updatePosition(position);
+
         const anchorPoints = positions.map(value => {
             return PlotUtils.cartesian2point(value)
         })
         const geometry = this.getGeometry(anchorPoints).flat();
-        this.coordinates = Cesium.Cartesian3.fromDegreesArray(geometry)
-        if(this.polygon!.hierarchy instanceof Cesium.ConstantProperty) {
-            this.polygon!.hierarchy = new Cesium.ConstantProperty(new Cesium.PolygonHierarchy(this.coordinates))
+        if (geometry.some(value => isNaN(value))) {
+            return
+        }
+        this.coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
+        if (this.polygon!.hierarchy instanceof Cesium.ConstantProperty) {
+            this.polygon!.hierarchy = new Cesium.ConstantProperty(new Cesium.PolygonHierarchy(this.coordinatesReal))
         }
     }
 
