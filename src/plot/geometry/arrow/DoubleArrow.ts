@@ -1,14 +1,11 @@
 import * as PlotUtils from '@/plot/utils/utils'
-import {Point} from "@/plot/utils/utils";
+import {Point} from '@/plot/utils/utils'
 import * as Constants from '@/plot/utils/constant';
 
-const headHeightFactor = 0.25;
-const headWidthFactor = 0.3;
-const neckHeightFactor = 0.85;
-const neckWidthFactor = 0.15;
-// const connPoint = null;
-// const tempPoint4 = null;
-const fixPointCount = 4;
+let headHeightFactor = 0.25;
+let headWidthFactor = 0.3;
+let neckHeightFactor = 0.85;
+let neckWidthFactor = 0.15;
 
 export default function DoubleArrow(anchor_points: Point[]): Point[] {
     // const count = this.getPointCount();
@@ -56,9 +53,8 @@ export default function DoubleArrow(anchor_points: Point[]): Point[] {
         rlBodyPnts = PlotUtils.getBezierPoints(rlBodyPnts);
         const bodyPnts = PlotUtils.getBezierPoints(rrBodyPnts.concat(llBodyPnts.slice(1)));
         lrBodyPnts = PlotUtils.getBezierPoints(lrBodyPnts);
-        const pnts = rlBodyPnts.concat(rArrowPnts, bodyPnts, lArrowPnts, lrBodyPnts);
         // this.setCoordinates([pnts]);
-        return pnts;
+        return rlBodyPnts.concat(rArrowPnts, bodyPnts, lArrowPnts, lrBodyPnts);
     }
     return []
 }

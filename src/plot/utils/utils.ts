@@ -1,5 +1,8 @@
 import * as Constants from './constant'
+import * as Cesium from "cesium";
+
 export type Point = [number, number];
+export type Point3D = [number, number, number]
 
 /**
  * 计算两个坐标之间的距离
@@ -516,6 +519,7 @@ export function getuuid(noBit = false) {
         return a ? (a ^ ((Math.random() * 16) >> (a / 4))).toString(16) : ([1e7] + -[1e3] + -4e3 + -8e3 + -1e11).replace(/[018]/g, b);
         /* eslint-enable */
     }
+
     return noBit ? b().replace(/-/g, '') : b();
 }
 
@@ -553,12 +557,31 @@ export const isObject = (value: any): value is object => {
     return value !== null && (type === 'object' || type === 'function');
 };
 
-/**
- * merge
- * @param a
- * @param b
- * @returns {*}
- */
+export const cartesian2point = (cartesian: Cesium.Cartesian3): Point => {
+    const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+
+    return [
+        Cesium.Math.toDegrees(cartographic.longitude),
+        Cesium.Math.toDegrees(cartographic.latitude),
+    ]
+}
+
+export const cartesian2point3d = (cartesian: Cesium.Cartesian3): Point3D => {
+    const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+
+    return [
+        Cesium.Math.toDegrees(cartographic.longitude),
+        Cesium.Math.toDegrees(cartographic.latitude),
+        cartographic.height
+    ]
+}
+
+// /**
+//  * merge
+//  * @param a
+//  * @param b
+//  * @returns {*}
+//  */
 // export const merge = (a, b) => {
 //     // eslint-disable-next-line no-restricted-syntax
 //     for (const key in b) {

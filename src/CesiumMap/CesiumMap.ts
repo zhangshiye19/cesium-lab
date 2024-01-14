@@ -25,6 +25,8 @@ export default class CesiumMap {
         }).then(terrainProvider => {
             this.viewer.terrainProvider = terrainProvider
         })
+
+        // console.log(this.viewer.screenSpaceEventHandler.getInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK))
     }
 
     static getViewer() {

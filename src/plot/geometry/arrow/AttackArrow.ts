@@ -4,11 +4,12 @@ import * as Constants from '@/plot/utils/constant'
 // import * as Constants from "constants";
 
 // this.type = PlotTypes.ATTACK_ARROW;
-const headHeightFactor = 0.18;
-const headWidthFactor = 0.3;
-const neckHeightFactor = 0.85;
-const neckWidthFactor = 0.15;
-const headTailFactor = 0.8;
+let headHeightFactor = 0.18;
+let headWidthFactor = 0.3;
+let neckHeightFactor = 0.85;
+let neckWidthFactor = 0.15;
+let headTailFactor = 0.8;
+
 
 export default function AttackArrow(anchor_points: Point[]) {
     if (anchor_points.length < 2) {

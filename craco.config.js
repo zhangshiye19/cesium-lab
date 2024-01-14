@@ -5,8 +5,6 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const {whenDev} = require("@craco/craco");
 
-import * as craco from '@craco/craco'
-
 // The path to the CesiumJS source code
 const cesiumSource = 'node_modules/cesium/Source';
 const cesiumWorkers = '../Build/Cesium/Workers';
@@ -21,7 +19,7 @@ module.exports = {
         },
         configure: (webpackConfig, {env, paths}) => {
 
-            console.log(env)
+            // console.log(env)
 
             webpackConfig.ignoreWarnings = [
                 function ignoreSourcemapsloaderWarnings(warning) {
