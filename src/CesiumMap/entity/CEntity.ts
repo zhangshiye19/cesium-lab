@@ -44,6 +44,10 @@ export default class CEntity extends Cesium.Entity {
         }
     }
 
+    active() {}
+
+    deactive() {}
+
     protected updateChildren(positions: Cesium.Cartesian3[]) {
     }
 

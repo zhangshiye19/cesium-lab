@@ -22,6 +22,7 @@ export default class PlotEdit {
         if (entity instanceof ArrowAttack) {
             // console.log('编辑模式')
             this.editingEntity = entity;
+            this.editingEntity.active();
             // console.log(entity.coordinatesVirtual)
         }
         this.startEdit();
@@ -30,7 +31,8 @@ export default class PlotEdit {
     }
 
     deactive() {
-        this.handle?.destroy()
+        this.editingEntity?.deactive();
+        this.handle?.destroy();
         this.editingEntity = undefined;
         this.selectedAnchorPoint = undefined;
         this.viewer.scene.screenSpaceCameraController.enableCollisionDetection = true;

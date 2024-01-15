@@ -32,6 +32,7 @@ export default class PlotDraw {
                 // makeCallback: true
             })
             this.viewer.entities.add(this.plottingEntity)
+            this.plottingEntity.active()
             // this.plottingEntity = this.createPolygon(Cesium.Cartesian3.fromDegreesArray(positions.flat()))
         }
     }
@@ -78,6 +79,7 @@ export default class PlotDraw {
     }
 
     stopPlot() {
+        this.plottingEntity?.deactive()
         this.handleScreenSpaceEvent?.destroy();
         this.plottingEntity = undefined;
         this.positions = [];
