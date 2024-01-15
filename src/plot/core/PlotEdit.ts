@@ -19,7 +19,7 @@ export default class PlotEdit {
     }
 
     active(entity: CEntity) {
-        if (entity instanceof ArrowAttack) {
+        if (entity instanceof CEntity) {
             // console.log('编辑模式')
             this.editingEntity = entity;
             this.editingEntity.active();

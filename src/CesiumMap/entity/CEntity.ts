@@ -70,12 +70,20 @@ export default class CEntity extends Cesium.Entity {
             return;
         }
 
-        if (this.position instanceof Cesium.ConstantPositionProperty) {
-            this.position = new Cesium.ConstantPositionProperty(positions[0])
-        } else if (this.position instanceof Cesium.CallbackProperty) {
-            this.coordinatesReal = positions;
-        } else if (this.position instanceof Cesium.SampledPositionProperty) {
-            this.position.addSample(Cesium.JulianDate.addSeconds(Cesium.JulianDate.now(), 1, new Cesium.JulianDate()), positions[0])
+        switch(this.positionType) {
+            case PositionType.Callback: {
+                this.coordinatesReal = positions;
+                break;
+            }
+            case PositionType.Sampled: {
+                if(this.position instanceof Cesium.SampledPositionProperty) {   // 样本位置
+                    this.position.addSample(Cesium.JulianDate.addSeconds(Cesium.JulianDate.now(), 1, new Cesium.JulianDate()), positions[0])
+                }
+                break;
+            }
+            default: {
+                this.position = new Cesium.ConstantPositionProperty(positions[0])
+            }
         }
     }
 

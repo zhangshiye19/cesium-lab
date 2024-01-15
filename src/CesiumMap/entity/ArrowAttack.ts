@@ -3,10 +3,12 @@ import * as PlotUtils from "@/plot/utils/utils";
 import {Point} from "@/plot/utils/utils";
 import * as Constants from "@/plot/utils/constant";
 import * as Cesium from "cesium";
+import CPolygon from "./CPolygon";
+import PositionType from "./PositionType";
 // import PositionType from "./PositionType";
 
 
-export default class ArrowAttack extends CEntity {
+export default class ArrowAttack extends CPolygon {
     headHeightFactor = 0.18;
     headWidthFactor = 0.3;
     neckHeightFactor = 0.85;
@@ -14,67 +16,12 @@ export default class ArrowAttack extends CEntity {
     headTailFactor = 0.8;
 
     constructor(options: CEntityOption) {
-        options = {
-            polygon: {
-                // hierarchy: new Cesium.PolygonHierarchy(options.coordinates),
-                material: new Cesium.ColorMaterialProperty(Cesium.Color.fromCssColorString('#91caff').withAlpha(0.8)),
-                // outline: true,
-                // outlineColor: Cesium.Color.fromCssColorString('#91caff'),
-                // outlineWidth: 10,
-                // height: 0,
-                // classificationType: ClassificationType.CESIUM_3D_TILE
-            },
-            ...options
-        }
         super(options);
-        // this.updatePosition(options.coordinates)
-        this.coordinatesVirtual = options.coordinates;
     }
 
-    active(): void {
-        this.children.forEach(child => child.show = true)
-    }
-
-    deactive(): void {
-        this.children.forEach(child => child.show = false)
-    }
-
-    makeCallback() {
-        super.makeCallback()
-        this.polygon!.hierarchy = new Cesium.CallbackProperty(time => {
-            return new Cesium.PolygonHierarchy(this.coordinatesReal)
-        }, false)
-        // this.children.forEach(child => child.makeCallback())
-
-        // super.makeCallback();
-    }
-
-    updateChildren(positions: Cesium.Cartesian3[]) {    // 更新 children
-        // super.updateChildren(positions);
-        if (Cesium.defined(this.entityCollection)) { // 需要更新
-            positions.forEach((position,index) => {
-                if(this.children[index]) {  // 没有child创建child 有child更新位置就行
-                    this.children[index].coordinatesVirtual = [position]
-                }else { //
-                    const entity = new CEntity({
-                        coordinates: [position],
-                        parent: this,
-                        point: {
-                            disableDepthTestDistance: Number.MAX_VALUE,
-                            pixelSize: 10
-                        },
-                        positionType: this.positionType
-                        // makeCallback: (this.polygon?.hierarchy instanceof Cesium.CallbackProperty)
-                    })
-                    this.children.push(entity)
-                    this.entityCollection.add(entity)
-                }
-            })
-        }
-    }
 
     updatePosition(positions: Cesium.Cartesian3[]) {
-        // super.updatePosition(position);
+        super.updatePosition(positions);
 
         const anchorPoints = positions.map(value => {
             return PlotUtils.cartesian2point(value)
@@ -84,17 +31,20 @@ export default class ArrowAttack extends CEntity {
             return
         }
         this.coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
-        if (this.polygon!.hierarchy instanceof Cesium.ConstantProperty) {
+        if (this.positionType === PositionType.Constant) {
             this.polygon!.hierarchy = new Cesium.ConstantProperty(new Cesium.PolygonHierarchy(this.coordinatesReal))
         }
     }
 
     getGeometry(anchor_points: Point[]) {
-        if (anchor_points.length < 2) {
+        if (anchor_points.length === 0) {
             return [];
         }
-        if (anchor_points.length === 2) {   // 只有两个点，无法形成攻击箭头，直接返回
-            return anchor_points;
+        if(anchor_points.length === 1) {
+            return new Array(3).fill(anchor_points[0]);    
+        }
+        else if (anchor_points.length === 2) {   // 只有两个点，无法形成攻击箭头，直接返回
+            return [...anchor_points,anchor_points[1]];
         } else {
             // 攻击箭头最底下两个点
             let [tailLeft, tailRight] = [anchor_points[0], anchor_points[1]];

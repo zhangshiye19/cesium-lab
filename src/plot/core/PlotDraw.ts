@@ -6,6 +6,7 @@ import CEntity from "@/CesiumMap/entity/CEntity";
 import * as PlotUtils from '@/plot/utils/utils';
 import PlotEdit from "@/plot/core/PlotEdit";
 import PositionType from "@/CesiumMap/entity/PositionType";
+import ArrowDouble from "@/CesiumMap/entity/ArrowDouble";
 
 export default class PlotDraw {
 
@@ -25,20 +26,34 @@ export default class PlotDraw {
     }
 
     plot(plotType: PlotType, positions: Cesium.Cartesian3[]) {
+        let required_point_count = 1;
         if (plotType === PlotType.AttackArrow) {
             this.plottingEntity = new ArrowAttack({
                 coordinates: positions,
                 positionType: PositionType.Callback
                 // makeCallback: true
             })
+            required_point_count = -1;  // 可以有无限多个点
+            // this.plottingEntity = this.createPolygon(Cesium.Cartesian3.fromDegreesArray(positions.flat()))
+        }else if(plotType === PlotType.DoubleArrow){
+            this.plottingEntity = new ArrowDouble({
+                coordinates: positions,
+                positionType: PositionType.Callback
+                // makeCallback: true
+            })
+            required_point_count = 5;
+        }
+
+        if(this.plottingEntity) {
             this.viewer.entities.add(this.plottingEntity)
             this.plottingEntity.active()
-            // this.plottingEntity = this.createPolygon(Cesium.Cartesian3.fromDegreesArray(positions.flat()))
         }
+        return required_point_count;
     }
 
-    startPlot() {
+    startPlot(plotType: PlotType) {
         this.handleScreenSpaceEvent = new Cesium.ScreenSpaceEventHandler()
+        let required_point_count = 1;
         this.handleScreenSpaceEvent.setInputAction((event: Cesium.ScreenSpaceEventHandler.PositionedEvent) => {
             const cartesian = PlotUtils.getCartesianFromScreen(this.viewer, event.position);
             if (!Cesium.defined(cartesian)) {
@@ -53,7 +68,10 @@ export default class PlotDraw {
                 // this.plottingEntity.coordinatesVirtual = [...this.positions, cartesian]
                 // this.plottingEntity?.updatePosition([...this.positions, cartesian])
             } else {
-                this.positions.length >= 2 && this.plot(PlotType.AttackArrow, this.positions)
+                required_point_count = this.plot(plotType, this.positions)
+            }
+            if(required_point_count === this.positions.length) {    // 直接通过单机结束
+                this.stopPlot()
             }
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
         // 双击结束
