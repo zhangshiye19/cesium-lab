@@ -5,7 +5,10 @@
 enum PlotType {
     AttackArrow,
     FineArrow,
-    DoubleArrow
+    DoubleArrow,
+    SquadCombat,
+    SwallowArrow,
+    CommonPolyline
 }
 
 export default PlotType;

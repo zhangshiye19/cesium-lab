@@ -7,6 +7,10 @@ import * as PlotUtils from '@/plot/utils/utils';
 import PlotEdit from "@/plot/core/PlotEdit";
 import PositionType from "@/CesiumMap/entity/PositionType";
 import ArrowDouble from "@/CesiumMap/entity/ArrowDouble";
+import ArrowFine from "@/CesiumMap/entity/ArrowFine";
+import SquadCombat from "@/CesiumMap/entity/SquadCombat";
+import StraightArrow from "@/CesiumMap/entity/StraightArrow";
+import CPolyline from "@/CesiumMap/entity/CPolyline";
 
 export default class PlotDraw {
 
@@ -33,7 +37,7 @@ export default class PlotDraw {
                 positionType: PositionType.Callback
                 // makeCallback: true
             })
-            required_point_count = -1;  // 可以有无限多个点
+            required_point_count = Infinity;  // 可以有无限多个点
             // this.plottingEntity = this.createPolygon(Cesium.Cartesian3.fromDegreesArray(positions.flat()))
         }else if(plotType === PlotType.DoubleArrow){
             this.plottingEntity = new ArrowDouble({
@@ -42,6 +46,30 @@ export default class PlotDraw {
                 // makeCallback: true
             })
             required_point_count = 5;
+        }else if(plotType === PlotType.FineArrow) {
+            this.plottingEntity = new ArrowFine({
+                coordinates: positions,
+                positionType: PositionType.Callback
+            })
+            required_point_count = 2;
+        }else if(plotType === PlotType.SquadCombat) {
+            this.plottingEntity = new SquadCombat({
+                coordinates: positions,
+                positionType: PositionType.Callback
+            })
+            required_point_count = Infinity;
+        }else if(plotType === PlotType.SwallowArrow) {
+            this.plottingEntity = new StraightArrow({
+                coordinates: positions,
+                positionType: PositionType.Callback
+            })
+            required_point_count = 2;
+        }else if(plotType === PlotType.CommonPolyline){
+            this.plottingEntity = new CPolyline({
+                coordinates: positions,
+                positionType: PositionType.Callback
+            })
+            required_point_count = Infinity;
         }
 
         if(this.plottingEntity) {
@@ -70,7 +98,7 @@ export default class PlotDraw {
             } else {
                 required_point_count = this.plot(plotType, this.positions)
             }
-            if(required_point_count === this.positions.length) {    // 直接通过单机结束
+            if(required_point_count === this.positions.length || required_point_count === -1) {    // 直接通过单机结束
                 this.stopPlot()
             }
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
@@ -108,7 +136,7 @@ export default class PlotDraw {
             this.instance = new PlotDraw(CesiumMap.getViewer())
             const handle = new Cesium.ScreenSpaceEventHandler()
             handle.setInputAction((event: Cesium.ScreenSpaceEventHandler.PositionedEvent) => {
-                const entity = CesiumMap.getViewer().scene.pick(event.position).id;
+                const entity = CesiumMap.getViewer().scene.pick(event.position)?.id;
                 // console.log(entity.parent)
                 // const cartesian = PlotUtils.getCartesianFromScreen(CesiumMap.getViewer(),event.endPosition)
                 if(entity instanceof CEntity) {

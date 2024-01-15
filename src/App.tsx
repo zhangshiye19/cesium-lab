@@ -5,7 +5,6 @@ import CesiumMap from './CesiumMap/CesiumMap';
 import 'cesium/Source/Widgets/widgets.css';
 import Toolbar from './pages/Toolbar';
 // import AttackArrow from "@/plot/geometry/arrow/AttackArrow";
-import DoubleArrow from "@/plot/geometry/arrow/DoubleArrow";
 import {Point} from "@/plot/utils/utils";
 import * as Cesium from "cesium";
 import ArrowAttack from "@/CesiumMap/entity/ArrowAttack";
