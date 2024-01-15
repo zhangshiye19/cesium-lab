@@ -1,4 +1,4 @@
-import {Flex} from "antd";
+import {Col, Flex, Row} from "antd";
 import SvgAttackArrow from '@/static/svg/攻击箭头.svg'
 import SvgRightArrow from '@/static/svg/细直箭头.svg'
 import PlotItem from "@/pages/Toolbar/component/PlotComponent/PlotItem";
@@ -8,13 +8,32 @@ export default function PlotMilitary() {
 
     return (
         <div>
-            <Flex wrap={'wrap'} gap={'large'}>
-                <PlotItem icon={<SvgAttackArrow/>} plotType={PlotType.AttackArrow} title={'攻击箭头'}/>
-                <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.DoubleArrow} title={'钳击箭头'}/>
-                <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.FineArrow} title={'FineArrow'}/>
-                <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.SquadCombat} title={'SquadCombat'}/>
-                <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.SwallowArrow} title={'SwallowArrow'}/>
-            </Flex>
+            <Row justify={'space-between'}>
+                <Col>
+                    <PlotItem icon={<SvgAttackArrow/>} plotType={PlotType.AttackArrow} title={'攻击箭头'}/>
+                </Col>
+                <Col>
+                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.DoubleArrow} title={'钳击箭头'}/>
+                </Col>
+                <Col>
+                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.FineArrow} title={'细直箭头'}/>
+                </Col>
+                <Col>
+                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.SquadCombat} title={'分队行动'}/>
+                </Col>
+                <Col>
+                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.SwallowArrow} title={'燕尾箭头'}/>
+                </Col>
+                <Col>
+                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.SwallowArrow} title={'燕尾箭头'}/>
+                </Col>
+                <Col>
+                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.SwallowArrow} title={'燕尾箭头'}/>
+                </Col>
+                <Col>
+                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.SwallowArrow} title={'燕尾箭头'}/>
+                </Col>
+            </Row>
         </div>
     )
 }
