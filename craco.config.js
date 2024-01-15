@@ -13,6 +13,9 @@ module.exports = {
     babel: {
         // plugins: ['react-refresh/babel'],
     },
+    devServer: {
+        port: 3001
+    },
     webpack: {
         alias: {
             "@": path.join(__dirname, "src")
@@ -21,16 +24,16 @@ module.exports = {
 
             // console.log(env)
 
-            webpackConfig.ignoreWarnings = [
-                function ignoreSourcemapsloaderWarnings(warning) {
-                    return (
-                        warning.module &&
-                        warning.module.resource.includes('node_modules') &&
-                        warning.details &&
-                        warning.details.includes('source-map-loader')
-                    )
-                },
-            ]
+            // webpackConfig.ignoreWarnings = [
+            //     function ignoreSourcemapsloaderWarnings(warning) {
+            //         return (
+            //             warning.module &&
+            //             warning.module.resource.includes('node_modules') &&
+            //             warning.details &&
+            //             warning.details.includes('source-map-loader')
+            //         )
+            //     },
+            // ]
 
             //resolve
             webpackConfig.resolve.fallback = {

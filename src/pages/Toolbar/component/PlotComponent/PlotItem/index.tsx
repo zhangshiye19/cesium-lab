@@ -19,9 +19,7 @@ export default function PlotItem({icon, plotType, title}: PlotItemProps) {
     return (
         <div className={styles['plot-item-container']}>
             <Button size={'large'} title={title} icon={icon} onClick={e => {
-                PlotDraw.getInstance().startPlot();
-                // e.stopPropagation();
-                // e.preventDefault();
+                PlotDraw.getInstance().startPlot(plotType);
             }}/>
             <div>{title}</div>
         </div>
