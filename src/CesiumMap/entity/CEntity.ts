@@ -1,9 +1,9 @@
 import * as Cesium from "cesium";
+import PositionType from "./PositionType";
 
 
 export type CEntityOption = Cesium.Entity.ConstructorOptions & {
-    makeCallback?: boolean,
-    makeSampled?: boolean,
+    positionType?: PositionType
     coordinates: Cesium.Cartesian3[]
 }
 
@@ -11,16 +11,37 @@ export default class CEntity extends Cesium.Entity {
 
     children: CEntity[];
     protected coordinatesReal: Cesium.Cartesian3[]; // 自定义位置坐标，统一类型，不能用_coordinates，entity自己也会进行属性劫持
-    private _coordinatesVirtual: Cesium.Cartesian3[];
+    protected _coordinatesVirtual: Cesium.Cartesian3[];
+    protected positionType: PositionType;
 
     constructor(options: CEntityOption) {
         super(options);
         this.children = [];
         this._coordinatesVirtual = [];
         this.coordinatesReal = options.coordinates;
+        this.positionType = options.positionType || PositionType.Constant;
 
-        options.makeCallback && this.makeCallback()
-        this.updatePosition(Cesium.defaultValue(options.coordinates, []))
+        // options.makeCallback && this.makeCallback()
+        this.makePositionType(this.positionType);
+        this.coordinatesVirtual = Cesium.defaultValue(options.coordinates, []);
+    }
+
+    makePositionType(positionType: PositionType) {
+        this.positionType = positionType;   // 再次赋值
+        switch(positionType) {
+            case PositionType.Callback: {
+                this.makeCallback()
+                break;
+            }
+            case PositionType.Sampled: {
+                this.makeSampled()
+                break;
+            }
+            case PositionType.Constant:
+            default: {  // 默认行为 Constant
+                this.makeConstant()
+            }
+        }
     }
 
     protected updateChildren(positions: Cesium.Cartesian3[]) {

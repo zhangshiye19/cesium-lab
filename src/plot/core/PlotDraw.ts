@@ -5,6 +5,7 @@ import ArrowAttack from "@/CesiumMap/entity/ArrowAttack";
 import CEntity from "@/CesiumMap/entity/CEntity";
 import * as PlotUtils from '@/plot/utils/utils';
 import PlotEdit from "@/plot/core/PlotEdit";
+import PositionType from "@/CesiumMap/entity/PositionType";
 
 export default class PlotDraw {
 
@@ -27,7 +28,8 @@ export default class PlotDraw {
         if (plotType === PlotType.AttackArrow) {
             this.plottingEntity = new ArrowAttack({
                 coordinates: positions,
-                makeCallback: true
+                positionType: PositionType.Callback
+                // makeCallback: true
             })
             this.viewer.entities.add(this.plottingEntity)
             // this.plottingEntity = this.createPolygon(Cesium.Cartesian3.fromDegreesArray(positions.flat()))

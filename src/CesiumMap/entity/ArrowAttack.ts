@@ -3,6 +3,7 @@ import * as PlotUtils from "@/plot/utils/utils";
 import {Point} from "@/plot/utils/utils";
 import * as Constants from "@/plot/utils/constant";
 import * as Cesium from "cesium";
+// import PositionType from "./PositionType";
 
 
 export default class ArrowAttack extends CEntity {
@@ -54,7 +55,8 @@ export default class ArrowAttack extends CEntity {
                             disableDepthTestDistance: Number.MAX_VALUE,
                             pixelSize: 10
                         },
-                        makeCallback: (this.polygon?.hierarchy instanceof Cesium.CallbackProperty)
+                        positionType: this.positionType
+                        // makeCallback: (this.polygon?.hierarchy instanceof Cesium.CallbackProperty)
                     })
                     this.children.push(entity)
                     this.entityCollection.add(entity)
