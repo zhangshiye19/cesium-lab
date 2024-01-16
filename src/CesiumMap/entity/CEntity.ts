@@ -6,6 +6,7 @@ import PlotType from "@/plot/core/PlotType";
 export type CEntityOption = Cesium.Entity.ConstructorOptions & {
     positionType?: PositionType
     coordinates: Cesium.Cartesian3[]
+    coordinatesReal?: Cesium.Cartesian3[]
 }
 
 export default class CEntity extends Cesium.Entity {
@@ -13,7 +14,7 @@ export default class CEntity extends Cesium.Entity {
     plotType: PlotType;
     requirePointCount: number;
     children: CEntity[];
-    protected _coordinatesReal: Cesium.Cartesian3[]; // 自定义位置坐标，统一类型，不能用_coordinates，entity 内部定义 get coordinates方法
+    protected _coordinatesReal: Cesium.Cartesian3[]; // 不能和options里面名字重名字，real可以，没有设置set属性
     protected _coordinatesVirtual: Cesium.Cartesian3[];
     protected positionType: PositionType;
 
@@ -23,8 +24,8 @@ export default class CEntity extends Cesium.Entity {
         this.requirePointCount = Infinity;
         this.children = [];
         this._coordinatesVirtual = [];
-        this._coordinatesReal = options.coordinates;
-        this.positionType = options.positionType || PositionType.Constant;
+        this._coordinatesReal = options.coordinatesReal ?? options.coordinates;
+        this.positionType = options.positionType ?? PositionType.Constant;
 
         // options.makeCallback && this.makeCallback()
         this.makePositionType(this.positionType);
@@ -53,9 +54,13 @@ export default class CEntity extends Cesium.Entity {
         }
     }
 
-    active() {}
+    active() {
+        this.updateChildren(this.coordinatesVirtual)
+    }
 
-    deactive() {}
+    deactive() {
+        this.updateChildren(this.coordinatesVirtual)
+    }
 
     protected updateChildren(positions: Cesium.Cartesian3[]) {
     }

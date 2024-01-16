@@ -30,10 +30,12 @@ export default class CPolygon extends CEntity {
     }
 
     active(): void {
+        super.active()
         this.children.forEach(child => child.show = true)
     }
 
     deactive(): void {
+        super.deactive()
         this.children.forEach(child => child.show = false)
     }
 
@@ -49,26 +51,29 @@ export default class CPolygon extends CEntity {
 
     updateChildren(positions: Cesium.Cartesian3[]) {    // 更新 children
         // super.updateChildren(positions);
-        if (Cesium.defined(this.entityCollection)) { // 需要更新
-            positions.forEach((position,index) => {
-                if(this.children[index]) {  // 没有child创建child 有child更新位置就行
-                    this.children[index].coordinatesVirtual = [position]
-                }else { //
-                    const entity = new CEntity({
-                        coordinates: [position],
-                        parent: this,
-                        point: {
-                            disableDepthTestDistance: Number.MAX_VALUE,
-                            pixelSize: 10
-                        },
-                        positionType: this.positionType
-                        // makeCallback: (this.polygon?.hierarchy instanceof Cesium.CallbackProperty)
-                    })
-                    this.children.push(entity)
-                    this.entityCollection.add(entity)
-                }
-            })
-        }
+        // if (Cesium.defined(this.entityCollection)) { // 需要更新
+        positions.forEach((position,index) => {
+            if(this.children[index]) {  // 没有child创建child 有child更新位置就行
+                this.children[index].coordinatesVirtual = [position]
+            }else { //
+                const entity = new CEntity({
+                    coordinates: [position],
+                    parent: this,
+                    point: {
+                        disableDepthTestDistance: Number.MAX_VALUE,
+                        pixelSize: 10
+                    },
+                    positionType: this.positionType
+                    // makeCallback: (this.polygon?.hierarchy instanceof Cesium.CallbackProperty)
+                })
+                this.children.push(entity)
+                // this.entityCollection.add(entity)
+            }
+            if(this.entityCollection && !this.entityCollection.getById(this.children[index].id)) {
+                this.entityCollection.add(this.children[index])
+            }
+        })
+        // }
     }
 
     updatePosition(positions: Cesium.Cartesian3[]) {
