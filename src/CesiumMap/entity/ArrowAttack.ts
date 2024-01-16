@@ -32,10 +32,7 @@ export default class ArrowAttack extends CPolygon {
         if (geometry.some(value => isNaN(value))) {
             return
         }
-        this._coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
-        if (this.positionType === PositionType.Constant) {
-            this.polygon!.hierarchy = new Cesium.ConstantProperty(new Cesium.PolygonHierarchy(this._coordinatesReal))
-        }
+        this.coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
     }
 
     getGeometry(anchor_points: Point[]) {
@@ -43,7 +40,7 @@ export default class ArrowAttack extends CPolygon {
             return [];
         }
         if(anchor_points.length === 1) {
-            return new Array(3).fill(anchor_points[0]);    
+            return new Array(3).fill(anchor_points[0]);
         }
         else if (anchor_points.length === 2) {   // 只有两个点，无法形成攻击箭头，直接返回
             return [...anchor_points,anchor_points[1]];

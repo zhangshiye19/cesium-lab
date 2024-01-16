@@ -30,6 +30,7 @@ export default class CEntity extends Cesium.Entity {
         // options.makeCallback && this.makeCallback()
         this.makePositionType(this.positionType);
         this.coordinatesVirtual = Cesium.defaultValue(options.coordinates, []);
+        this.coordinatesReal = options.coordinatesR ?? options.coordinates;
     }
 
     get geometryType() {
@@ -75,30 +76,33 @@ export default class CEntity extends Cesium.Entity {
         return this._coordinatesVirtual;
     }
 
-    get coordinatesReal() { // 获取真实 cartesian
+    get coordinatesReal() {
         return this._coordinatesReal;
     }
 
+    set coordinatesReal(positions: Cesium.Cartesian3[]) {
 
-    protected set coordinateReal(positions: Cesium.Cartesian3[]) {
-        if (!Cesium.defined(this.position)) {    // 未定义，直接赋予ConstantPositionProperty
-            this.position = new Cesium.ConstantPositionProperty(positions[0])
-            return;
-        }
-
+        this._coordinatesReal = positions;
         switch(this.positionType) {
             case PositionType.Callback: {
-                this._coordinatesReal = positions;
-                break;
-            }
-            case PositionType.Sampled: {
-                if(this.position instanceof Cesium.SampledPositionProperty) {   // 样本位置
-                    this.position.addSample(Cesium.JulianDate.addSeconds(Cesium.JulianDate.now(), 1, new Cesium.JulianDate()), positions[0])
+                if (!(this.position instanceof Cesium.CallbackProperty)) {
+                    // @ts-ignore
+                    this.position = new Cesium.CallbackProperty(time => {
+                        return this._coordinatesReal[0]
+                    }, false)
                 }
                 break;
             }
+            case PositionType.Sampled: {
+                if(!(this.position instanceof Cesium.SampledPositionProperty)) {   // 样本位置
+                    this.position = new Cesium.SampledPositionProperty()
+                }
+                //@ts-ignore
+                this.position.addSample(Cesium.JulianDate.addSeconds(Cesium.JulianDate.now(), 1, new Cesium.JulianDate()), positions[0])
+                break;
+            }
             default: {
-                this.position = new Cesium.ConstantPositionProperty(positions[0])
+                this.position = new Cesium.ConstantPositionProperty(this._coordinatesReal[0])
             }
         }
     }
@@ -107,25 +111,21 @@ export default class CEntity extends Cesium.Entity {
      * 更新位置
      */
     protected updatePosition(positions: Cesium.Cartesian3[]) {
-        this.coordinateReal = positions;
+        this.coordinatesReal = positions;
     }
 
-
     makeCallback() {
-        // @ts-ignore
-        this.position = new Cesium.CallbackProperty(time => {
-            return this._coordinatesReal[0]
-        }, false)
+        this.positionType = PositionType.Callback;
         this.children.forEach(child => child.makeCallback())
     }
 
     makeConstant() {
-
-        this.position = new Cesium.ConstantPositionProperty(this._coordinatesReal[0])
+        this.positionType = PositionType.Constant;
         this.children.forEach(child => child.makeConstant())
     }
 
     makeSampled() {
-        this.position = new Cesium.SampledPositionProperty()
+        this.positionType = PositionType.Sampled
+        this.children.forEach(child => child.makeSampled())
     }
 }

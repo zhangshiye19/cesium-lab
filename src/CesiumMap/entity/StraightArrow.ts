@@ -30,10 +30,7 @@ export default class StraightArrow extends CPolyline {
         if (geometry.some(value => isNaN(value))) {
             return
         }
-        this._coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
-        if (this.positionType === PositionType.Constant) {
-            this.polyline!.positions = new Cesium.ConstantProperty(this._coordinatesReal)
-        }
+        this.coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
     }
 
 

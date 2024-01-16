@@ -31,16 +31,22 @@ export default class CPolyline extends CEntity {
         this.children.forEach(child => child.show = false)
     }
 
-    makeCallback() {
-        super.makeCallback()
-        this.polyline!.positions = new Cesium.CallbackProperty(time => {
-            return this._coordinatesReal
-        }, false)
-    }
-
-    makeConstant(): void {
-        super.makeConstant()
-        this.polyline!.positions = new Cesium.ConstantProperty(this._coordinatesReal)
+    set coordinatesReal(positions: Cesium.Cartesian3[]) {
+        this._coordinatesReal = positions;
+        switch(this.positionType) {
+            case PositionType.Callback: {
+                if (!(this.polyline!.positions instanceof Cesium.CallbackProperty)) {
+                    // @ts-ignore
+                    this.polyline!.positions = new Cesium.CallbackProperty(time => {
+                        return this._coordinatesReal
+                    }, false)
+                }
+                break;
+            }
+            default: {
+                this.polyline!.positions = new Cesium.ConstantProperty(this._coordinatesReal)
+            }
+        }
     }
 
     updateChildren(positions: Cesium.Cartesian3[]) {    // 更新 children
@@ -70,9 +76,6 @@ export default class CPolyline extends CEntity {
     updatePosition(positions: Cesium.Cartesian3[]) {
         super.updatePosition(positions);
 
-        this._coordinatesReal = positions;
-        if (this.positionType === PositionType.Constant) {
-            this.polyline!.positions = new Cesium.ConstantProperty(this._coordinatesReal)
-        }
+        this.coordinatesReal = positions;
     }
 }

@@ -31,10 +31,7 @@ export default class ArrowDouble extends CPolygon {
         if (geometry.some(value => isNaN(value))) {
             return
         }
-        this._coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
-        if (this.positionType === PositionType.Constant) {
-            this.polygon!.hierarchy = new Cesium.ConstantProperty(new Cesium.PolygonHierarchy(this._coordinatesReal))
-        }
+        this.coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
     }
 
     getGeometry(anchor_points: Point[]): Point[] {
