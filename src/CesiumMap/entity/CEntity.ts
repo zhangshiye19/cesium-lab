@@ -6,7 +6,7 @@ import PlotType from "@/plot/core/PlotType";
 export type CEntityOption = Cesium.Entity.ConstructorOptions & {
     positionType?: PositionType
     coordinates: Cesium.Cartesian3[]
-    coordinatesReal?: Cesium.Cartesian3[]
+    coordinatesR?: Cesium.Cartesian3[]
 }
 
 export default class CEntity extends Cesium.Entity {
@@ -24,7 +24,7 @@ export default class CEntity extends Cesium.Entity {
         this.requirePointCount = Infinity;
         this.children = [];
         this._coordinatesVirtual = [];
-        this._coordinatesReal = options.coordinatesReal ?? options.coordinates;
+        this._coordinatesReal = options.coordinatesR ?? options.coordinates;
         this.positionType = options.positionType ?? PositionType.Constant;
 
         // options.makeCallback && this.makeCallback()
@@ -79,10 +79,8 @@ export default class CEntity extends Cesium.Entity {
         return this._coordinatesReal;
     }
 
-    /**
-     * 更新位置
-     */
-    protected updatePosition(positions: Cesium.Cartesian3[]) {
+
+    protected set coordinateReal(positions: Cesium.Cartesian3[]) {
         if (!Cesium.defined(this.position)) {    // 未定义，直接赋予ConstantPositionProperty
             this.position = new Cesium.ConstantPositionProperty(positions[0])
             return;
@@ -105,6 +103,14 @@ export default class CEntity extends Cesium.Entity {
         }
     }
 
+    /**
+     * 更新位置
+     */
+    protected updatePosition(positions: Cesium.Cartesian3[]) {
+        this.coordinateReal = positions;
+    }
+
+
     makeCallback() {
         // @ts-ignore
         this.position = new Cesium.CallbackProperty(time => {
@@ -114,6 +120,7 @@ export default class CEntity extends Cesium.Entity {
     }
 
     makeConstant() {
+
         this.position = new Cesium.ConstantPositionProperty(this._coordinatesReal[0])
         this.children.forEach(child => child.makeConstant())
     }

@@ -8,6 +8,7 @@ import Toolbar from './pages/Toolbar';
 import {Point} from "@/plot/utils/utils";
 import * as Cesium from "cesium";
 import ArrowAttack from "@/CesiumMap/entity/ArrowAttack";
+import {loadEntityFromJsonObj} from "@/plot/core/PlotFactory";
 
 function App() {
 
@@ -18,12 +19,23 @@ function App() {
   },[])
 
   const doSomething = () => {
-    const viewer = CesiumMap.getViewer();
-    const attackArrowAnchorPoint:Point[] = [[114,21],[115,21],[114.6,25]]
-    const entity = new ArrowAttack({
-      coordinates: Cesium.Cartesian3.fromDegreesArray(attackArrowAnchorPoint.flat())
-    });
-    viewer.entities.add(entity)
+
+    const items = localStorage.getItem('plotdrawtest')
+    if(items) {
+      JSON.parse(items).forEach((obj: any) => {
+        const entity = loadEntityFromJsonObj(obj);
+        if(entity) {
+          CesiumMap.getViewer().entities.add(entity)
+        }
+      })
+    }
+
+    // const viewer = CesiumMap.getViewer();
+    // const attackArrowAnchorPoint:Point[] = [[114,21],[115,21],[114.6,25]]
+    // const entity = new ArrowAttack({
+    //   coordinates: Cesium.Cartesian3.fromDegreesArray(attackArrowAnchorPoint.flat())
+    // });
+    // viewer.entities.add(entity)
     // const resultPoints =
     // const resultPoints = DoubleArrow(attackArrowAnchorPoint)
 

@@ -61,6 +61,7 @@ import CPolygon from "@/CesiumMap/entity/CPolygon";
 
 export function getEntityFromType(plotType: PlotType, positions: Cesium.Cartesian3[],positionType?: PositionType) {
     let plottingEntity: CEntity | undefined;
+    console.log(plotType)
     if (plotType === PlotType.AttackArrow) {
         plottingEntity = new ArrowAttack({
             coordinates: positions,
@@ -105,9 +106,7 @@ export function loadEntityFromJsonObj(obj: any): CEntity | undefined {
         return;   //    没有值，无法转换
     }
     const points: Point[] = obj['properties']['points'];
-
-    // entity && (entity.coordinatesVirtual = point)
-
+    console.log(obj)
     return getEntityFromType(obj['properties']['type'], Cesium.Cartesian3.fromDegreesArray(points.flat()));
 }
 

@@ -39,6 +39,11 @@ export default class CPolygon extends CEntity {
         this.children.forEach(child => child.show = false)
     }
 
+    makeConstant() {
+        super.makeConstant();
+        this.polygon!.hierarchy = new Cesium.ConstantProperty(new Cesium.PolygonHierarchy(this._coordinatesReal));
+    }
+
     makeCallback() {
         super.makeCallback()
         this.polygon!.hierarchy = new Cesium.CallbackProperty(time => {
