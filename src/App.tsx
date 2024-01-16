@@ -17,21 +17,21 @@ function App() {
 
   const doSomething = () => {
 
-    PlotDraw.getInstance().eventDrawEnd.addEventListener((entity: CEntity) => {
-      console.log(entity)
-      const obj = saveEntityToJsonObj(entity)
-      localStorage.setItem('plotdrawtest',JSON.stringify([obj]))
+    const items = localStorage.getItem('plotdrawtest') ?? '[]'
+    const objArray = JSON.parse(items)
+    objArray.forEach((obj: any) => {
+      const entity = loadEntityFromJsonObj(obj);
+      if(entity) {
+        CesiumMap.getViewer().entities.add(entity)
+      }
     })
 
-    const items = localStorage.getItem('plotdrawtest')
-    if(items) {
-      JSON.parse(items).forEach((obj: any) => {
-        const entity = loadEntityFromJsonObj(obj);
-        if(entity) {
-          CesiumMap.getViewer().entities.add(entity)
-        }
-      })
-    }
+    PlotDraw.getInstance().eventDrawEnd.addEventListener((entity: CEntity) => {
+      const obj = saveEntityToJsonObj(entity)
+      objArray.push(obj)
+      localStorage.setItem('plotdrawtest',JSON.stringify(objArray))
+    })
+
 
     // const viewer = CesiumMap.getViewer();
     // const attackArrowAnchorPoint:Point[] = [[114,21],[115,21],[114.6,25]]
