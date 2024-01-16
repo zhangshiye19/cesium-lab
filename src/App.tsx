@@ -1,13 +1,8 @@
 import React, { useEffect } from 'react';
 import './App.css';
 import CesiumMap from './CesiumMap/CesiumMap';
-// import 'cesium/Build/Cesium/Widgets/'
 import 'cesium/Source/Widgets/widgets.css';
 import Toolbar from './pages/Toolbar';
-// import AttackArrow from "@/plot/geometry/arrow/AttackArrow";
-import {Point} from "@/CesiumMap/entity/utils/utils";
-import * as Cesium from "cesium";
-import ArrowAttack from "@/CesiumMap/entity/ArrowAttack";
 import {loadEntityFromJsonObj, saveEntityToJsonObj} from "@/plot/core/PlotFactory";
 import PlotDraw from "@/plot/core/PlotDraw";
 import CEntity from "@/CesiumMap/entity/CEntity";

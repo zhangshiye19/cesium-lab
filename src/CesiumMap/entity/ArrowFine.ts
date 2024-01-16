@@ -1,10 +1,9 @@
-import CEntity, {CEntityOption} from "@/CesiumMap/entity/CEntity";
+import {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import * as PlotUtils from "@/CesiumMap/entity/utils/utils";
 import {Point} from "@/CesiumMap/entity/utils/utils";
 import * as Constants from "@/CesiumMap/entity/utils/constant";
 import * as Cesium from "cesium";
 import CPolygon from "./CPolygon";
-import PositionType from "./PositionType";
 import PlotType from "@/CesiumMap/entity/PlotType";
 // import PositionType from "./PositionType";
 
@@ -41,7 +40,7 @@ export default class ArrowFine extends CPolygon {
         if(cont === 0) {
             return []
         }
-        if (cont == 1) {
+        if (cont === 1) {
             return new Array(2).fill(anchor_points[0]);
         }
         const pnts = anchor_points;

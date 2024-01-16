@@ -4,7 +4,6 @@ import type { Point } from "@/CesiumMap/entity/utils/utils";
 import CPolygon from "./CPolygon";
 import { CEntityOption } from "./CEntity";
 import * as Cesium from 'cesium';
-import PositionType from "./PositionType";
 import PlotType from "@/CesiumMap/entity/PlotType";
 
 export default class ArrowDouble extends CPolygon {

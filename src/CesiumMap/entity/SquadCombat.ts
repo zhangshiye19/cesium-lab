@@ -1,10 +1,8 @@
-import CEntity, {CEntityOption} from "@/CesiumMap/entity/CEntity";
+import {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import * as PlotUtils from "@/CesiumMap/entity/utils/utils";
 import {Point} from "@/CesiumMap/entity/utils/utils";
 import * as Constants from "@/CesiumMap/entity/utils/constant";
 import * as Cesium from "cesium";
-import CPolygon from "./CPolygon";
-import PositionType from "./PositionType";
 import ArrowAttack from "./ArrowAttack";
 import PlotType from "@/CesiumMap/entity/PlotType";
 // import PositionType from "./PositionType";
