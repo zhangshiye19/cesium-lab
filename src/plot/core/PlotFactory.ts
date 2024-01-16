@@ -1,6 +1,6 @@
 import * as Cesium from 'cesium'
 import CEntity from "@/CesiumMap/entity/CEntity";
-import PlotType from "@/plot/core/PlotType";
+import PlotType from "@/CesiumMap/entity/PlotType";
 import ArrowAttack from "@/CesiumMap/entity/ArrowAttack";
 import PositionType from "@/CesiumMap/entity/PositionType";
 import ArrowDouble from "@/CesiumMap/entity/ArrowDouble";
@@ -8,7 +8,7 @@ import ArrowFine from "@/CesiumMap/entity/ArrowFine";
 import SquadCombat from "@/CesiumMap/entity/SquadCombat";
 import StraightArrow from "@/CesiumMap/entity/StraightArrow";
 import CPolyline from "@/CesiumMap/entity/CPolyline";
-import {cartesian2point, Point} from "@/plot/utils/utils";
+import {cartesian2point, Point} from "@/CesiumMap/entity/utils/utils";
 
 
 // [

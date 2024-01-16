@@ -1,11 +1,11 @@
 import CEntity, {CEntityOption} from "@/CesiumMap/entity/CEntity";
-import * as PlotUtils from "@/plot/utils/utils";
-import {Point} from "@/plot/utils/utils";
-import * as Constants from "@/plot/utils/constant";
+import * as PlotUtils from "@/CesiumMap/entity/utils/utils";
+import {Point} from "@/CesiumMap/entity/utils/utils";
+import * as Constants from "@/CesiumMap/entity/utils/constant";
 import * as Cesium from "cesium";
 import CPolygon from "./CPolygon";
 import PositionType from "./PositionType";
-import PlotType from "@/plot/core/PlotType";
+import PlotType from "@/CesiumMap/entity/PlotType";
 // import PositionType from "./PositionType";
 
 
@@ -22,8 +22,8 @@ export default class ArrowFine extends CPolygon {
         this.requirePointCount = 2;
     }
 
-    updatePosition(positions: Cesium.Cartesian3[]) {
-        super.updatePosition(positions);
+    mapToCoordinates(positions: Cesium.Cartesian3[]) {
+        super.mapToCoordinates(positions);
 
         const anchorPoints = positions.map(value => {
             return PlotUtils.cartesian2point(value)

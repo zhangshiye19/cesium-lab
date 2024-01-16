@@ -1,11 +1,11 @@
-import * as PlotUtils from "@/plot/utils/utils";
-import * as Constants from '@/plot/utils/constant';
-import type { Point } from "@/plot/utils/utils";
+import * as PlotUtils from "@/CesiumMap/entity/utils/utils";
+import * as Constants from '@/CesiumMap/entity/utils/constant';
+import type { Point } from "@/CesiumMap/entity/utils/utils";
 import CPolygon from "./CPolygon";
 import { CEntityOption } from "./CEntity";
 import * as Cesium from 'cesium';
 import PositionType from "./PositionType";
-import PlotType from "@/plot/core/PlotType";
+import PlotType from "@/CesiumMap/entity/PlotType";
 
 export default class ArrowDouble extends CPolygon {
 
@@ -21,8 +21,8 @@ export default class ArrowDouble extends CPolygon {
         this.requirePointCount = 5;
     }
 
-    updatePosition(positions: Cesium.Cartesian3[]) {
-        super.updatePosition(positions);
+    mapToCoordinates(positions: Cesium.Cartesian3[]) {
+        super.mapToCoordinates(positions);
 
         const anchorPoints = positions.map(value => {
             return PlotUtils.cartesian2point(value)

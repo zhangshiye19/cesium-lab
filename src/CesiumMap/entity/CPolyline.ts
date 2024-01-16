@@ -2,7 +2,7 @@ import CEntity from './CEntity'
 import { CEntityOption } from './CEntity'
 import * as Cesium from 'cesium'
 import PositionType from './PositionType'
-import PlotType from "@/plot/core/PlotType";
+import PlotType from "@/CesiumMap/entity/PlotType";
 
 export default class CPolyline extends CEntity {
     constructor(options: CEntityOption) {
@@ -30,6 +30,10 @@ export default class CPolyline extends CEntity {
 
     deactive(): void {
         this.children.forEach(child => child.show = false)
+    }
+
+    get coordinatesReal() {
+        return this._coordinatesReal;
     }
 
     set coordinatesReal(positions: Cesium.Cartesian3[]) {
@@ -74,8 +78,8 @@ export default class CPolyline extends CEntity {
         }
     }
 
-    updatePosition(positions: Cesium.Cartesian3[]) {
-        super.updatePosition(positions);
+    mapToCoordinates(positions: Cesium.Cartesian3[]) {
+        super.mapToCoordinates(positions);
 
         this.coordinatesReal = positions;
     }

@@ -1,7 +1,7 @@
 import styles from './index.module.css'
 import {Button} from "antd";
 import React, {useEffect} from "react";
-import PlotType from "@/plot/core/PlotType";
+import PlotType from "@/CesiumMap/entity/PlotType";
 import PlotDraw from "@/plot/core/PlotDraw";
 
 type PlotItemProps = {

@@ -1,6 +1,6 @@
 import CEntity, {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import * as Cesium from "cesium";
-import PlotType from "@/plot/core/PlotType";
+import PlotType from "@/CesiumMap/entity/PlotType";
 import PositionType from "@/CesiumMap/entity/PositionType";
 // import PositionType from "./PositionType";
 
@@ -92,8 +92,8 @@ export default class CPolygon extends CEntity {
         })
     }
 
-    updatePosition(positions: Cesium.Cartesian3[]) {
-        super.updatePosition(positions);
+    mapToCoordinates(positions: Cesium.Cartesian3[]) {
+        super.mapToCoordinates(positions);
 
         this.coordinatesReal = positions;
     }

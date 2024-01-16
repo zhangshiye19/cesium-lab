@@ -2,7 +2,7 @@ import * as Cesium from 'cesium';
 import CEntity from "@/CesiumMap/entity/CEntity";
 import CesiumMap from "@/CesiumMap/CesiumMap";
 import ArrowAttack from "@/CesiumMap/entity/ArrowAttack";
-import * as PlotUtils from '@/plot/utils/utils';
+import * as PlotUtils from '@/CesiumMap/entity/utils/utils';
 
 export default class PlotEdit {
     static instance: PlotEdit;

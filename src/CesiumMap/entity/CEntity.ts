@@ -1,6 +1,6 @@
 import * as Cesium from "cesium";
 import PositionType from "./PositionType";
-import PlotType from "@/plot/core/PlotType";
+import PlotType from "@/CesiumMap/entity/PlotType";
 
 
 export type CEntityOption = Cesium.Entity.ConstructorOptions & {
@@ -68,7 +68,7 @@ export default class CEntity extends Cesium.Entity {
 
     set coordinatesVirtual(coordinates: Cesium.Cartesian3[]) {
         this.updateChildren(coordinates)
-        this.updatePosition(coordinates)
+        this.mapToCoordinates(coordinates)
         this._coordinatesVirtual = coordinates
     }
 
@@ -111,7 +111,7 @@ export default class CEntity extends Cesium.Entity {
     /**
      * 更新位置
      */
-    protected updatePosition(positions: Cesium.Cartesian3[]) {
+    protected mapToCoordinates(positions: Cesium.Cartesian3[]) {
         this.coordinatesReal = positions;
     }
 
