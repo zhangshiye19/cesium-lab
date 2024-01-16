@@ -11,6 +11,8 @@ export default class PlotDraw {
 
     static instance: PlotDraw;  // 所有绘制接口
 
+    readonly eventDrawStart: Cesium.Event;
+    readonly eventDrawEnd: Cesium.Event;
     private plottingEntity: CEntity | undefined;
     private viewer: Cesium.Viewer;
     private handleScreenSpaceEvent: Cesium.ScreenSpaceEventHandler | undefined;
@@ -21,6 +23,8 @@ export default class PlotDraw {
     constructor(viewer: Cesium.Viewer) {
         this.viewer = viewer;
         this.positions = [];
+        this.eventDrawEnd = new Cesium.Event();
+        this.eventDrawStart = new Cesium.Event();
         PlotEdit.getInstance(); // 随时准备edit
     }
 
@@ -45,6 +49,8 @@ export default class PlotDraw {
                 if(this.plottingEntity) {
                     required_point_count = this.plottingEntity.requirePointCount;    // 没有值就赋予-1，代表找不到这种类型
                     CesiumMap.getViewer().entities.add(this.plottingEntity)
+                    //@ts-ignore
+                    this.eventDrawStart.raiseEvent(this.plottingEntity)
                 }
             }
             if(required_point_count === this.positions.length || required_point_count === -1) {    // 直接通过单机结束
@@ -58,9 +64,7 @@ export default class PlotDraw {
             if (!Cesium.Cartesian3.equals(this.positions.slice(-1)[0], cartesian)) {   // 如果不相等才做处理
                 this.positions.push(cartesian)
                 if (this.plottingEntity) this.plottingEntity.coordinatesVirtual = this.positions
-                // if (this.plottingEntity) this.plottingEntity.updatePosition([...this.positions, cartesian])
             }
-            // console.log(this.plottingEntity?.coordinatesVirtual)
             this.stopPlot()
         }, Cesium.ScreenSpaceEventType.RIGHT_CLICK)
         // 移动更新
@@ -74,6 +78,8 @@ export default class PlotDraw {
     }
 
     stopPlot() {
+        //@ts-ignore
+        this.eventDrawEnd.raiseEvent(this.plottingEntity)
         this.plottingEntity?.deactive()
         this.handleScreenSpaceEvent?.destroy();
         this.plottingEntity = undefined;

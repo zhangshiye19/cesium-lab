@@ -30,7 +30,7 @@ export default class CEntity extends Cesium.Entity {
         // options.makeCallback && this.makeCallback()
         this.makePositionType(this.positionType);
         this.coordinatesVirtual = Cesium.defaultValue(options.coordinates, []);
-        this.coordinatesReal = options.coordinatesR ?? options.coordinates;
+        if(options.coordinatesR) this.coordinatesReal = options.coordinatesR;
     }
 
     get geometryType() {
@@ -77,6 +77,7 @@ export default class CEntity extends Cesium.Entity {
     }
 
     get coordinatesReal() {
+        console.log(this._coordinatesReal)
         return this._coordinatesReal;
     }
 

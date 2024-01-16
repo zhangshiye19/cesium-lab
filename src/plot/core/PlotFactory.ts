@@ -9,7 +9,6 @@ import SquadCombat from "@/CesiumMap/entity/SquadCombat";
 import StraightArrow from "@/CesiumMap/entity/StraightArrow";
 import CPolyline from "@/CesiumMap/entity/CPolyline";
 import {cartesian2point, Point} from "@/plot/utils/utils";
-import CPolygon from "@/CesiumMap/entity/CPolygon";
 
 
 // [
@@ -59,42 +58,36 @@ import CPolygon from "@/CesiumMap/entity/CPolygon";
 //   }
 // ]
 
-export function getEntityFromType(plotType: PlotType, positions: Cesium.Cartesian3[],positionType?: PositionType) {
+export function getEntityFromType(plotType: PlotType, positions: Cesium.Cartesian3[],positionType?: PositionType,positionsReal?: Cesium.Cartesian3[]) {
     let plottingEntity: CEntity | undefined;
-    console.log(plotType)
+    // console.log(plotType)
+    const options = {
+        coordinates: positions,
+        positionType: positionType ?? PositionType.Constant,
+        coordinatesR: positionsReal
+        // makeCallback: true
+    }
     if (plotType === PlotType.AttackArrow) {
-        plottingEntity = new ArrowAttack({
-            coordinates: positions,
-            positionType: positionType ?? PositionType.Constant
-            // makeCallback: true
-        })
+        plottingEntity = new ArrowAttack(options)
         // this.plottingEntity = this.createPolygon(Cesium.Cartesian3.fromDegreesArray(positions.flat()))
     } else if (plotType === PlotType.DOUBLE_ARROW) {
-        plottingEntity = new ArrowDouble({
-            coordinates: positions,
-            positionType: positionType ?? PositionType.Constant
-            // makeCallback: true
-        })
+        plottingEntity = new ArrowDouble(options)
     } else if (plotType === PlotType.FINE_ARROW) {
         plottingEntity = new ArrowFine({
             coordinates: positions,
-            positionType: positionType ?? PositionType.Constant
+            positionType: positionType ?? PositionType.Constant,
+            coordinatesR: positionsReal
         })
     } else if (plotType === PlotType.SQUAD_COMBAT) {
-        plottingEntity = new SquadCombat({
-            coordinates: positions,
-            positionType: positionType ?? PositionType.Constant
-        })
+        plottingEntity = new SquadCombat(options)
     } else if (plotType === PlotType.STRAIGHT_ARROW) {
         plottingEntity = new StraightArrow({
             coordinates: positions,
-            positionType: positionType ?? PositionType.Constant
+            positionType: positionType ?? PositionType.Constant,
+            coordinatesR: positionsReal
         })
     } else if (plotType === PlotType.POLYLINE) {
-        plottingEntity = new CPolyline({
-            coordinates: positions,
-            positionType: positionType ?? PositionType.Constant
-        })
+        plottingEntity = new CPolyline(options)
     }
     return plottingEntity;
 }
@@ -106,13 +99,17 @@ export function loadEntityFromJsonObj(obj: any): CEntity | undefined {
         return;   //    没有值，无法转换
     }
     const points: Point[] = obj['properties']['points'];
-    console.log(obj)
-    return getEntityFromType(obj['properties']['type'], Cesium.Cartesian3.fromDegreesArray(points.flat()));
+    const pointsR: Point[] = obj['geometry']['coordinates'];
+    return getEntityFromType(obj['properties']['type'],
+        Cesium.Cartesian3.fromDegreesArray(points.flat()),
+        PositionType.Callback,
+        Cesium.Cartesian3.fromDegreesArray(pointsR.flat()));
 }
 
 export function saveEntityToJsonObj(entity: CEntity) {
     const obj: any = {};
     obj['type'] = 'Feature';
+
     obj['geometry'] = {
         "type": entity.geometryType,
         "coordinates": entity.coordinatesReal.map(cartesian => cartesian2point(cartesian))

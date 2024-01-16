@@ -15,6 +15,7 @@ export default class CPolyline extends CEntity {
         }
         super(options)
         this.coordinatesVirtual = options.coordinates;
+        if(options.coordinatesR) this.coordinatesReal = options.coordinatesR;   // 必须在virtual 后面执行
         this.plotType = PlotType.POLYLINE;
         this.requirePointCount = Infinity;
     }

@@ -23,6 +23,7 @@ export default class CPolygon extends CEntity {
         super(options);
         // this.updatePosition(options.coordinates)
         this.coordinatesVirtual = options.coordinates;
+        if(options.coordinatesR) this.coordinatesReal = options.coordinatesR;
         this.plotType = PlotType.POLYGON;
     }
 
@@ -44,6 +45,9 @@ export default class CPolygon extends CEntity {
         super.makeConstant();
     }
 
+    get coordinatesReal() {
+        return this._coordinatesReal;
+    }
 
     set coordinatesReal(positions: Cesium.Cartesian3[]) {
 

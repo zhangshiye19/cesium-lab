@@ -8,7 +8,9 @@ import Toolbar from './pages/Toolbar';
 import {Point} from "@/plot/utils/utils";
 import * as Cesium from "cesium";
 import ArrowAttack from "@/CesiumMap/entity/ArrowAttack";
-import {loadEntityFromJsonObj} from "@/plot/core/PlotFactory";
+import {loadEntityFromJsonObj, saveEntityToJsonObj} from "@/plot/core/PlotFactory";
+import PlotDraw from "@/plot/core/PlotDraw";
+import CEntity from "@/CesiumMap/entity/CEntity";
 
 function App() {
 
@@ -19,6 +21,12 @@ function App() {
   },[])
 
   const doSomething = () => {
+
+    PlotDraw.getInstance().eventDrawEnd.addEventListener((entity: CEntity) => {
+      console.log(entity)
+      const obj = saveEntityToJsonObj(entity)
+      localStorage.setItem('plotdrawtest',JSON.stringify([obj]))
+    })
 
     const items = localStorage.getItem('plotdrawtest')
     if(items) {
