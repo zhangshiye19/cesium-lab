@@ -5,6 +5,7 @@ import CPolygon from "./CPolygon";
 import { CEntityOption } from "./CEntity";
 import * as Cesium from 'cesium';
 import PositionType from "./PositionType";
+import PlotType from "@/plot/core/PlotType";
 
 export default class ArrowDouble extends CPolygon {
 
@@ -16,6 +17,8 @@ export default class ArrowDouble extends CPolygon {
 
     constructor(options: CEntityOption) {
         super(options);
+        this.plotType = PlotType.DOUBLE_ARROW;
+        this.requirePointCount = 5;
     }
 
     updatePosition(positions: Cesium.Cartesian3[]) {
@@ -28,9 +31,9 @@ export default class ArrowDouble extends CPolygon {
         if (geometry.some(value => isNaN(value))) {
             return
         }
-        this.coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
+        this._coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
         if (this.positionType === PositionType.Constant) {
-            this.polygon!.hierarchy = new Cesium.ConstantProperty(new Cesium.PolygonHierarchy(this.coordinatesReal))
+            this.polygon!.hierarchy = new Cesium.ConstantProperty(new Cesium.PolygonHierarchy(this._coordinatesReal))
         }
     }
 

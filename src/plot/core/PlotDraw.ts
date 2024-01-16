@@ -1,16 +1,11 @@
 import PlotType from "@/plot/core/PlotType";
 import * as Cesium from "cesium";
 import CesiumMap from "@/CesiumMap/CesiumMap";
-import ArrowAttack from "@/CesiumMap/entity/ArrowAttack";
 import CEntity from "@/CesiumMap/entity/CEntity";
 import * as PlotUtils from '@/plot/utils/utils';
 import PlotEdit from "@/plot/core/PlotEdit";
+import {getEntityFromType} from "@/plot/core/PlotFactory";
 import PositionType from "@/CesiumMap/entity/PositionType";
-import ArrowDouble from "@/CesiumMap/entity/ArrowDouble";
-import ArrowFine from "@/CesiumMap/entity/ArrowFine";
-import SquadCombat from "@/CesiumMap/entity/SquadCombat";
-import StraightArrow from "@/CesiumMap/entity/StraightArrow";
-import CPolyline from "@/CesiumMap/entity/CPolyline";
 
 export default class PlotDraw {
 
@@ -29,59 +24,10 @@ export default class PlotDraw {
         PlotEdit.getInstance(); // 随时准备edit
     }
 
-    plot(plotType: PlotType, positions: Cesium.Cartesian3[]) {
-        let required_point_count = 1;
-        if (plotType === PlotType.AttackArrow) {
-            this.plottingEntity = new ArrowAttack({
-                coordinates: positions,
-                positionType: PositionType.Callback
-                // makeCallback: true
-            })
-            required_point_count = Infinity;  // 可以有无限多个点
-            // this.plottingEntity = this.createPolygon(Cesium.Cartesian3.fromDegreesArray(positions.flat()))
-        }else if(plotType === PlotType.DoubleArrow){
-            this.plottingEntity = new ArrowDouble({
-                coordinates: positions,
-                positionType: PositionType.Callback
-                // makeCallback: true
-            })
-            required_point_count = 5;
-        }else if(plotType === PlotType.FineArrow) {
-            this.plottingEntity = new ArrowFine({
-                coordinates: positions,
-                positionType: PositionType.Callback
-            })
-            required_point_count = 2;
-        }else if(plotType === PlotType.SquadCombat) {
-            this.plottingEntity = new SquadCombat({
-                coordinates: positions,
-                positionType: PositionType.Callback
-            })
-            required_point_count = Infinity;
-        }else if(plotType === PlotType.SwallowArrow) {
-            this.plottingEntity = new StraightArrow({
-                coordinates: positions,
-                positionType: PositionType.Callback
-            })
-            required_point_count = 2;
-        }else if(plotType === PlotType.CommonPolyline){
-            this.plottingEntity = new CPolyline({
-                coordinates: positions,
-                positionType: PositionType.Callback
-            })
-            required_point_count = Infinity;
-        }
-
-        if(this.plottingEntity) {
-            this.viewer.entities.add(this.plottingEntity)
-            this.plottingEntity.active()
-        }
-        return required_point_count;
-    }
-
     startPlot(plotType: PlotType) {
+        console.log('开始绘制')
         this.handleScreenSpaceEvent = new Cesium.ScreenSpaceEventHandler()
-        let required_point_count = 1;
+        let required_point_count = -1;
         this.handleScreenSpaceEvent.setInputAction((event: Cesium.ScreenSpaceEventHandler.PositionedEvent) => {
             const cartesian = PlotUtils.getCartesianFromScreen(this.viewer, event.position);
             if (!Cesium.defined(cartesian)) {
@@ -93,13 +39,16 @@ export default class PlotDraw {
             this.positions.push(cartesian)
             if (this.plottingEntity) {
                 this.plottingEntity.coordinatesVirtual = this.positions
-                // this.plottingEntity.coordinatesVirtual = [...this.positions, cartesian]
-                // this.plottingEntity?.updatePosition([...this.positions, cartesian])
             } else {
-                required_point_count = this.plot(plotType, this.positions)
+                // required_point_count = this.plot(plotType, this.positions)
+                this.plottingEntity = getEntityFromType(plotType,this.positions,PositionType.Callback);
+                if(this.plottingEntity) {
+                    required_point_count = this.plottingEntity.requirePointCount;    // 没有值就赋予-1，代表找不到这种类型
+                    CesiumMap.getViewer().entities.add(this.plottingEntity)
+                }
             }
             if(required_point_count === this.positions.length || required_point_count === -1) {    // 直接通过单机结束
-                this.stopPlot()
+                this.stopPlot() // 点数足够了，直接退出
             }
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
         // 双击结束

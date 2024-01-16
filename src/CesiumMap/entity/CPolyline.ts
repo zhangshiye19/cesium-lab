@@ -2,6 +2,7 @@ import CEntity from './CEntity'
 import { CEntityOption } from './CEntity'
 import * as Cesium from 'cesium'
 import PositionType from './PositionType'
+import PlotType from "@/plot/core/PlotType";
 
 export default class CPolyline extends CEntity {
     constructor(options: CEntityOption) {
@@ -14,6 +15,12 @@ export default class CPolyline extends CEntity {
         }
         super(options)
         this.coordinatesVirtual = options.coordinates;
+        this.plotType = PlotType.POLYLINE;
+        this.requirePointCount = Infinity;
+    }
+
+    get geometryType() {
+        return 'Polyline'
     }
 
     active(): void {
@@ -27,13 +34,13 @@ export default class CPolyline extends CEntity {
     makeCallback() {
         super.makeCallback()
         this.polyline!.positions = new Cesium.CallbackProperty(time => {
-            return this.coordinatesReal
+            return this._coordinatesReal
         }, false)
     }
 
     makeConstant(): void {
         super.makeConstant()
-        this.polyline!.positions = new Cesium.ConstantProperty(this.coordinatesReal)
+        this.polyline!.positions = new Cesium.ConstantProperty(this._coordinatesReal)
     }
 
     updateChildren(positions: Cesium.Cartesian3[]) {    // 更新 children
@@ -63,9 +70,9 @@ export default class CPolyline extends CEntity {
     updatePosition(positions: Cesium.Cartesian3[]) {
         super.updatePosition(positions);
 
-        this.coordinatesReal = positions;
+        this._coordinatesReal = positions;
         if (this.positionType === PositionType.Constant) {
-            this.polyline!.positions = new Cesium.ConstantProperty(this.coordinatesReal)
+            this.polyline!.positions = new Cesium.ConstantProperty(this._coordinatesReal)
         }
     }
 }

@@ -13,25 +13,19 @@ export default function PlotMilitary() {
                     <PlotItem icon={<SvgAttackArrow/>} plotType={PlotType.AttackArrow} title={'攻击箭头'}/>
                 </Col>
                 <Col span={24/4}>
-                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.DoubleArrow} title={'钳击箭头'}/>
+                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.DOUBLE_ARROW} title={'钳击箭头'}/>
                 </Col>
                 <Col span={24/4}>
-                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.FineArrow} title={'细直箭头'}/>
+                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.FINE_ARROW} title={'细直箭头'}/>
                 </Col>
                 <Col span={24/4}>
-                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.SquadCombat} title={'分队行动'}/>
+                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.SQUAD_COMBAT} title={'分队行动'}/>
                 </Col>
                 <Col span={24/4}>
-                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.SwallowArrow} title={'燕尾箭头'}/>
+                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.POLYLINE} title={'燕尾箭头'}/>
                 </Col>
                 <Col span={24/4}>
-                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.SwallowArrow} title={'燕尾箭头'}/>
-                </Col>
-                <Col span={24/4}>
-                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.SwallowArrow} title={'燕尾箭头'}/>
-                </Col>
-                <Col span={24/4}>
-                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.SwallowArrow} title={'燕尾箭头'}/>
+                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.STRAIGHT_ARROW} title={'箭头'}/>
                 </Col>
             </Row>
         </div>

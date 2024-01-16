@@ -6,6 +6,7 @@ import * as Cesium from "cesium";
 import CPolygon from "./CPolygon";
 import PositionType from "./PositionType";
 import ArrowAttack from "./ArrowAttack";
+import PlotType from "@/plot/core/PlotType";
 // import PositionType from "./PositionType";
 
 
@@ -18,6 +19,7 @@ export default class SquadCombat extends ArrowAttack {
 
     constructor(options: CEntityOption) {
         super(options);
+        this.plotType = PlotType.SQUAD_COMBAT;
     }
 
     updatePosition(positions: Cesium.Cartesian3[]) {
@@ -30,9 +32,9 @@ export default class SquadCombat extends ArrowAttack {
         if (geometry.some(value => isNaN(value))) {
             return
         }
-        this.coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
+        this._coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
         if (this.positionType === PositionType.Constant) {
-            this.polygon!.hierarchy = new Cesium.ConstantProperty(new Cesium.PolygonHierarchy(this.coordinatesReal))
+            this.polygon!.hierarchy = new Cesium.ConstantProperty(new Cesium.PolygonHierarchy(this._coordinatesReal))
         }
     }
 

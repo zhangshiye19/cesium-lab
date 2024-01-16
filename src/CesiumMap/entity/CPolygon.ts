@@ -1,5 +1,6 @@
 import CEntity, {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import * as Cesium from "cesium";
+import PlotType from "@/plot/core/PlotType";
 // import PositionType from "./PositionType";
 
 
@@ -21,6 +22,11 @@ export default class CPolygon extends CEntity {
         super(options);
         // this.updatePosition(options.coordinates)
         this.coordinatesVirtual = options.coordinates;
+        this.plotType = PlotType.POLYGON;
+    }
+
+    get geometryType() {
+        return 'Polygon'
     }
 
     active(): void {
@@ -34,7 +40,7 @@ export default class CPolygon extends CEntity {
     makeCallback() {
         super.makeCallback()
         this.polygon!.hierarchy = new Cesium.CallbackProperty(time => {
-            return new Cesium.PolygonHierarchy(this.coordinatesReal)
+            return new Cesium.PolygonHierarchy(this._coordinatesReal)
         }, false)
         // this.children.forEach(child => child.makeCallback())
 
@@ -68,9 +74,9 @@ export default class CPolygon extends CEntity {
     updatePosition(positions: Cesium.Cartesian3[]) {
         super.updatePosition(positions);
 
-        this.coordinatesReal = positions;
+        this._coordinatesReal = positions;
         if (this.polygon!.hierarchy instanceof Cesium.ConstantProperty) {
-            this.polygon!.hierarchy = new Cesium.ConstantProperty(new Cesium.PolygonHierarchy(this.coordinatesReal))
+            this.polygon!.hierarchy = new Cesium.ConstantProperty(new Cesium.PolygonHierarchy(this._coordinatesReal))
         }
     }
 }

@@ -1,5 +1,6 @@
 import * as Cesium from "cesium";
 import PositionType from "./PositionType";
+import PlotType from "@/plot/core/PlotType";
 
 
 export type CEntityOption = Cesium.Entity.ConstructorOptions & {
@@ -9,21 +10,29 @@ export type CEntityOption = Cesium.Entity.ConstructorOptions & {
 
 export default class CEntity extends Cesium.Entity {
 
+    plotType: PlotType;
+    requirePointCount: number;
     children: CEntity[];
-    protected coordinatesReal: Cesium.Cartesian3[]; // 自定义位置坐标，统一类型，不能用_coordinates，entity自己也会进行属性劫持
+    protected _coordinatesReal: Cesium.Cartesian3[]; // 自定义位置坐标，统一类型，不能用_coordinates，entity 内部定义 get coordinates方法
     protected _coordinatesVirtual: Cesium.Cartesian3[];
     protected positionType: PositionType;
 
     constructor(options: CEntityOption) {
         super(options);
+        this.plotType = PlotType.ENTITY;
+        this.requirePointCount = Infinity;
         this.children = [];
         this._coordinatesVirtual = [];
-        this.coordinatesReal = options.coordinates;
+        this._coordinatesReal = options.coordinates;
         this.positionType = options.positionType || PositionType.Constant;
 
         // options.makeCallback && this.makeCallback()
         this.makePositionType(this.positionType);
         this.coordinatesVirtual = Cesium.defaultValue(options.coordinates, []);
+    }
+
+    get geometryType() {
+        return 'Point'
     }
 
     makePositionType(positionType: PositionType) {
@@ -58,7 +67,11 @@ export default class CEntity extends Cesium.Entity {
     }
 
     get coordinatesVirtual() {
-        return this._coordinatesVirtual
+        return this._coordinatesVirtual;
+    }
+
+    get coordinatesReal() { // 获取真实 cartesian
+        return this._coordinatesReal;
     }
 
     /**
@@ -72,7 +85,7 @@ export default class CEntity extends Cesium.Entity {
 
         switch(this.positionType) {
             case PositionType.Callback: {
-                this.coordinatesReal = positions;
+                this._coordinatesReal = positions;
                 break;
             }
             case PositionType.Sampled: {
@@ -90,13 +103,13 @@ export default class CEntity extends Cesium.Entity {
     makeCallback() {
         // @ts-ignore
         this.position = new Cesium.CallbackProperty(time => {
-            return this.coordinatesReal[0]
+            return this._coordinatesReal[0]
         }, false)
         this.children.forEach(child => child.makeCallback())
     }
 
     makeConstant() {
-        this.position = new Cesium.ConstantPositionProperty(this.coordinatesReal[0])
+        this.position = new Cesium.ConstantPositionProperty(this._coordinatesReal[0])
         this.children.forEach(child => child.makeConstant())
     }
 

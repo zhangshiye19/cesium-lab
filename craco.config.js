@@ -3,7 +3,7 @@ const path = require('path')
 const webpack = require('webpack');
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const {whenDev} = require("@craco/craco");
+const {whenDev, whenProd} = require("@craco/craco");
 
 // The path to the CesiumJS source code
 const cesiumSource = 'node_modules/cesium/Source';
@@ -22,18 +22,21 @@ module.exports = {
         },
         configure: (webpackConfig, {env, paths}) => {
 
+            // console.log(webpackConfig)
+
+            // webpackConfig.devtool = whenProd(() => 'source-map','eval-source-map')
             // console.log(env)
 
-            // webpackConfig.ignoreWarnings = [
-            //     function ignoreSourcemapsloaderWarnings(warning) {
-            //         return (
-            //             warning.module &&
-            //             warning.module.resource.includes('node_modules') &&
-            //             warning.details &&
-            //             warning.details.includes('source-map-loader')
-            //         )
-            //     },
-            // ]
+            webpackConfig.ignoreWarnings = [
+                function ignoreSourcemapsloaderWarnings(warning) {
+                    return (
+                        warning.module &&
+                        warning.module.resource.includes('node_modules') &&
+                        warning.details &&
+                        warning.details.includes('source-map-loader')
+                    )
+                },
+            ]
 
             //resolve
             webpackConfig.resolve.fallback = {

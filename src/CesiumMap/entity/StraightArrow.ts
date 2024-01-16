@@ -5,6 +5,7 @@ import * as Constants from "@/plot/utils/constant";
 import * as Cesium from "cesium";
 import CPolyline from './CPolyline';
 import PositionType from "./PositionType";
+import PlotType from "@/plot/core/PlotType";
 // import PositionType from "./PositionType";
 
 
@@ -15,6 +16,8 @@ export default class StraightArrow extends CPolyline {
 
     constructor(options: CEntityOption) {
         super(options);
+        this.plotType = PlotType.STRAIGHT_ARROW;
+        this.requirePointCount = 2;
     }
 
     updatePosition(positions: Cesium.Cartesian3[]) {
@@ -27,9 +30,9 @@ export default class StraightArrow extends CPolyline {
         if (geometry.some(value => isNaN(value))) {
             return
         }
-        this.coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
+        this._coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
         if (this.positionType === PositionType.Constant) {
-            this.polyline!.positions = new Cesium.ConstantProperty(this.coordinatesReal)
+            this.polyline!.positions = new Cesium.ConstantProperty(this._coordinatesReal)
         }
     }
 

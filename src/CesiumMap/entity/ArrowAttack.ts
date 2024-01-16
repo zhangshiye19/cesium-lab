@@ -5,6 +5,7 @@ import * as Constants from "@/plot/utils/constant";
 import * as Cesium from "cesium";
 import CPolygon from "./CPolygon";
 import PositionType from "./PositionType";
+import PlotType from "@/plot/core/PlotType";
 // import PositionType from "./PositionType";
 
 
@@ -17,6 +18,7 @@ export default class ArrowAttack extends CPolygon {
 
     constructor(options: CEntityOption) {
         super(options);
+        this.plotType = PlotType.AttackArrow;
     }
 
 
@@ -30,9 +32,9 @@ export default class ArrowAttack extends CPolygon {
         if (geometry.some(value => isNaN(value))) {
             return
         }
-        this.coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
+        this._coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
         if (this.positionType === PositionType.Constant) {
-            this.polygon!.hierarchy = new Cesium.ConstantProperty(new Cesium.PolygonHierarchy(this.coordinatesReal))
+            this.polygon!.hierarchy = new Cesium.ConstantProperty(new Cesium.PolygonHierarchy(this._coordinatesReal))
         }
     }
 
