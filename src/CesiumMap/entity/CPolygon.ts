@@ -11,7 +11,7 @@ export default class CPolygon extends CEntity {
         options = {
             polygon: {
                 // hierarchy: new Cesium.PolygonHierarchy(options.coordinates),
-                material: new Cesium.ColorMaterialProperty(Cesium.Color.fromCssColorString('#91caff').withAlpha(0.8)),
+                material: new Cesium.ColorMaterialProperty(Cesium.Color.fromCssColorString('#84C9EF').withAlpha(0.8)),
                 // outline: true,
                 // outlineColor: Cesium.Color.fromCssColorString('#91caff'),
                 // outlineWidth: 10,

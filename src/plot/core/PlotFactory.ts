@@ -13,6 +13,7 @@ import CloseCurve from "@/CesiumMap/entity/CloseCurve";
 import {cartesians2lonlats, lonlats2cartesians} from "@/CesiumMap/entity/util/pointconvert";
 import {type Point} from "@/CesiumMap/entity/core/PlotUtil";
 import Lune from "@/CesiumMap/entity/Lune";
+import Sector from "@/CesiumMap/entity/Sector";
 
 // [
 //   {
@@ -97,6 +98,8 @@ export function getEntityFromType(plotType: PlotType, positions: Cesium.Cartesia
         plottingEntity = new CloseCurve(options)
     }else if(plotType === PlotType.LUNE) {
         plottingEntity = new Lune(options)
+    }else if(plotType === PlotType.SECTOR) {
+        plottingEntity = new Sector(options)
     }
     return plottingEntity;
 }
