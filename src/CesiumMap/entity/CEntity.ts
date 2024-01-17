@@ -1,6 +1,6 @@
 import * as Cesium from "cesium";
 import PositionType from "./PositionType";
-import PlotType from "@/CesiumMap/entity/PlotType";
+import PlotType from "./PlotType";
 
 
 export type CEntityOption = Cesium.Entity.ConstructorOptions & {

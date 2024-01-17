@@ -1,9 +1,9 @@
-import {CEntityOption} from "@/CesiumMap/entity/CEntity";
+import {CEntityOption} from "./CEntity";
 import * as Cesium from "cesium";
-import PlotType from "@/CesiumMap/entity/PlotType";
-import {plotUtil, Point} from "@/CesiumMap/entity/core/PlotUtil";
+import PlotType from "./PlotType";
+import {plotUtil, Point} from "./core/PlotUtil";
 import * as pointconvert from './util/pointconvert'
-import ArrowParent from "@/CesiumMap/entity/ArrowParent";
+import ArrowParent from "./ArrowParent";
 
 
 export default class ArrowAttack extends ArrowParent {

@@ -1,9 +1,9 @@
-import {CEntityOption} from "@/CesiumMap/entity/CEntity";
+import {CEntityOption} from "./CEntity";
 import * as Cesium from "cesium";
-import PlotType from "@/CesiumMap/entity/PlotType";
-import {plotUtil, Point} from "@/CesiumMap/entity/core/PlotUtil";
+import PlotType from "./PlotType";
+import {plotUtil, Point} from "./core/PlotUtil";
 import * as pointconvert from './util/pointconvert'
-import CPolygon from "@/CesiumMap/entity/CPolygon";
+import CPolygon from "./CPolygon";
 
 
 export default class Lune extends CPolygon {

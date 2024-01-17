@@ -1,7 +1,7 @@
-import {CEntityOption} from "@/CesiumMap/entity/CEntity";
+import {CEntityOption} from "./CEntity";
 import * as Cesium from "cesium";
 import ArrowAttack from "./ArrowAttack";
-import PlotType from "@/CesiumMap/entity/PlotType";
+import PlotType from "./PlotType";
 // import PositionType from "./PositionType";
 
 

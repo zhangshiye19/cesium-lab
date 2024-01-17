@@ -1,8 +1,8 @@
-import {CEntityOption} from "@/CesiumMap/entity/CEntity";
+import {CEntityOption} from "./CEntity";
 import * as Cesium from "cesium";
 import CPolygon from "./CPolygon";
-import PlotType from "@/CesiumMap/entity/PlotType";
-import {plotUtil, Point} from "@/CesiumMap/entity/core/PlotUtil";
+import PlotType from "./PlotType";
+import {plotUtil, Point} from "./core/PlotUtil";
 
 
 export default class ArrowParent extends CPolygon {

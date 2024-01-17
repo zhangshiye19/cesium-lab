@@ -1,7 +1,7 @@
-import CEntity, {CEntityOption} from "@/CesiumMap/entity/CEntity";
+import CEntity, {CEntityOption} from "./CEntity";
 import * as Cesium from "cesium";
-import PlotType from "@/CesiumMap/entity/PlotType";
-import PositionType from "@/CesiumMap/entity/PositionType";
+import PlotType from "./PlotType";
+import PositionType from "./PositionType";
 // import PositionType from "./PositionType";
 
 

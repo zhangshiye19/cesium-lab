@@ -2,7 +2,7 @@ import CEntity from './CEntity'
 import { CEntityOption } from './CEntity'
 import * as Cesium from 'cesium'
 import PositionType from './PositionType'
-import PlotType from "@/CesiumMap/entity/PlotType";
+import PlotType from "./PlotType";
 
 export default class CPolyline extends CEntity {
     constructor(options: CEntityOption) {
