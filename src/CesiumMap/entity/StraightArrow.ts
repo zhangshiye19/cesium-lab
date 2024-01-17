@@ -1,16 +1,19 @@
-import CEntity, {CEntityOption} from "@/CesiumMap/entity/CEntity";
-import * as PlotUtils from "@/CesiumMap/entity/utils/utils";
-import {Point} from "@/CesiumMap/entity/utils/utils";
+import {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import * as Cesium from "cesium";
 import CPolyline from './CPolyline';
 import PlotType from "@/CesiumMap/entity/PlotType";
+import {plotUtil, Point} from "@/CesiumMap/entity/core/PlotUtil";
+import * as pointconvert from './util/pointconvert';
+import CPolygon from "@/CesiumMap/entity/CPolygon";
 // import PositionType from "./PositionType";
 
 
-export default class StraightArrow extends CPolyline {
-    fixPointCount = 2;
-    maxArrowLength = 3000000;
-    arrowLengthScale = 5;
+export default class StraightArrow extends CPolygon {
+    tailWidthFactor =  0.05;
+    neckWidthFactor =  0.1;
+    headWidthFactor =  0.15;
+    headAngle = Math.PI / 4;
+    neckAngle = Math.PI * 0.17741;
 
     constructor(options: CEntityOption) {
         super(options);
@@ -20,34 +23,37 @@ export default class StraightArrow extends CPolyline {
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {
         super.mapToCoordinates(positions);
-
-        const anchorPoints = positions.map(value => {
-            return PlotUtils.cartesian2point(value)
-        })
-        const geometry = this.getGeometry(anchorPoints).flat();
-        if (geometry.some(value => isNaN(value))) {
-            return
-        }
-        this.coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
+        this.coordinatesReal = this.getGeometry(positions)
     }
 
 
-    getGeometry(anchor_points: Point[]) {
-        const count = anchor_points.length;
-        if(count === 0) {
+    getGeometry(positions: Cesium.Cartesian3[]) {
+
+        if (positions.length === 0) {
             return []
         }
-        if(count === 1) {
-            return new Array(2).fill(anchor_points[0])
+        if (positions.length < 2) {
+            return positions.concat(new Array(3 - positions.length).fill(positions[positions.length - 1]))
         }
-        const pnts = anchor_points;
-        const [pnt1, pnt2] = [pnts[0], pnts[1]];
-        const distance = PlotUtils.MathDistance(pnt1, pnt2);
-        let len = distance / this.arrowLengthScale;
-        len = len > this.maxArrowLength ? this.maxArrowLength : len;
-        const leftPnt = PlotUtils.getThirdPoint(pnt1, pnt2, Math.PI / 6, len, false);
-        const rightPnt = PlotUtils.getThirdPoint(pnt1, pnt2, Math.PI / 6, len, true);
-        // this.setCoordinates([pnt1, pnt2, leftPnt, pnt2, rightPnt]);
-        return [pnt1, pnt2, leftPnt, pnt2, rightPnt];
+
+        //@ts-ignore
+        let pnts:Point[] = pointconvert.cartesians2mercators(positions);
+        let _ref = [pnts[0], pnts[1]],
+            pnt1 = _ref[0],
+            pnt2 = _ref[1];
+        let len = plotUtil.getBaseLength(pnts);
+        let tailWidth = len * this.tailWidthFactor;
+        let neckWidth = len * this.neckWidthFactor;
+        let headWidth = len * this.headWidthFactor;
+        let tailLeft = plotUtil.getThirdPoint(pnt2, pnt1, Math.PI / 2, tailWidth, true);
+        let tailRight = plotUtil.getThirdPoint(pnt2, pnt1, Math.PI / 2, tailWidth, false);
+        let headLeft = plotUtil.getThirdPoint(pnt1, pnt2, this.headAngle, headWidth, false);
+        let headRight = plotUtil.getThirdPoint(pnt1, pnt2, this.headAngle, headWidth, true);
+        let neckLeft = plotUtil.getThirdPoint(pnt1, pnt2, this.neckAngle, neckWidth, false);
+        let neckRight = plotUtil.getThirdPoint(pnt1, pnt2, this.neckAngle, neckWidth, true);
+        let pList = [tailLeft, neckLeft, headLeft, pnt2, headRight, neckRight, tailRight];
+
+        let returnArr = pointconvert.mercators2cartesians(pList);
+        return returnArr;
     }
 }

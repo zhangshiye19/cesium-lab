@@ -8,8 +8,10 @@ import ArrowFine from "@/CesiumMap/entity/ArrowFine";
 import SquadCombat from "@/CesiumMap/entity/SquadCombat";
 import StraightArrow from "@/CesiumMap/entity/StraightArrow";
 import CPolyline from "@/CesiumMap/entity/CPolyline";
-import {cartesian2point, Point} from "@/CesiumMap/entity/utils/utils";
-
+import GatheringPlace from "@/CesiumMap/entity/GatheringPlace";
+import CloseCurve from "@/CesiumMap/entity/CloseCurve";
+import {cartesians2lonlats} from "@/CesiumMap/entity/util/pointconvert";
+import {type Point} from "@/CesiumMap/entity/core/PlotUtil";
 
 // [
 //   {
@@ -88,6 +90,10 @@ export function getEntityFromType(plotType: PlotType, positions: Cesium.Cartesia
         })
     } else if (plotType === PlotType.POLYLINE) {
         plottingEntity = new CPolyline(options)
+    }else if (plotType === PlotType.GATHERING_PLACE) {
+        plottingEntity = new GatheringPlace(options)
+    }else if(plotType === PlotType.CLOSED_CURVE) {
+        plottingEntity = new CloseCurve(options)
     }
     return plottingEntity;
 }
@@ -112,11 +118,11 @@ export function saveEntityToJsonObj(entity: CEntity) {
 
     obj['geometry'] = {
         "type": entity.geometryType,
-        "coordinates": entity.coordinatesReal.map(cartesian => cartesian2point(cartesian))
+        "coordinates": cartesians2lonlats(entity.coordinatesReal)
     }
     obj['properties'] = {
         "type": entity.plotType,
-        "points": entity.coordinatesVirtual.map(cartesian => cartesian2point(cartesian))
+        "points": cartesians2lonlats(entity.coordinatesVirtual)
     }
 
     return obj

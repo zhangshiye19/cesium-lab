@@ -2,10 +2,10 @@ import PlotType from "@/CesiumMap/entity/PlotType";
 import * as Cesium from "cesium";
 import CesiumMap from "@/CesiumMap/CesiumMap";
 import CEntity from "@/CesiumMap/entity/CEntity";
-import * as PlotUtils from '@/CesiumMap/entity/utils/utils';
 import PlotEdit from "@/plot/core/PlotEdit";
 import {getEntityFromType} from "@/plot/core/PlotFactory";
 import PositionType from "@/CesiumMap/entity/PositionType";
+import {plotUtil} from "@/CesiumMap/entity/core/PlotUtil";
 
 export default class PlotDraw {
 
@@ -33,7 +33,7 @@ export default class PlotDraw {
         this.handleScreenSpaceEvent = new Cesium.ScreenSpaceEventHandler()
         let required_point_count = -1;
         this.handleScreenSpaceEvent.setInputAction((event: Cesium.ScreenSpaceEventHandler.PositionedEvent) => {
-            const cartesian = PlotUtils.getCartesianFromScreen(this.viewer, event.position);
+            const cartesian = plotUtil.getCartesianFromScreen(this.viewer, event.position);
             if (!Cesium.defined(cartesian)) {
                 return;
             }
@@ -59,7 +59,7 @@ export default class PlotDraw {
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
         // 双击结束
         this.handleScreenSpaceEvent.setInputAction((event: Cesium.ScreenSpaceEventHandler.PositionedEvent) => {
-            const cartesian = PlotUtils.getCartesianFromScreen(this.viewer, event.position);
+            const cartesian = plotUtil.getCartesianFromScreen(this.viewer, event.position);
             if (!Cesium.defined(cartesian)) return;
             if (!Cesium.Cartesian3.equals(this.positions.slice(-1)[0], cartesian)) {   // 如果不相等才做处理
                 this.positions.push(cartesian)
@@ -69,7 +69,7 @@ export default class PlotDraw {
         }, Cesium.ScreenSpaceEventType.RIGHT_CLICK)
         // 移动更新
         this.handleScreenSpaceEvent.setInputAction((event: Cesium.ScreenSpaceEventHandler.MotionEvent) => {
-            const cartesian = PlotUtils.getCartesianFromScreen(this.viewer, event.endPosition);
+            const cartesian = plotUtil.getCartesianFromScreen(this.viewer, event.endPosition);
             if (Cesium.defined(cartesian) && Cesium.defined(this.plottingEntity)) {
                 this.plottingEntity.coordinatesVirtual = [...this.positions,cartesian]
                 // this.plottingEntity?.updatePosition([...this.positions, cartesian])
@@ -78,6 +78,7 @@ export default class PlotDraw {
     }
 
     stopPlot() {
+        console.log('结束绘制')
         //@ts-ignore
         this.eventDrawEnd.raiseEvent(this.plottingEntity)
         this.plottingEntity?.deactive()

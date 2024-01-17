@@ -1,13 +1,11 @@
-import * as PlotUtils from "@/CesiumMap/entity/utils/utils";
-import * as Constants from '@/CesiumMap/entity/utils/constant';
-import type { Point } from "@/CesiumMap/entity/utils/utils";
 import CPolygon from "./CPolygon";
 import { CEntityOption } from "./CEntity";
 import * as Cesium from 'cesium';
 import PlotType from "@/CesiumMap/entity/PlotType";
+import {plotUtil, Point} from "@/CesiumMap/entity/core/PlotUtil";
+import * as pointconvert from './util/pointconvert'
 
 export default class ArrowDouble extends CPolygon {
-
 
     headHeightFactor = 0.25;
     headWidthFactor = 0.3;
@@ -23,94 +21,131 @@ export default class ArrowDouble extends CPolygon {
     mapToCoordinates(positions: Cesium.Cartesian3[]) {
         super.mapToCoordinates(positions);
 
-        const anchorPoints = positions.map(value => {
-            return PlotUtils.cartesian2point(value)
-        })
-        const geometry = this.getGeometry(anchorPoints).flat();
-        if (geometry.some(value => isNaN(value))) {
-            return
-        }
-        this.coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
+        this.coordinatesReal = this.getGeometry(positions)
     }
 
-    getGeometry(anchor_points: Point[]): Point[] {
-        const count = anchor_points.length;
-        if (count === 0) {
-            return [];
-        }
-        if(count === 1) {
-            return new Array(3).fill(anchor_points[0])
-        }else if (count === 2) {
-            return [...anchor_points,anchor_points[1]];
-            // this.setCoordinates([this.points]);
-        }
-        if (count > 2) {
-            let tempPoint4: Point;
-            let connPoint: Point;
-            const [pnt1, pnt2, pnt3] = [anchor_points[0], anchor_points[1], anchor_points[2]];
-            if (count === 3) {
-                tempPoint4 = this.getTempPoint4(pnt1, pnt2, pnt3);
-                connPoint = PlotUtils.Mid(pnt1, pnt2);
-            } else if (count === 4) {
-                tempPoint4 = anchor_points[3];
-                connPoint = PlotUtils.Mid(pnt1, pnt2);
-            } else {
-                tempPoint4 = anchor_points[3];
-                connPoint = anchor_points[4];
-            }
-            let leftArrowPnts: Point[];
-            let rightArrowPnts: Point[];
-            if (PlotUtils.isClockWise(pnt1, pnt2, pnt3)) {
-                leftArrowPnts = this.getArrowPoints(pnt1, connPoint, tempPoint4, false);
-                rightArrowPnts = this.getArrowPoints(connPoint, pnt2, pnt3, true);
-            } else {
-                leftArrowPnts = this.getArrowPoints(pnt2, connPoint, pnt3, false);
-                rightArrowPnts = this.getArrowPoints(connPoint, pnt1, tempPoint4, true);
-            }
-            const m = leftArrowPnts.length;
-            const t = (m - 5) / 2;
-            const llBodyPnts = leftArrowPnts.slice(0, t);
-            const lArrowPnts = leftArrowPnts.slice(t, t + 5);
-            let lrBodyPnts = leftArrowPnts.slice(t + 5, m);
-            let rlBodyPnts = rightArrowPnts.slice(0, t);
-            const rArrowPnts = rightArrowPnts.slice(t, t + 5);
-            const rrBodyPnts = rightArrowPnts.slice(t + 5, m);
-            rlBodyPnts = PlotUtils.getBezierPoints(rlBodyPnts);
-            const bodyPnts = PlotUtils.getBezierPoints(rrBodyPnts.concat(llBodyPnts.slice(1)));
-            lrBodyPnts = PlotUtils.getBezierPoints(lrBodyPnts);
-            const pnts = rlBodyPnts.concat(rArrowPnts, bodyPnts, lArrowPnts, lrBodyPnts);
 
-            return pnts;
-            // this.setCoordinates([pnts]);
+    getGeometry(positions: Cesium.Cartesian3[]): Cesium.Cartesian3[] {
+        if(positions.length === 0) {
+            return []
         }
-        return []
+        if(positions.length < 3) {
+            return positions.concat(new Array(3 - positions.length).fill(positions[positions.length - 1]))
+        }
+        //@ts-ignore
+        var pnts:Point[] = pointconvert.cartesians2mercators(positions);
+
+        var _ref = [pnts[0], pnts[1], pnts[2]];
+        var pnt1:Point = _ref[0];
+        var pnt2 = _ref[1];
+        var pnt3 = _ref[2];
+        var count = positions.length;
+        var tempPoint4;
+        var connPoint;
+        if (count === 3) {
+            // @ts-ignore
+            tempPoint4 = this.getTempPoint4(pnt1, pnt2, pnt3);
+            connPoint = plotUtil.Mid(pnt1, pnt2);
+        } else if (count === 4) {
+            tempPoint4 = pnts[3];
+            connPoint = plotUtil.Mid(pnt1, pnt2);
+        } else {
+            tempPoint4 = pnts[3];
+            connPoint = pnts[4];
+        }
+        var leftArrowPnts: Point[] = [],
+            rightArrowPnts: Point[] = [];
+
+        if (plotUtil.isClockWise(pnt1, pnt2, pnt3)) {
+            // @ts-ignore
+            leftArrowPnts = this.getArrowPoints(pnt1, connPoint, tempPoint4, false);
+            // @ts-ignore
+            rightArrowPnts = this.getArrowPoints(connPoint, pnt2, pnt3, true);
+        } else {
+            // @ts-ignore
+            leftArrowPnts = this.getArrowPoints(pnt2, connPoint, pnt3, false);
+            // @ts-ignore
+            rightArrowPnts = this.getArrowPoints(connPoint, pnt1, tempPoint4, true);
+        }
+        // @ts-ignore
+        var m = leftArrowPnts.length;
+        var t = (m - 5) / 2;
+        var llBodyPnts = leftArrowPnts.slice(0, t);
+        var lArrowPnts = leftArrowPnts.slice(t, t + 5);
+        var lrBodyPnts = leftArrowPnts.slice(t + 5, m);
+        var rlBodyPnts = rightArrowPnts.slice(0, t);
+        var rArrowPnts = rightArrowPnts.slice(t, t + 5);
+        var rrBodyPnts = rightArrowPnts.slice(t + 5, m);
+        rlBodyPnts = plotUtil.getBezierPoints(rlBodyPnts);
+        var bodyPnts = plotUtil.getBezierPoints(rrBodyPnts.concat(llBodyPnts.slice(1)));
+        lrBodyPnts = plotUtil.getBezierPoints(lrBodyPnts);
+        var newPnts = rlBodyPnts.concat(rArrowPnts, bodyPnts, lArrowPnts, lrBodyPnts);
+
+        var returnArr = pointconvert.mercators2cartesians(newPnts);
+        return returnArr;
     }
 
-    /**
-     * 插值箭形上的点
-     * @param pnt1
-     * @param pnt2
-     * @param pnt3
-     * @param clockWise
-     * @returns {Array.<T>}
-     */
-    getArrowPoints(pnt1: Point, pnt2: Point, pnt3: Point, clockWise: boolean): Point[] {
-        const midPnt = PlotUtils.Mid(pnt1, pnt2);
-        const len = PlotUtils.MathDistance(midPnt, pnt3);
-        let midPnt1 = PlotUtils.getThirdPoint(pnt3, midPnt, 0, len * 0.3, true);
-        let midPnt2 = PlotUtils.getThirdPoint(pnt3, midPnt, 0, len * 0.5, true);
-        midPnt1 = PlotUtils.getThirdPoint(midPnt, midPnt1, Constants.HALF_PI, len / 5, clockWise);
-        midPnt2 = PlotUtils.getThirdPoint(midPnt, midPnt2, Constants.HALF_PI, len / 4, clockWise);
-        const points = [midPnt, midPnt1, midPnt2, pnt3];
-        const arrowPnts = this.getArrowHeadPoints(points);
+    getTempPoint4(linePnt1: Point, linePnt2: Point, point: Point) {
+        var midPnt = plotUtil.Mid(linePnt1, linePnt2);
+        var len = plotUtil.MathDistance(midPnt, point);
+        var angle = plotUtil.getAngleOfThreePoints(linePnt1, midPnt, point);
+        var symPnt = undefined,
+            distance1 = undefined,
+            distance2 = undefined,
+            mid = undefined;
+
+        if (angle < Math.PI / 2) {
+            distance1 = len * Math.sin(angle);
+            distance2 = len * Math.cos(angle);
+            mid = plotUtil.getThirdPoint(linePnt1, midPnt, Math.PI / 2, distance1, false);
+            symPnt = plotUtil.getThirdPoint(midPnt, mid, Math.PI / 2, distance2, true);
+        } else if (angle >= Math.PI / 2 && angle < Math.PI) {
+            distance1 = len * Math.sin(Math.PI - angle);
+            distance2 = len * Math.cos(Math.PI - angle);
+            mid = plotUtil.getThirdPoint(linePnt1, midPnt, Math.PI / 2, distance1, false);
+            symPnt = plotUtil.getThirdPoint(midPnt, mid, Math.PI / 2, distance2, false);
+        } else if (angle >= Math.PI && angle < Math.PI * 1.5) {
+            distance1 = len * Math.sin(angle - Math.PI);
+            distance2 = len * Math.cos(angle - Math.PI);
+            mid = plotUtil.getThirdPoint(linePnt1, midPnt, Math.PI / 2, distance1, true);
+            symPnt = plotUtil.getThirdPoint(midPnt, mid, Math.PI / 2, distance2, true);
+        } else {
+            distance1 = len * Math.sin(Math.PI * 2 - angle);
+            distance2 = len * Math.cos(Math.PI * 2 - angle);
+            mid = plotUtil.getThirdPoint(linePnt1, midPnt, Math.PI / 2, distance1, true);
+            symPnt = plotUtil.getThirdPoint(midPnt, mid, Math.PI / 2, distance2, false);
+        }
+        return symPnt;
+    }
+    getArrowPoints(pnt1: Point, pnt2: Point, pnt3: Point, clockWise: boolean) {
+        var midPnt = plotUtil.Mid(pnt1, pnt2);
+        var len = plotUtil.MathDistance(midPnt, pnt3);
+        var midPnt1 = plotUtil.getThirdPoint(pnt3, midPnt, 0, len * 0.3, true);
+        var midPnt2 = plotUtil.getThirdPoint(pnt3, midPnt, 0, len * 0.5, true);
+        midPnt1 = plotUtil.getThirdPoint(midPnt, midPnt1, Math.PI / 2, len / 5, clockWise);
+        midPnt2 = plotUtil.getThirdPoint(midPnt, midPnt2, Math.PI / 2, len / 4, clockWise);
+        var points = [midPnt, midPnt1, midPnt2, pnt3];
+        // @ts-ignore
+        var arrowPnts = this.getArrowHeadPoints(points);
         if (arrowPnts && Array.isArray(arrowPnts) && arrowPnts.length > 0) {
-            const [neckLeftPoint, neckRightPoint] = [arrowPnts[0], arrowPnts[4]];
-            const tailWidthFactor = PlotUtils.MathDistance(pnt1, pnt2) / PlotUtils.getBaseLength(points) / 2;
-            const bodyPnts = this.getArrowBodyPoints(points, neckLeftPoint, neckRightPoint, tailWidthFactor);
+            var _ref2 = [arrowPnts[0], arrowPnts[4]],
+                neckLeftPoint = _ref2[0],
+                neckRightPoint = _ref2[1];
+
+            var tailWidthFactor =
+                plotUtil.MathDistance(pnt1, pnt2) / plotUtil.getBaseLength(points) / 2;
+            // @ts-ignore
+            var bodyPnts = this.getArrowBodyPoints(
+                // @ts-ignore
+                points,
+                neckLeftPoint,
+                neckRightPoint,
+                tailWidthFactor
+            );
             if (bodyPnts) {
-                const n = bodyPnts.length;
-                let lPoints = bodyPnts.slice(0, n / 2);
-                let rPoints = bodyPnts.slice(n / 2, n);
+                var n = bodyPnts.length;
+                var lPoints = bodyPnts.slice(0, n / 2);
+                var rPoints = bodyPnts.slice(n / 2, n);
                 lPoints.push(neckLeftPoint);
                 rPoints.push(neckRightPoint);
                 lPoints = lPoints.reverse();
@@ -119,98 +154,58 @@ export default class ArrowDouble extends CPolygon {
                 rPoints.push(pnt1);
                 return lPoints.reverse().concat(arrowPnts, rPoints);
             }
+        } else {
+            throw new Error("插值出错");
         }
-        return []
     }
-
-    /**
-     * 插值头部点
-     * @param points
-     * @returns {[*,*,*,*,*]}
-     */
-    getArrowHeadPoints(points: Point[]): Point[] {
-        const len = PlotUtils.getBaseLength(points);
-        const headHeight = len * this.headHeightFactor;
-        const headPnt = points[points.length - 1];
-        const headWidth = headHeight * this.headWidthFactor;
-        const neckWidth = headHeight * this.neckWidthFactor;
-        const neckHeight = headHeight * this.neckHeightFactor;
-        const headEndPnt = PlotUtils.getThirdPoint(points[points.length - 2], headPnt, 0, headHeight, true);
-        const neckEndPnt = PlotUtils.getThirdPoint(points[points.length - 2], headPnt, 0, neckHeight, true);
-        const headLeft = PlotUtils.getThirdPoint(headPnt, headEndPnt, Constants.HALF_PI, headWidth, false);
-        const headRight = PlotUtils.getThirdPoint(headPnt, headEndPnt, Constants.HALF_PI, headWidth, true);
-        const neckLeft = PlotUtils.getThirdPoint(headPnt, neckEndPnt, Constants.HALF_PI, neckWidth, false);
-        const neckRight = PlotUtils.getThirdPoint(headPnt, neckEndPnt, Constants.HALF_PI, neckWidth, true);
+    getArrowHeadPoints(points: Point[]) {
+        var len = plotUtil.getBaseLength(points);
+        var headHeight = len * this.headHeightFactor;
+        var headPnt = points[points.length - 1];
+        var headWidth = headHeight * this.headWidthFactor;
+        var neckWidth = headHeight * this.neckWidthFactor;
+        var neckHeight = headHeight * this.neckHeightFactor;
+        var headEndPnt = plotUtil.getThirdPoint(
+            points[points.length - 2],
+            headPnt,
+            0,
+            headHeight,
+            true
+        );
+        var neckEndPnt = plotUtil.getThirdPoint(
+            points[points.length - 2],
+            headPnt,
+            0,
+            neckHeight,
+            true
+        );
+        var headLeft = plotUtil.getThirdPoint(headPnt, headEndPnt, Math.PI / 2, headWidth, false);
+        var headRight = plotUtil.getThirdPoint(headPnt, headEndPnt, Math.PI / 2, headWidth, true);
+        var neckLeft = plotUtil.getThirdPoint(headPnt, neckEndPnt, Math.PI / 2, neckWidth, false);
+        var neckRight = plotUtil.getThirdPoint(headPnt, neckEndPnt, Math.PI / 2, neckWidth, true);
         return [neckLeft, headLeft, headPnt, headRight, neckRight];
     }
 
-    /**
-     * 插值面部分数据
-     * @param points
-     * @param neckLeft
-     * @param neckRight
-     * @param tailWidthFactor
-     * @returns {Array.<*>}
-     */
-    getArrowBodyPoints(points: Point[], neckLeft: Point, neckRight: Point, tailWidthFactor: number): Point[] {
-        const allLen = PlotUtils.wholeDistance(points);
-        const len = PlotUtils.getBaseLength(points);
-        const tailWidth = len * tailWidthFactor;
-        const neckWidth = PlotUtils.MathDistance(neckLeft, neckRight);
-        const widthDif = (tailWidth - neckWidth) / 2;
-        // eslint-disable-next-line
-        let tempLen = 0;
-        const leftBodyPnts: Point[] = [];
-        const rightBodyPnts: Point[] = [];
-        for (let i = 1; i < points.length - 1; i++) {
-            const angle = PlotUtils.getAngleOfThreePoints(points[i - 1], points[i], points[i + 1]) / 2;
-            tempLen += PlotUtils.MathDistance(points[i - 1], points[i]);
-            const w = (tailWidth / 2 - (tempLen / allLen) * widthDif) / Math.sin(angle);
-            const left = PlotUtils.getThirdPoint(points[i - 1], points[i], Math.PI - angle, w, true);
-            const right = PlotUtils.getThirdPoint(points[i - 1], points[i], angle, w, false);
+    getArrowBodyPoints(points: Point[], neckLeft: Point, neckRight: Point, tailWidthFactor: number) {
+        var allLen = plotUtil.wholeDistance(points);
+        var len = plotUtil.getBaseLength(points);
+        var tailWidth = len * tailWidthFactor;
+        var neckWidth = plotUtil.MathDistance(neckLeft, neckRight);
+        var widthDif = (tailWidth - neckWidth) / 2;
+        var tempLen = 0,
+            leftBodyPnts = [],
+            rightBodyPnts = [];
+
+        for (var i = 1; i < points.length - 1; i++) {
+            var angle = plotUtil.getAngleOfThreePoints(points[i - 1], points[i], points[i + 1]) / 2;
+            tempLen += plotUtil.MathDistance(points[i - 1], points[i]);
+            var w = (tailWidth / 2 - (tempLen / allLen) * widthDif) / Math.sin(angle);
+            var left = plotUtil.getThirdPoint(points[i - 1], points[i], Math.PI - angle, w, true);
+            var right = plotUtil.getThirdPoint(points[i - 1], points[i], angle, w, false);
             leftBodyPnts.push(left);
             rightBodyPnts.push(right);
         }
         return leftBodyPnts.concat(rightBodyPnts);
     }
-
-    /**
-     * 获取对称点
-     * @param linePnt1
-     * @param linePnt2
-     * @param point
-     * @returns {Point}
-     */
-    getTempPoint4(linePnt1: Point, linePnt2: Point, point: Point): Point {
-        const midPnt = PlotUtils.Mid(linePnt1, linePnt2);
-        const len = PlotUtils.MathDistance(midPnt, point);
-        const angle = PlotUtils.getAngleOfThreePoints(linePnt1, midPnt, point);
-        let symPnt;
-        let distance1 = 0;
-        let distance2 = 0;
-        let mid: Point;
-        if (angle < Constants.HALF_PI) {
-            distance1 = len * Math.sin(angle);
-            distance2 = len * Math.cos(angle);
-            mid = PlotUtils.getThirdPoint(linePnt1, midPnt, Constants.HALF_PI, distance1, false);
-            symPnt = PlotUtils.getThirdPoint(midPnt, mid, Constants.HALF_PI, distance2, true);
-        } else if (angle >= Constants.HALF_PI && angle < Math.PI) {
-            distance1 = len * Math.sin(Math.PI - angle);
-            distance2 = len * Math.cos(Math.PI - angle);
-            mid = PlotUtils.getThirdPoint(linePnt1, midPnt, Constants.HALF_PI, distance1, false);
-            symPnt = PlotUtils.getThirdPoint(midPnt, mid, Constants.HALF_PI, distance2, false);
-        } else if (angle >= Math.PI && angle < Math.PI * 1.5) {
-            distance1 = len * Math.sin(angle - Math.PI);
-            distance2 = len * Math.cos(angle - Math.PI);
-            mid = PlotUtils.getThirdPoint(linePnt1, midPnt, Constants.HALF_PI, distance1, true);
-            symPnt = PlotUtils.getThirdPoint(midPnt, mid, Constants.HALF_PI, distance2, true);
-        } else {
-            distance1 = len * Math.sin(Math.PI * 2 - angle);
-            distance2 = len * Math.cos(Math.PI * 2 - angle);
-            mid = PlotUtils.getThirdPoint(linePnt1, midPnt, Constants.HALF_PI, distance1, true);
-            symPnt = PlotUtils.getThirdPoint(midPnt, mid, Constants.HALF_PI, distance2, false);
-        }
-        return symPnt;
-
-    }
+    
 }

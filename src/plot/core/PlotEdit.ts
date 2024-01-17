@@ -1,7 +1,7 @@
 import * as Cesium from 'cesium';
 import CEntity from "@/CesiumMap/entity/CEntity";
 import CesiumMap from "@/CesiumMap/CesiumMap";
-import * as PlotUtils from '@/CesiumMap/entity/utils/utils';
+import {plotUtil} from "@/CesiumMap/entity/core/PlotUtil";
 
 export default class PlotEdit {
     static instance: PlotEdit;
@@ -57,7 +57,7 @@ export default class PlotEdit {
         // 鼠标移动
         this.handle.setInputAction((event: Cesium.ScreenSpaceEventHandler.MotionEvent) => {
             // console.log(this.pressed,this.selectedAnchorPoint,this.editingEntity)
-            const cartesian = PlotUtils.getCartesianFromScreen(this.viewer, event.endPosition);
+            const cartesian = plotUtil.getCartesianFromScreen(this.viewer, event.endPosition);
             if (this.pressed && cartesian && this.editingEntity && this.selectedAnchorPoint) {  // 鼠标按下
                 const coordV = this.editingEntity.coordinatesVirtual;
                 const index = this.editingEntity.children.findIndex(entity => entity.id === this.selectedAnchorPoint?.id);
