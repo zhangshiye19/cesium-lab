@@ -22,8 +22,8 @@ export default class CPolygon extends CEntity {
         }
         super(options);
         // this.updatePosition(options.coordinates)
-        this.coordinatesVirtual = options.coordinates;
-        if(options.coordinatesR) this.coordinatesReal = options.coordinatesR;
+        // this.coordinatesVirtual = options.coordinates;
+        // if(options.coordinatesR) this.coordinatesReal = options.coordinatesR;
         this.plotType = PlotType.POLYGON;
     }
 
