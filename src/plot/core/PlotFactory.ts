@@ -10,7 +10,7 @@ import StraightArrow from "@/CesiumMap/entity/StraightArrow";
 import CPolyline from "@/CesiumMap/entity/CPolyline";
 import GatheringPlace from "@/CesiumMap/entity/GatheringPlace";
 import CloseCurve from "@/CesiumMap/entity/CloseCurve";
-import {cartesians2lonlats} from "@/CesiumMap/entity/util/pointconvert";
+import {cartesians2lonlats, lonlat2cartesian, lonlats2cartesians} from "@/CesiumMap/entity/util/pointconvert";
 import {type Point} from "@/CesiumMap/entity/core/PlotUtil";
 
 // [
@@ -107,9 +107,9 @@ export function loadEntityFromJsonObj(obj: any): CEntity | undefined {
     const points: Point[] = obj['properties']['points'];
     const pointsR: Point[] = obj['geometry']['coordinates'];
     return getEntityFromType(obj['properties']['type'],
-        Cesium.Cartesian3.fromDegreesArray(points.flat()),
+        lonlats2cartesians(points),
         PositionType.Callback,
-        Cesium.Cartesian3.fromDegreesArray(pointsR.flat()));
+        lonlats2cartesians(pointsR));
 }
 
 export function saveEntityToJsonObj(entity: CEntity) {
