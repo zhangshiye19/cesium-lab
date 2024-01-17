@@ -3,8 +3,8 @@ import './App.css';
 import CesiumMap from './CesiumMap/CesiumMap';
 import 'cesium/Source/Widgets/widgets.css';
 import Toolbar from './pages/Toolbar';
-import {loadEntityFromJsonObj, saveEntityToJsonObj} from "@/plot/core/PlotFactory";
-import PlotDraw from "@/plot/core/PlotDraw";
+import {loadEntityFromJsonObj, saveEntityToJsonObj} from "@/CesiumMap/plot/PlotFactory";
+import PlotDraw from "@/CesiumMap/plot/PlotDraw";
 import CEntity from "@/CesiumMap/entity/CEntity";
 
 function App() {

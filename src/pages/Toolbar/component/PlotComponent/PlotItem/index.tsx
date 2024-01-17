@@ -2,7 +2,7 @@ import styles from './index.module.css'
 import {Button} from "antd";
 import React, {useEffect} from "react";
 import PlotType from "@/CesiumMap/entity/PlotType";
-import PlotDraw from "@/plot/core/PlotDraw";
+import PlotDraw from "@/CesiumMap/plot/PlotDraw";
 
 type PlotItemProps = {
     icon: React.ReactNode,
