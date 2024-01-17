@@ -10,8 +10,9 @@ import StraightArrow from "@/CesiumMap/entity/StraightArrow";
 import CPolyline from "@/CesiumMap/entity/CPolyline";
 import GatheringPlace from "@/CesiumMap/entity/GatheringPlace";
 import CloseCurve from "@/CesiumMap/entity/CloseCurve";
-import {cartesians2lonlats, lonlat2cartesian, lonlats2cartesians} from "@/CesiumMap/entity/util/pointconvert";
+import {cartesians2lonlats, lonlats2cartesians} from "@/CesiumMap/entity/util/pointconvert";
 import {type Point} from "@/CesiumMap/entity/core/PlotUtil";
+import Lune from "@/CesiumMap/entity/Lune";
 
 // [
 //   {
@@ -94,6 +95,8 @@ export function getEntityFromType(plotType: PlotType, positions: Cesium.Cartesia
         plottingEntity = new GatheringPlace(options)
     }else if(plotType === PlotType.CLOSED_CURVE) {
         plottingEntity = new CloseCurve(options)
+    }else if(plotType === PlotType.LUNE) {
+        plottingEntity = new Lune(options)
     }
     return plottingEntity;
 }

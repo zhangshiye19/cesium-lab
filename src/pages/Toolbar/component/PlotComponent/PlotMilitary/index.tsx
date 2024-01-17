@@ -33,6 +33,9 @@ export default function PlotMilitary() {
                 <Col span={24/4}>
                     <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.GATHERING_PLACE} title={'Gathering'}/>
                 </Col>
+                <Col span={24/4}>
+                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.LUNE} title={'Lune'}/>
+                </Col>
             </Row>
         </div>
     )
