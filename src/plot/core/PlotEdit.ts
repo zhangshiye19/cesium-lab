@@ -18,12 +18,9 @@ export default class PlotEdit {
     }
 
     active(entity: CEntity) {
-        if (entity instanceof CEntity) {
-            // console.log('编辑模式')
-            this.editingEntity = entity;
-            this.editingEntity.active();
-            // console.log(entity.coordinatesVirtual)
-        }
+        this.editingEntity && this.editingEntity.deactive()
+        this.editingEntity = entity;
+        this.editingEntity.active();
         this.startEdit();
         this.viewer.scene.screenSpaceCameraController.enableCollisionDetection = false;
         this.viewer.scene.screenSpaceCameraController.enableRotate = false;
@@ -31,7 +28,7 @@ export default class PlotEdit {
 
     deactive() {
         this.editingEntity?.deactive();
-        this.handle?.destroy();
+        !this.handle?.isDestroyed() && this.handle?.destroy();
         this.editingEntity = undefined;
         this.selectedAnchorPoint = undefined;
         this.viewer.scene.screenSpaceCameraController.enableCollisionDetection = true;
