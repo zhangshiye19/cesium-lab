@@ -20,11 +20,8 @@ export default class CloseCurve extends CPolygon {
 
 
     getGeometry(positions: Cesium.Cartesian3[]) {
-        if(positions.length === 0) {
-            return []
-        }
         if(positions.length < 3) {
-            return positions.concat(new Array(3 - positions.length).fill(positions[positions.length - 1]))
+            return []
         }
         //@ts-ignore
         let pnts:Point[] = pointconvert.cartesians2mercators(positions);

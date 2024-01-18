@@ -18,23 +18,14 @@ export default class ArrowAttack extends ArrowParent {
         this.plotType = PlotType.AttackArrow;
     }
 
-
     mapToCoordinates(positions: Cesium.Cartesian3[]) {
         super.mapToCoordinates(positions);
         this.coordinatesReal = this.getGeometry(positions)
     }
 
     getGeometry(positions: Cesium.Cartesian3[]): Cesium.Cartesian3[] {
+        if(positions.length < 3) return []
         let pnts = pointconvert.cartesians2mercators(positions);
-
-        if (positions.length === 1) {
-            return [positions[0], positions[0], positions[0]]
-        }
-
-        if (positions.length === 2) {
-            return [positions[0], positions[1], positions[1]]
-        }
-
         let _ref = [pnts[0], pnts[1]],
             tailLeft = _ref[0],
             tailRight = _ref[1];

@@ -26,13 +26,7 @@ export default class Lune extends CPolygon {
     }
 
     getGeometry(positions: Cesium.Cartesian3[]): Cesium.Cartesian3[] {
-        if (positions.length === 1) {
-            return [positions[0], positions[0], positions[0]]
-        }
-
-        if (positions.length === 2) {
-            return [positions[0], positions[1], positions[1]]
-        }
+        if(positions.length < 3) return []
 
         //@ts-ignore
         let pnts:Point[] = pointconvert.cartesians2mercators(positions);

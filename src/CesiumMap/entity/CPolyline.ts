@@ -1,5 +1,5 @@
 import CEntity from './CEntity'
-import { CEntityOption } from './CEntity'
+import {CEntityOption} from './CEntity'
 import * as Cesium from 'cesium'
 import PositionType from './PositionType'
 import PlotType from "./PlotType";
@@ -15,7 +15,7 @@ export default class CPolyline extends CEntity {
         }
         super(options)
         this.coordinatesVirtual = options.coordinates;
-        if(options.coordinatesR) this.coordinatesReal = options.coordinatesR;   // 必须在virtual 后面执行
+        if (options.coordinatesR) this.coordinatesReal = options.coordinatesR;   // 必须在virtual 后面执行
         this.plotType = PlotType.POLYLINE;
         this.requirePointCount = Infinity;
     }
@@ -37,8 +37,9 @@ export default class CPolyline extends CEntity {
     }
 
     set coordinatesReal(positions: Cesium.Cartesian3[]) {
+        if (positions.length < 2) return
         this._coordinatesReal = positions;
-        switch(this.positionType) {
+        switch (this.positionType) {
             case PositionType.Callback: {
                 if (!(this.polyline!.positions instanceof Cesium.CallbackProperty)) {
                     // @ts-ignore
@@ -57,10 +58,10 @@ export default class CPolyline extends CEntity {
     updateChildren(positions: Cesium.Cartesian3[]) {    // 更新 children
         // super.updateChildren(positions);
         if (Cesium.defined(this.entityCollection)) { // 需要更新
-            positions.forEach((position,index) => {
-                if(this.children[index]) {  // 没有child创建child 有child更新位置就行
+            positions.forEach((position, index) => {
+                if (this.children[index]) {  // 没有child创建child 有child更新位置就行
                     this.children[index].coordinatesVirtual = [position]
-                }else { //
+                } else { //
                     const entity = new CEntity({
                         coordinates: [position],
                         parent: this,
