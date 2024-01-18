@@ -25,7 +25,7 @@ class CesiumDS {
 
     static getInstance() {
         if (!this.instance) {
-            this.instance = new CesiumDS(CesiumMap.getViewer())
+            this.instance = new CesiumDS(CesiumMap.viewer)
         }
         return this.instance
     }

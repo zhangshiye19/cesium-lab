@@ -48,7 +48,7 @@ export default class PlotDraw {
                 this.plottingEntity = getEntityFromType(plotType,this.positions,PositionType.Callback);
                 if(this.plottingEntity) {
                     required_point_count = this.plottingEntity.requirePointCount;    // 没有值就赋予-1，代表找不到这种类型
-                    CesiumMap.getViewer().entities.add(this.plottingEntity)
+                    CesiumMap.viewer.entities.add(this.plottingEntity)
                     //@ts-ignore
                     this.eventDrawStart.raiseEvent(this.plottingEntity)
                 }
@@ -89,10 +89,10 @@ export default class PlotDraw {
 
     static getInstance() {
         if (!this.instance) {
-            this.instance = new PlotDraw(CesiumMap.getViewer())
+            this.instance = new PlotDraw(CesiumMap.viewer)
             const handle = new Cesium.ScreenSpaceEventHandler()
             handle.setInputAction((event: Cesium.ScreenSpaceEventHandler.PositionedEvent) => {
-                const entity = CesiumMap.getViewer().scene.pick(event.position)?.id;
+                const entity = CesiumMap.viewer.scene.pick(event.position)?.id;
                 // console.log(entity.parent)
                 // const cartesian = PlotUtils.getCartesianFromScreen(CesiumMap.getViewer(),event.endPosition)
                 if(entity instanceof CEntity) {

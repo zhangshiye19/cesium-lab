@@ -1,5 +1,6 @@
 
 .toolbar-container {
+    pointer-events: all;
     position: fixed;
     right: 50px;
     top: 200px;

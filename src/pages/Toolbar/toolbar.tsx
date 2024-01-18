@@ -1,4 +1,4 @@
-import styles from './index.module.css'
+import styles from './toolbar.module.css'
 import PlottingComponent from './component/PlotComponent';
 import { Button, Space } from 'antd';
 import Icon,{IeOutlined} from '@ant-design/icons';

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import './App.css';
 import CesiumMap from './CesiumMap/CesiumMap';
 import 'cesium/Source/Widgets/widgets.css';
-import Toolbar from './pages/Toolbar';
+import Toolbar from './pages/Toolbar/toolbar';
 import {loadEntityFromJsonObj, saveEntityToJsonObj} from "@/CesiumMap/plot/PlotFactory";
 import PlotDraw from "@/CesiumMap/plot/PlotDraw";
 import CEntity from "@/CesiumMap/entity/CEntity";
@@ -10,7 +10,7 @@ import CEntity from "@/CesiumMap/entity/CEntity";
 function App() {
 
   useEffect(()=>{
-    CesiumMap.getInstance()
+    // CesiumMap.getInstance()
 
     doSomething()
   },[])
@@ -22,7 +22,7 @@ function App() {
     objArray.forEach((obj: any) => {
       const entity = loadEntityFromJsonObj(obj);
       if(entity) {
-        CesiumMap.getViewer().entities.add(entity)
+        CesiumMap.viewer.entities.add(entity)
       }
     })
 
@@ -68,7 +68,7 @@ function App() {
   }
 
   return (
-    <div id="cesium-container">
+    <div id="app-container">
       <Toolbar />
     </div>
   );

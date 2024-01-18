@@ -1,10 +1,10 @@
 import * as Cesium from 'cesium';
 
-export default class CesiumMap {
+class CesiumMap {
 
     static instance: CesiumMap;
 
-    private readonly viewer: Cesium.Viewer;
+    readonly viewer: Cesium.Viewer;
 
     constructor() {
         this.viewer = new Cesium.Viewer('cesium-container',{
@@ -48,3 +48,5 @@ export default class CesiumMap {
         return this.instance;
     }
 }
+
+export default CesiumMap.getInstance();

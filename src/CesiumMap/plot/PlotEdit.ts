@@ -68,7 +68,7 @@ export default class PlotEdit {
 
     static getInstance() {
         if (!this.instance) {
-            this.instance = new PlotEdit(CesiumMap.getViewer());
+            this.instance = new PlotEdit(CesiumMap.viewer);
         }
         return this.instance;
     }
