@@ -81,8 +81,7 @@ export default class CEntity extends Cesium.Entity {
         return this._coordinatesReal;
     }
 
-    set coordinatesReal(positions: Cesium.Cartesian3[]) {
-
+    protected set coordinatesReal(positions: Cesium.Cartesian3[]) {
         this._coordinatesReal = positions;
         switch(this.positionType) {
             case PositionType.Callback: {

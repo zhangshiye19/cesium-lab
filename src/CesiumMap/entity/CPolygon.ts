@@ -49,7 +49,7 @@ export default class CPolygon extends CEntity {
         return this._coordinatesReal;
     }
 
-    set coordinatesReal(positions: Cesium.Cartesian3[]) {
+    protected set coordinatesReal(positions: Cesium.Cartesian3[]) {
         if(positions.length < 2) return
         this._coordinatesReal = positions;
         switch(this.positionType) {
