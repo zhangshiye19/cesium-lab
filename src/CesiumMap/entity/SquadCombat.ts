@@ -1,8 +1,10 @@
 import {CEntityOption} from "./CEntity";
-import * as Cesium from "cesium";
 import ArrowAttack from "./ArrowAttack";
 import PlotType from "./PlotType";
-// import PositionType from "./PositionType";
+import * as Cesium from "cesium";
+import * as pointconvert from './util/pointconvert'
+import {plotUtil, Point} from "./core/PlotUtil";
+
 
 
 export default class SquadCombat extends ArrowAttack {
@@ -11,6 +13,7 @@ export default class SquadCombat extends ArrowAttack {
     neckHeightFactor = 0.85;
     neckWidthFactor = 0.15;
     tailWidthFactor = 0.1;
+    swallowTailFactor = 1;
 
     constructor(options: CEntityOption) {
         super(options);
@@ -19,58 +22,38 @@ export default class SquadCombat extends ArrowAttack {
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {
         super.mapToCoordinates(positions);
-        //
-        // const anchorPoints = positions.map(value => {
-        //     return PlotUtils.cartesian2point(value)
-        // })
-        // const geometry = this.getGeometry(anchorPoints).flat();
-        // if (geometry.some(value => isNaN(value))) {
-        //     return
-        // }
-        // this.coordinatesReal = Cesium.Cartesian3.fromDegreesArray(geometry)
+        this.coordinatesReal = this.getGeometry(positions)
     }
 
+    getGeometry(positions: Cesium.Cartesian3[]):Cesium.Cartesian3[] {
+        if (positions.length < 2) return [];
 
-    // getGeometry(anchor_points: Point[]) {
-    //     const count = anchor_points.length;
-    //
-    //     if(count === 0) {
-    //         return []
-    //     }
-    //
-    //     if (count === 1) {
-    //         return new Array(2).fill(anchor_points[0]);
-    //     //   return false;
-    //       // eslint-disable-next-line no-else-return
-    //     } else {
-    //       const pnts = anchor_points;
-    //       const tailPnts = this.getTailPoints(pnts);
-    //       const headPnts = this.getArrowHeadPoints(pnts, tailPnts[0], tailPnts[1]);
-    //       if (headPnts && headPnts.length > 4) {
-    //         const neckLeft = headPnts[0];
-    //         const neckRight = headPnts[4];
-    //         const bodyPnts = this.getArrowBodyPoints(pnts, neckLeft, neckRight, this.tailWidthFactor);
-    //         // eslint-disable-next-line @typescript-eslint/no-shadow
-    //         const count = bodyPnts.length;
-    //         let leftPnts = [tailPnts[0]].concat(bodyPnts.slice(0, count / 2));
-    //         leftPnts.push(neckLeft);
-    //         let rightPnts = [tailPnts[1]].concat(bodyPnts.slice(count / 2, count));
-    //         rightPnts.push(neckRight);
-    //         leftPnts = PlotUtils.getQBSplinePoints(leftPnts);
-    //         rightPnts = PlotUtils.getQBSplinePoints(rightPnts);
-    //
-    //         return leftPnts.concat(headPnts, rightPnts.reverse())
-    //         // this.setCoordinates([leftPnts.concat(headPnts, rightPnts.reverse())]);
-    //       }
-    //     }
-    //     return [];
-    // }
-    //
-    // getTailPoints(points: Point[]) {
-    //     const allLen = PlotUtils.getBaseLength(points);
-    //     const tailWidth = allLen * this.tailWidthFactor;
-    //     const tailLeft = PlotUtils.getThirdPoint(points[1], points[0], Constants.HALF_PI, tailWidth, false);
-    //     const tailRight = PlotUtils.getThirdPoint(points[1], points[0], Constants.HALF_PI, tailWidth, true);
-    //     return [tailLeft, tailRight];
-    //   }
+        //@ts-ignore
+        let pnts:Point[] = pointconvert.cartesians2mercators(positions);
+
+        let tailPnts = this.getTailPoints(pnts);
+        let headPnts = this.getArrowHeadPoints(pnts, tailPnts[0], tailPnts[1]);
+        let neckLeft = headPnts[0];
+        let neckRight = headPnts[4];
+        let bodyPnts = this.getArrowBodyPoints(pnts, neckLeft, neckRight, this.tailWidthFactor);
+        let _count = bodyPnts.length;
+        let leftPnts = [tailPnts[0]].concat(bodyPnts.slice(0, _count / 2));
+        leftPnts.push(neckLeft);
+        let rightPnts = [tailPnts[1]].concat(bodyPnts.slice(_count / 2, _count));
+        rightPnts.push(neckRight);
+        leftPnts = plotUtil.getQBSplinePoints(leftPnts);
+        rightPnts = plotUtil.getQBSplinePoints(rightPnts);
+        let pList = leftPnts.concat(headPnts, rightPnts.reverse());
+
+        let returnArr = pointconvert.mercators2cartesians(pList);
+        return returnArr;
+    }
+
+    getTailPoints(points:Point[]) {
+        let allLen = plotUtil.getBaseLength(points);
+        let tailWidth = allLen * this.tailWidthFactor;
+        let tailLeft = plotUtil.getThirdPoint(points[1], points[0], Math.PI / 2, tailWidth, false);
+        let tailRight = plotUtil.getThirdPoint(points[1], points[0], Math.PI / 2, tailWidth, true);
+        return [tailLeft, tailRight];
+    }
 }
