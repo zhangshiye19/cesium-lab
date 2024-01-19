@@ -8,7 +8,7 @@ import * as pointconvert from './util/pointconvert'
 import ArrowParent from "./ArrowParent";
 
 
-export default class ArrowAttack extends ArrowParent {
+export default class ArrowAttackSwallowTailed extends ArrowParent {
     headHeightFactor = 0.18;
     headWidthFactor = 0.3;
     neckHeightFactor = 0.85;

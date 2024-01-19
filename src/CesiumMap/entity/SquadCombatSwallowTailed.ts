@@ -6,7 +6,7 @@ import * as pointconvert from './util/pointconvert'
 import {plotUtil, Point} from "./core/PlotUtil";
 
 
-export default class SquadCombat extends ArrowAttack {
+export default class SquadCombatSwallowTailed extends ArrowAttack {
     headHeightFactor = 0.18;
     headWidthFactor = 0.3;
     neckHeightFactor = 0.85;

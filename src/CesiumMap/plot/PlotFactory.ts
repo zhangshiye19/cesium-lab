@@ -14,53 +14,9 @@ import {cartesians2lonlats, lonlats2cartesians} from "@/CesiumMap/entity/util/po
 import {type Point} from "@/CesiumMap/entity/core/PlotUtil";
 import Lune from "@/CesiumMap/entity/Lune";
 import Sector from "@/CesiumMap/entity/Sector";
+import ArrowAttackSwallowTailed from "@/CesiumMap/entity/ArrowAttackSwallowTailed";
+import SquadCombatSwallowTailed from "@/CesiumMap/entity/SquadCombatSwallowTailed";
 
-// [
-//   {
-//     "type": "Feature",
-//     "geometry": {
-//       "type": "Polygon",
-//       "coordinates": [
-//         [
-//
-//           [
-//             105.94861739256925,
-//             32.46661416774336
-//           ],
-//           [
-//             105.81165152399356,
-//             32.58263364413328
-//           ],
-//           [
-//             105.6734010485882,
-//             32.69711933802854
-//           ],
-//           [
-//             105.53388314117527,
-//             32.81005702689991
-//           ],
-//         ]
-//       ]
-//     },
-//     "properties": {
-//       "type": "Sector",
-//       "points": [
-//         [
-//           95.47107833932773,
-//           20.236295629106483
-//         ],
-//         [
-//           111.26603256037902,
-//           17.09321794574894
-//         ],
-//         [
-//           106.05409523085464,
-//           34.081748775483646
-//         ]
-//       ]
-//     }
-//   }
-// ]
 
 export function getEntityFromType(plotType: PlotType, positions: Cesium.Cartesian3[],positionType?: PositionType,positionsReal?: Cesium.Cartesian3[]) {
     let plottingEntity: CEntity | undefined;
@@ -73,23 +29,14 @@ export function getEntityFromType(plotType: PlotType, positions: Cesium.Cartesia
     }
     if (plotType === PlotType.AttackArrow) {
         plottingEntity = new ArrowAttack(options)
-        // this.plottingEntity = this.createPolygon(Cesium.Cartesian3.fromDegreesArray(positions.flat()))
     } else if (plotType === PlotType.DOUBLE_ARROW) {
         plottingEntity = new ArrowDouble(options)
     } else if (plotType === PlotType.FINE_ARROW) {
-        plottingEntity = new ArrowFine({
-            coordinates: positions,
-            positionType: positionType ?? PositionType.Constant,
-            coordinatesR: positionsReal
-        })
+        plottingEntity = new ArrowFine(options)
     } else if (plotType === PlotType.SQUAD_COMBAT) {
         plottingEntity = new SquadCombat(options)
     } else if (plotType === PlotType.STRAIGHT_ARROW) {
-        plottingEntity = new StraightArrow({
-            coordinates: positions,
-            positionType: positionType ?? PositionType.Constant,
-            coordinatesR: positionsReal
-        })
+        plottingEntity = new StraightArrow(options)
     } else if (plotType === PlotType.POLYLINE) {
         plottingEntity = new CPolyline(options)
     }else if (plotType === PlotType.GATHERING_PLACE) {
@@ -100,6 +47,10 @@ export function getEntityFromType(plotType: PlotType, positions: Cesium.Cartesia
         plottingEntity = new Lune(options)
     }else if(plotType === PlotType.SECTOR) {
         plottingEntity = new Sector(options)
+    }else if(plotType === PlotType.TAILED_SQUAD_COMBAT) {
+        plottingEntity = new SquadCombatSwallowTailed(options)
+    }else if(plotType === PlotType.TAILED_ATTACK_ARROW) {
+        plottingEntity = new ArrowAttackSwallowTailed(options)
     }
     return plottingEntity;
 }

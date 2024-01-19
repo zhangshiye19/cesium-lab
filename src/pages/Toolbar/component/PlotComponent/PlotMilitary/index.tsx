@@ -9,36 +9,16 @@ export default function PlotMilitary() {
     return (
         <div>
             <Row justify={'space-between'} gutter={[16,16]} >
-                <Col span={24/4}>
-                    <PlotItem icon={<SvgAttackArrow/>} plotType={PlotType.AttackArrow} title={'AttackArrow'}/>
-                </Col>
-                <Col span={24/4}>
-                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.DOUBLE_ARROW} title={'DoubleArrow'}/>
-                </Col>
-                <Col span={24/4}>
-                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.FINE_ARROW} title={'FineArrow'}/>
-                </Col>
-                <Col span={24/4}>
-                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.SQUAD_COMBAT} title={'nouse'}/>
-                </Col>
-                <Col span={24/4}>
-                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.POLYLINE} title={'polyline'}/>
-                </Col>
-                <Col span={24/4}>
-                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.STRAIGHT_ARROW} title={'StraightArrow'}/>
-                </Col>
-                <Col span={24/4}>
-                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.CLOSED_CURVE} title={'CloseCurve'}/>
-                </Col>
-                <Col span={24/4}>
-                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.GATHERING_PLACE} title={'Gathering'}/>
-                </Col>
-                <Col span={24/4}>
-                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.LUNE} title={'Lune'}/>
-                </Col>
-                <Col span={24/4}>
-                    <PlotItem icon={<SvgRightArrow/>} plotType={PlotType.SECTOR} title={'Sector'}/>
-                </Col>
+                {
+                    Object.entries(PlotType).map(([key,value]:[string, PlotType])=>{
+
+                        return (
+                            <Col span={24/4} key={key}>
+                                <PlotItem icon={<SvgRightArrow/>} plotType={value} title={value}/>
+                            </Col>
+                        )
+                    })
+                }
             </Row>
         </div>
     )
