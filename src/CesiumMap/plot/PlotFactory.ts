@@ -16,6 +16,7 @@ import ArrowAttack from "@/CesiumMap/entity/Arrow/ArrowAttack";
 import ArrowDouble from "@/CesiumMap/entity/Arrow/ArrowDouble";
 import ArrowFine from "@/CesiumMap/entity/Arrow/ArrowFine";
 import SquadCombat from "@/CesiumMap/entity/Arrow/SquadCombat";
+import {Arc} from "@/CesiumMap/entity/Arc/Arc";
 
 
 export function getEntityFromType(plotType: PlotType,options: CEntityOption) {
@@ -46,6 +47,8 @@ export function getEntityFromType(plotType: PlotType,options: CEntityOption) {
         plottingEntity = new ArrowAttackSwallowTailed(options)
     }else if(plotType === PlotType.ASSAULT_DIRECTION) {
         plottingEntity = new AssaultDirection(options)
+    }else if(plotType === PlotType.ARC) {
+        plottingEntity = new Arc(options)
     }
     return plottingEntity;
 }
