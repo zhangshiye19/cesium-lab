@@ -17,6 +17,8 @@ import ArrowDouble from "@/CesiumMap/entity/Arrow/ArrowDouble";
 import ArrowFine from "@/CesiumMap/entity/Arrow/ArrowFine";
 import SquadCombat from "@/CesiumMap/entity/Arrow/SquadCombat";
 import {Arc} from "@/CesiumMap/entity/Arc/Arc";
+import Ellipse from "@/CesiumMap/entity/Circle/Ellipse";
+import Circle from "@/CesiumMap/entity/Circle/Circle";
 
 
 export function getEntityFromType(plotType: PlotType,options: CEntityOption) {
@@ -49,6 +51,10 @@ export function getEntityFromType(plotType: PlotType,options: CEntityOption) {
         plottingEntity = new AssaultDirection(options)
     }else if(plotType === PlotType.ARC) {
         plottingEntity = new Arc(options)
+    }else if(plotType === PlotType.CIRCLE) {
+        plottingEntity = new Circle(options)
+    }else if(plotType === PlotType.ELLIPSE) {
+        plottingEntity = new Ellipse(options)
     }
     return plottingEntity;
 }
