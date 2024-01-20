@@ -6,7 +6,7 @@ import CPolyline from "@/CesiumMap/entity/CPolyline";
 import GatheringPlace from "@/CesiumMap/entity/GatheringPlace";
 import CloseCurve from "@/CesiumMap/entity/CloseCurve";
 import {cartesians2lonlats, lonlats2cartesians} from "@/CesiumMap/entity/util/pointconvert";
-import {type Point} from "@/CesiumMap/entity/core/PlotUtil";
+import {type Point} from "@/CesiumMap/entity/core/PlotUtils";
 import Lune from "@/CesiumMap/entity/Lune";
 import Sector from "@/CesiumMap/entity/Sector";
 import SquadCombatSwallowTailed from "@/CesiumMap/entity/Arrow/SquadCombatSwallowTailed";

@@ -3,7 +3,8 @@ import * as pointconvert from './util/pointconvert'
 import * as Cesium from "cesium";
 import CPolygon from "./CPolygon";
 import PlotType from "./PlotType";
-import {plotUtil, Point} from "./core/PlotUtil";
+import {Point} from "./core/PlotUtils";
+import * as plotUtil from './core/PlotUtils'
 
 
 export default class GatheringPlace extends CPolygon {

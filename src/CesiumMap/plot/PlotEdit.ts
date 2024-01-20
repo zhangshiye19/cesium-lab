@@ -1,7 +1,8 @@
 import * as Cesium from 'cesium';
 import CEntity from "@/CesiumMap/entity/CEntity";
 import CesiumMap from "@/CesiumMap/CesiumMap";
-import {plotUtil} from "@/CesiumMap/entity/core/PlotUtil";
+// import {plotUtil} from "@/CesiumMap/entity/core/PlotUtils";
+import * as plotUtil from '@/CesiumMap/entity/core/PlotUtils'
 
 export default class PlotEdit {
     static instance: PlotEdit;

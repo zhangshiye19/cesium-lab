@@ -1,10 +1,11 @@
 import {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import PlotType from "@/CesiumMap/entity/PlotType";
 import * as Cesium from "cesium";
-import {plotUtil, Point} from "@/CesiumMap/entity/core/PlotUtil";
+import {type Point} from "@/CesiumMap/entity/core/PlotUtils";
 import * as pointconvert from '@/CesiumMap/entity/util/pointconvert'
 import CPolyline from "@/CesiumMap/entity/CPolyline";
 // import PositionType from "./PositionType";
+import * as plotUtil from '../core/PlotUtils'
 
 
 export default class StraightArrow extends CPolyline {

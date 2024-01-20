@@ -1,5 +1,5 @@
 import * as Cesium from 'cesium/Build/Cesium/Cesium';
-import { plotUtil } from "../PlotUtil";
+import { plotUtil } from "../PlotUtils";
 
 //箭头的父类
 export class ArrowParent {

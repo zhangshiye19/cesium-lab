@@ -4,10 +4,10 @@
 import {CEntityOption} from "./CEntity";
 import * as Cesium from "cesium";
 import PlotType from "./PlotType";
-import {plotUtil, Point} from "./core/PlotUtil";
+import { Point} from "./core/PlotUtils";
 import * as pointconvert from './util/pointconvert'
 import CPolygon from "./CPolygon";
-
+import * as plotUtil from './core/PlotUtils'
 
 export default class Sector extends CPolygon {
 

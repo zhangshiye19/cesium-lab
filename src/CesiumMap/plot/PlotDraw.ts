@@ -5,7 +5,7 @@ import CEntity from "@/CesiumMap/entity/CEntity";
 import PlotEdit from "@/CesiumMap/plot/PlotEdit";
 import {getEntityFromType} from "@/CesiumMap/plot/PlotFactory";
 import PositionType from "@/CesiumMap/entity/PositionType";
-import {plotUtil} from "@/CesiumMap/entity/core/PlotUtil";
+import * as plotUtil from "@/CesiumMap/entity/core/PlotUtils";
 
 export default class PlotDraw {
 

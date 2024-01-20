@@ -1,5 +1,5 @@
 import * as Cesium from 'cesium/Build/Cesium/Cesium';
-import { plotUtil } from "../PlotUtil";
+import { plotUtil } from "../PlotUtils";
 import * as pointconvert from "../../../util/pointconvert";
 
 //计算钳击箭头坐标

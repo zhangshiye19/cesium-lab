@@ -2,8 +2,10 @@ import ArrowAttack from "@/CesiumMap/entity/Arrow/ArrowAttack";
 import {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import PlotType from "@/CesiumMap/entity/PlotType";
 import * as Cesium from "cesium";
-import {plotUtil, Point} from "@/CesiumMap/entity/core/PlotUtil";
+import { Point} from "@/CesiumMap/entity/core/PlotUtils";
 import * as pointconvert from '@/CesiumMap/entity/util/pointconvert'
+import * as plotUtil from '../core/PlotUtils'
+
 
 export default class SquadCombatSwallowTailed extends ArrowAttack {
     headHeightFactor = 0.18;

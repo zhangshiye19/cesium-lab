@@ -3,8 +3,8 @@ import * as pointconvert from './util/pointconvert'
 import * as Cesium from "cesium";
 import CPolygon from "./CPolygon";
 import PlotType from "./PlotType";
-import {plotUtil, Point} from "./core/PlotUtil";
-
+import { Point} from "./core/PlotUtils";
+import * as PlotUtils from './core/PlotUtils'
 
 export default class CloseCurve extends CPolygon {
     constructor(options: CEntityOption) {
@@ -30,7 +30,7 @@ export default class CloseCurve extends CPolygon {
         let normals:any[] = [];
         let pList = [];
         for (let i = 0; i < pnts.length - 2; i++) {
-            let normalPoints = plotUtil.getBisectorNormals(0.3, pnts[i], pnts[i + 1], pnts[i + 2]);
+            let normalPoints = PlotUtils.getBisectorNormals(0.3, pnts[i], pnts[i + 1], pnts[i + 2]);
             normals = normals.concat(normalPoints);
         }
         let count = normals.length;
@@ -40,7 +40,7 @@ export default class CloseCurve extends CPolygon {
             let pnt2 = pnts[_i + 1];
             pList.push(pnt1);
             for (let t = 0; t <= 100; t++) {
-                let pnt = plotUtil.getCubicValue(
+                let pnt = PlotUtils.getCubicValue(
                     t / 100,
                     pnt1,
                     normals[_i * 2],
