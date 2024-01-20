@@ -1,4 +1,3 @@
-import ArrowAttack from "@/CesiumMap/entity/Arrow/ArrowAttack";
 import {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import PlotType from "@/CesiumMap/entity/PlotType";
 import * as Cesium from "cesium";

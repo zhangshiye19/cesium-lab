@@ -1,7 +1,7 @@
 import * as Cesium from 'cesium'
 import CEntity from "@/CesiumMap/entity/CEntity";
 import PlotType from "@/CesiumMap/entity/PlotType";
-import AssaultDirection from "@/CesiumMap/entity/AssaultDirection";
+import AssaultDirection from "@/CesiumMap/entity/Arrow/AssaultDirection";
 import CPolyline from "@/CesiumMap/entity/CPolyline";
 import GatheringPlace from "@/CesiumMap/entity/GatheringPlace";
 import CloseCurve from "@/CesiumMap/entity/CloseCurve";
