@@ -1,11 +1,6 @@
 import * as Cesium from 'cesium'
 import CEntity from "@/CesiumMap/entity/CEntity";
 import PlotType from "@/CesiumMap/entity/PlotType";
-import ArrowAttack from "@/CesiumMap/entity/ArrowAttack";
-import PositionType from "@/CesiumMap/entity/PositionType";
-import ArrowDouble from "@/CesiumMap/entity/ArrowDouble";
-import ArrowFine from "@/CesiumMap/entity/ArrowFine";
-import SquadCombat from "@/CesiumMap/entity/SquadCombat";
 import AssaultDirection from "@/CesiumMap/entity/AssaultDirection";
 import CPolyline from "@/CesiumMap/entity/CPolyline";
 import GatheringPlace from "@/CesiumMap/entity/GatheringPlace";
@@ -14,9 +9,14 @@ import {cartesians2lonlats, lonlats2cartesians} from "@/CesiumMap/entity/util/po
 import {type Point} from "@/CesiumMap/entity/core/PlotUtil";
 import Lune from "@/CesiumMap/entity/Lune";
 import Sector from "@/CesiumMap/entity/Sector";
-import ArrowAttackSwallowTailed from "@/CesiumMap/entity/ArrowAttackSwallowTailed";
-import SquadCombatSwallowTailed from "@/CesiumMap/entity/SquadCombatSwallowTailed";
-import StraightArrow from "@/CesiumMap/entity/StraightArrow";
+import SquadCombatSwallowTailed from "@/CesiumMap/entity/Arrow/SquadCombatSwallowTailed";
+import ArrowAttackSwallowTailed from "@/CesiumMap/entity/Arrow/ArrowAttackSwallowTailed";
+import StraightArrow from "@/CesiumMap/entity/Arrow/StraightArrow";
+import PositionType from "@/CesiumMap/entity/PositionType";
+import ArrowAttack from "@/CesiumMap/entity/Arrow/ArrowAttack";
+import ArrowDouble from "@/CesiumMap/entity/Arrow/ArrowDouble";
+import ArrowFine from "@/CesiumMap/entity/Arrow/ArrowFine";
+import SquadCombat from "@/CesiumMap/entity/Arrow/SquadCombat";
 
 
 export function getEntityFromType(plotType: PlotType, positions: Cesium.Cartesian3[],positionType?: PositionType,positionsReal?: Cesium.Cartesian3[]) {

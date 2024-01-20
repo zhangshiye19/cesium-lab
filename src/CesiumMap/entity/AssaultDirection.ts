@@ -1,12 +1,7 @@
-import {CEntityOption} from "./CEntity";
+import {CEntityOption} from "@/CesiumMap/entity/CEntity";
+import PlotType from "@/CesiumMap/entity/PlotType";
 import * as Cesium from "cesium";
-import CPolyline from './CPolyline';
-import PlotType from "./PlotType";
-import {plotUtil, Point} from "./core/PlotUtil";
-import * as pointconvert from './util/pointconvert';
-import CPolygon from "./CPolygon";
-import ArrowFine from "@/CesiumMap/entity/ArrowFine";
-// import PositionType from "./PositionType";
+import ArrowFine from "@/CesiumMap/entity/Arrow/ArrowFine";
 
 
 export default class AssaultDirection extends ArrowFine {
