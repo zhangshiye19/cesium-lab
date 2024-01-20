@@ -6,7 +6,7 @@ import PositionType from "@/CesiumMap/entity/PositionType";
 import ArrowDouble from "@/CesiumMap/entity/ArrowDouble";
 import ArrowFine from "@/CesiumMap/entity/ArrowFine";
 import SquadCombat from "@/CesiumMap/entity/SquadCombat";
-import StraightArrow from "@/CesiumMap/entity/StraightArrow";
+import AssaultDirection from "@/CesiumMap/entity/AssaultDirection";
 import CPolyline from "@/CesiumMap/entity/CPolyline";
 import GatheringPlace from "@/CesiumMap/entity/GatheringPlace";
 import CloseCurve from "@/CesiumMap/entity/CloseCurve";
@@ -16,6 +16,7 @@ import Lune from "@/CesiumMap/entity/Lune";
 import Sector from "@/CesiumMap/entity/Sector";
 import ArrowAttackSwallowTailed from "@/CesiumMap/entity/ArrowAttackSwallowTailed";
 import SquadCombatSwallowTailed from "@/CesiumMap/entity/SquadCombatSwallowTailed";
+import StraightArrow from "@/CesiumMap/entity/StraightArrow";
 
 
 export function getEntityFromType(plotType: PlotType, positions: Cesium.Cartesian3[],positionType?: PositionType,positionsReal?: Cesium.Cartesian3[]) {
@@ -51,6 +52,8 @@ export function getEntityFromType(plotType: PlotType, positions: Cesium.Cartesia
         plottingEntity = new SquadCombatSwallowTailed(options)
     }else if(plotType === PlotType.TAILED_ATTACK_ARROW) {
         plottingEntity = new ArrowAttackSwallowTailed(options)
+    }else if(plotType === PlotType.ASSAULT_DIRECTION) {
+        plottingEntity = new AssaultDirection(options)
     }
     return plottingEntity;
 }
