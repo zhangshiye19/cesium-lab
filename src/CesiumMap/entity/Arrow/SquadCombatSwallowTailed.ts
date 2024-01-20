@@ -2,9 +2,9 @@ import ArrowAttack from "@/CesiumMap/entity/Arrow/ArrowAttack";
 import {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import PlotType from "@/CesiumMap/entity/PlotType";
 import * as Cesium from "cesium";
-import { Point} from "@/CesiumMap/entity/core/PlotUtils";
-import * as pointconvert from '@/CesiumMap/entity/util/pointconvert'
-import * as plotUtil from '../core/PlotUtils'
+import { Point} from "@/CesiumMap/entity/core/algorithm";
+import * as pointconvert from '@/CesiumMap/entity/marsutils/pointconvert'
+import * as algorithm from '../core/algorithm'
 
 
 export default class SquadCombatSwallowTailed extends ArrowAttack {
@@ -42,8 +42,8 @@ export default class SquadCombatSwallowTailed extends ArrowAttack {
             leftPnts.push(neckLeft);
             let rightPnts = [tailPnts[2]].concat(bodyPnts.slice(count / 2, count));
             rightPnts.push(neckRight);
-            leftPnts = plotUtil.getQBSplinePoints(leftPnts);
-            rightPnts = plotUtil.getQBSplinePoints(rightPnts);
+            leftPnts = algorithm.getQBSplinePoints(leftPnts);
+            rightPnts = algorithm.getQBSplinePoints(rightPnts);
             const pList = leftPnts.concat(headPnts, rightPnts.reverse(), [tailPnts[1], leftPnts[0]]);
             return pointconvert.mercators2cartesians(pList)
         }
@@ -52,12 +52,12 @@ export default class SquadCombatSwallowTailed extends ArrowAttack {
     }
 
     getTailPoints(points: Point[]) {
-        const allLen = plotUtil.getBaseLength(points);
+        const allLen = algorithm.getBaseLength(points);
         const tailWidth = allLen * this.tailWidthFactor;
-        const tailLeft = plotUtil.getThirdPoint(points[1], points[0], Math.PI / 2, tailWidth, false);
-        const tailRight = plotUtil.getThirdPoint(points[1], points[0], Math.PI / 2, tailWidth, true);
+        const tailLeft = algorithm.getThirdPoint(points[1], points[0], Math.PI / 2, tailWidth, false);
+        const tailRight = algorithm.getThirdPoint(points[1], points[0], Math.PI / 2, tailWidth, true);
         const len = tailWidth * this.swallowTailFactor;
-        const swallowTailPnt = plotUtil.getThirdPoint(points[1], points[0], 0, len, true);
+        const swallowTailPnt = algorithm.getThirdPoint(points[1], points[0], 0, len, true);
         return [tailLeft, swallowTailPnt, tailRight];
     }
 }

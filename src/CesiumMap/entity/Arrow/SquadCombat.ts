@@ -2,9 +2,9 @@ import ArrowAttack from "@/CesiumMap/entity/Arrow/ArrowAttack";
 import {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import PlotType from "@/CesiumMap/entity/PlotType";
 import * as Cesium from "cesium";
-import { Point} from "@/CesiumMap/entity/core/PlotUtils";
-import * as pointconvert from '@/CesiumMap/entity/util/pointconvert'
-import * as plotUtil from '../core/PlotUtils'
+import { Point} from "@/CesiumMap/entity/core/algorithm";
+import * as pointconvert from '@/CesiumMap/entity/marsutils/pointconvert'
+import * as algorithm from '../core/algorithm'
 
 
 export default class SquadCombat extends ArrowAttack {
@@ -41,8 +41,8 @@ export default class SquadCombat extends ArrowAttack {
         leftPnts.push(neckLeft);
         let rightPnts = [tailPnts[1]].concat(bodyPnts.slice(_count / 2, _count));
         rightPnts.push(neckRight);
-        leftPnts = plotUtil.getQBSplinePoints(leftPnts);
-        rightPnts = plotUtil.getQBSplinePoints(rightPnts);
+        leftPnts = algorithm.getQBSplinePoints(leftPnts);
+        rightPnts = algorithm.getQBSplinePoints(rightPnts);
         let pList = leftPnts.concat(headPnts, rightPnts.reverse());
 
         let returnArr = pointconvert.mercators2cartesians(pList);
@@ -50,10 +50,10 @@ export default class SquadCombat extends ArrowAttack {
     }
 
     getTailPoints(points:Point[]) {
-        let allLen = plotUtil.getBaseLength(points);
+        let allLen = algorithm.getBaseLength(points);
         let tailWidth = allLen * this.tailWidthFactor;
-        let tailLeft = plotUtil.getThirdPoint(points[1], points[0], Math.PI / 2, tailWidth, false);
-        let tailRight = plotUtil.getThirdPoint(points[1], points[0], Math.PI / 2, tailWidth, true);
+        let tailLeft = algorithm.getThirdPoint(points[1], points[0], Math.PI / 2, tailWidth, false);
+        let tailRight = algorithm.getThirdPoint(points[1], points[0], Math.PI / 2, tailWidth, true);
         return [tailLeft, tailRight];
     }
 }

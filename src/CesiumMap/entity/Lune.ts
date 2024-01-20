@@ -1,10 +1,10 @@
 import {CEntityOption} from "./CEntity";
 import * as Cesium from "cesium";
 import PlotType from "./PlotType";
-import {Point} from "./core/PlotUtils";
-import * as pointconvert from './util/pointconvert'
+import {Point} from "./core/algorithm";
+import * as pointconvert from '@/CesiumMap/entity/marsutils/pointconvert'
 import CPolygon from "./CPolygon";
-import * as plotUtil from './core/PlotUtils'
+import * as algorithm from './core/algorithm'
 
 export default class Lune extends CPolygon {
     headHeightFactor = 0.18;
@@ -43,18 +43,18 @@ export default class Lune extends CPolygon {
         let startAngle = 0;
         let endAngle = 0;
 
-        let center = plotUtil.getCircleCenterOfThreePoints(pnt1, pnt2, pnt3);
-        let radius = plotUtil.MathDistance(pnt1, center);
-        let angle1 = plotUtil.getAzimuth(pnt1, center);
-        let angle2 = plotUtil.getAzimuth(pnt2, center);
-        if (plotUtil.isClockWise(pnt1, pnt2, pnt3)) {
+        let center = algorithm.getCircleCenterOfThreePoints(pnt1, pnt2, pnt3);
+        let radius = algorithm.MathDistance(pnt1, center);
+        let angle1 = algorithm.getAzimuth(pnt1, center);
+        let angle2 = algorithm.getAzimuth(pnt2, center);
+        if (algorithm.isClockWise(pnt1, pnt2, pnt3)) {
             startAngle = angle2;
             endAngle = angle1;
         } else {
             startAngle = angle1;
             endAngle = angle2;
         }
-        pnts = plotUtil.getArcPoints(center, radius, startAngle, endAngle);
+        pnts = algorithm.getArcPoints(center, radius, startAngle, endAngle);
         pnts.push(pnts[0]);
 
         let returnArr = pointconvert.mercators2cartesians(pnts);

@@ -3,10 +3,10 @@
 import {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import PlotType from "@/CesiumMap/entity/PlotType";
 import * as Cesium from "cesium";
-import { Point} from "@/CesiumMap/entity/core/PlotUtils";
-import * as pointconvert from '@/CesiumMap/entity/util/pointconvert'
+import { Point} from "@/CesiumMap/entity/core/algorithm";
+import * as pointconvert from '@/CesiumMap/entity/marsutils/pointconvert'
 import ArrowParent from "@/CesiumMap/entity/Arrow/ArrowParent";
-import * as PlotUtils from '../core/PlotUtils'
+import * as algorithms from '../core/algorithm'
 
 
 export default class ArrowAttackSwallowTailed extends ArrowParent {
@@ -38,21 +38,21 @@ export default class ArrowAttackSwallowTailed extends ArrowParent {
             tailLeft = _ref[0],
             tailRight = _ref[1];
 
-        if (PlotUtils.isClockWise(pnts[0], pnts[1], pnts[2])) {
+        if (algorithms.isClockWise(pnts[0], pnts[1], pnts[2])) {
             tailLeft = pnts[1];
             tailRight = pnts[0];
         }
-        let midTail = PlotUtils.Mid(tailLeft, tailRight);
+        let midTail = algorithms.Mid(tailLeft, tailRight);
         let bonePnts = [midTail].concat(pnts.slice(2));
         let headPnts = this.getArrowHeadPoints(bonePnts, tailLeft, tailRight);
         let _ref2 = [headPnts[0], headPnts[4]],
             neckLeft = _ref2[0],
             neckRight = _ref2[1];
 
-        let tailWidth = PlotUtils.MathDistance(tailLeft, tailRight);
-        let allLen = PlotUtils.getBaseLength(bonePnts);
+        let tailWidth = algorithms.MathDistance(tailLeft, tailRight);
+        let allLen = algorithms.getBaseLength(bonePnts);
         let len = allLen * this.tailWidthFactor * this.swallowTailFactor;
-        let swallowTailPnt = PlotUtils.getThirdPoint(bonePnts[1], bonePnts[0], 0, len, true);
+        let swallowTailPnt = algorithms.getThirdPoint(bonePnts[1], bonePnts[0], 0, len, true);
         let factor = tailWidth / allLen;
         let bodyPnts = this.getArrowBodyPoints(bonePnts, neckLeft, neckRight, factor);
         let count = bodyPnts.length;
@@ -60,8 +60,8 @@ export default class ArrowAttackSwallowTailed extends ArrowParent {
         leftPnts.push(neckLeft);
         let rightPnts = [tailRight].concat(bodyPnts.slice(count / 2, count));
         rightPnts.push(neckRight);
-        leftPnts = PlotUtils.getQBSplinePoints(leftPnts);
-        rightPnts = PlotUtils.getQBSplinePoints(rightPnts);
+        leftPnts = algorithms.getQBSplinePoints(leftPnts);
+        rightPnts = algorithms.getQBSplinePoints(rightPnts);
         let pList = leftPnts.concat(headPnts, rightPnts.reverse(), [swallowTailPnt, leftPnts[0]]);
 
         let returnArr = pointconvert.mercators2cartesians(pList);

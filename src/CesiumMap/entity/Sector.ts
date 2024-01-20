@@ -4,10 +4,10 @@
 import {CEntityOption} from "./CEntity";
 import * as Cesium from "cesium";
 import PlotType from "./PlotType";
-import { Point} from "./core/PlotUtils";
-import * as pointconvert from './util/pointconvert'
+import { Point} from "./core/algorithm";
+import * as pointconvert from '@/CesiumMap/entity/marsutils/pointconvert'
 import CPolygon from "./CPolygon";
-import * as plotUtil from './core/PlotUtils'
+import * as algorithm from './core/algorithm'
 
 export default class Sector extends CPolygon {
 
@@ -32,10 +32,10 @@ export default class Sector extends CPolygon {
         let center = pnts[0],
             pnt2 = pnts[1],
             pnt3 = pnts[2];
-        let radius = plotUtil.MathDistance(pnt2, center);
-        let startAngle = plotUtil.getAzimuth(pnt2, center);
-        let endAngle = plotUtil.getAzimuth(pnt3, center);
-        let pList = plotUtil.getArcPoints(center, radius, startAngle, endAngle);
+        let radius = algorithm.MathDistance(pnt2, center);
+        let startAngle = algorithm.getAzimuth(pnt2, center);
+        let endAngle = algorithm.getAzimuth(pnt3, center);
+        let pList = algorithm.getArcPoints(center, radius, startAngle, endAngle);
         pList.push(center, pList[0]);
 
         let returnArr = pointconvert.mercators2cartesians(pList);

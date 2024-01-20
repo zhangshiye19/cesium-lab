@@ -1,10 +1,10 @@
 import {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import PlotType from "@/CesiumMap/entity/PlotType";
 import * as Cesium from "cesium";
-import { Point} from "@/CesiumMap/entity/core/PlotUtils";
-import * as pointconvert from '@/CesiumMap/entity/util/pointconvert'
+import { Point} from "@/CesiumMap/entity/core/algorithm";
+import * as pointconvert from '@/CesiumMap/entity/marsutils/pointconvert'
 import ArrowParent from "@/CesiumMap/entity/Arrow/ArrowParent";
-import * as plotUtil from '../core/PlotUtils'
+import * as algorithm from '../core/algorithm'
 
 export default class ArrowAttack extends ArrowParent {
     headHeightFactor = 0.18;
@@ -31,12 +31,12 @@ export default class ArrowAttack extends ArrowParent {
             tailRight = _ref[1];
 
         //@ts-ignore
-        if (plotUtil.isClockWise(pnts[0], pnts[1], pnts[2])) {
+        if (algorithm.isClockWise(pnts[0], pnts[1], pnts[2])) {
             tailLeft = pnts[1];
             tailRight = pnts[0];
         }
         //@ts-ignore
-        let midTail = plotUtil.Mid(tailLeft, tailRight);
+        let midTail = algorithm.Mid(tailLeft, tailRight);
         //@ts-ignore
         let bonePnts = [midTail].concat(pnts.slice(2));
         // @ts-ignore
@@ -46,7 +46,7 @@ export default class ArrowAttack extends ArrowParent {
             neckRight = _ref2[1];
 
         //@ts-ignore
-        let tailWidthFactor = plotUtil.MathDistance(tailLeft, tailRight) / plotUtil.getBaseLength(bonePnts);
+        let tailWidthFactor = algorithm.MathDistance(tailLeft, tailRight) / algorithm.getBaseLength(bonePnts);
         // @ts-ignore
         let bodyPnts = this.getArrowBodyPoints(bonePnts, neckLeft, neckRight, tailWidthFactor);
         let count = bodyPnts.length;
@@ -56,8 +56,8 @@ export default class ArrowAttack extends ArrowParent {
         // @ts-ignore
         let rightPnts:Point[] = [tailRight].concat(bodyPnts.slice(count / 2, count));
         rightPnts.push(neckRight);
-        leftPnts = plotUtil.getQBSplinePoints(leftPnts);
-        rightPnts = plotUtil.getQBSplinePoints(rightPnts);
+        leftPnts = algorithm.getQBSplinePoints(leftPnts);
+        rightPnts = algorithm.getQBSplinePoints(rightPnts);
         let pList = leftPnts.concat(headPnts, rightPnts.reverse());
 
         let returnArr = pointconvert.mercators2cartesians(pList);

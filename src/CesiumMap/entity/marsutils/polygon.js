@@ -1,7 +1,7 @@
 import * as Cesium from 'cesium';
 import { getGranularity } from "./util";
 import { computeSurfacePoints } from "./polyline";
-import { getSurfaceHeight, setPositionsHeight } from "../util/point";
+import { getSurfaceHeight, setPositionsHeight } from "@/CesiumMap/entity/marsutils/point";
 
 //面内进行贴地(或贴模型)插值, 返回三角网等计算结果
 export function interPolygon(opts) {

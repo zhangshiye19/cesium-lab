@@ -122,7 +122,7 @@ export function clone(obj, removeKeys, level) {
       }
       return copy;
     } catch (e) {
-      marslog.warn("util.clone方法时异常", e);
+      marslog.warn("marsutils.clone方法时异常", e);
     }
   }
   return obj;

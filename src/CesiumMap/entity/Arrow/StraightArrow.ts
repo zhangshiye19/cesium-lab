@@ -1,11 +1,11 @@
 import {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import PlotType from "@/CesiumMap/entity/PlotType";
 import * as Cesium from "cesium";
-import {type Point} from "@/CesiumMap/entity/core/PlotUtils";
-import * as pointconvert from '@/CesiumMap/entity/util/pointconvert'
+import {type Point} from "@/CesiumMap/entity/core/algorithm";
+import * as pointconvert from '@/CesiumMap/entity/marsutils/pointconvert'
 import CPolyline from "@/CesiumMap/entity/CPolyline";
 // import PositionType from "./PositionType";
-import * as plotUtil from '../core/PlotUtils'
+import * as algorithm from '../core/algorithm'
 
 
 export default class StraightArrow extends CPolyline {
@@ -31,11 +31,11 @@ export default class StraightArrow extends CPolyline {
         //@ts-ignore
         const pnts:Point[] = pointconvert.cartesians2mercators(positions);
         const [pnt1, pnt2] = [pnts[0], pnts[1]];
-        const distance = plotUtil.MathDistance(pnt1, pnt2);
+        const distance = algorithm.MathDistance(pnt1, pnt2);
         let len = distance / this.arrowLengthScale;
         len = len > this.maxArrowLength ? this.maxArrowLength : len;
-        const leftPnt = plotUtil.getThirdPoint(pnt1, pnt2, Math.PI / 6, len, false);
-        const rightPnt = plotUtil.getThirdPoint(pnt1, pnt2, Math.PI / 6, len, true);
+        const leftPnt = algorithm.getThirdPoint(pnt1, pnt2, Math.PI / 6, len, false);
+        const rightPnt = algorithm.getThirdPoint(pnt1, pnt2, Math.PI / 6, len, true);
         return pointconvert.mercators2cartesians([pnt1, pnt2, leftPnt, pnt2, rightPnt])
     }
 }
