@@ -6,7 +6,7 @@ import PlotType from "./PlotType";
 export type CEntityOption = Cesium.Entity.ConstructorOptions & {
     positionType?: PositionType
     coordinates: Cesium.Cartesian3[]
-    coordinatesR?: Cesium.Cartesian3[]
+    coordinatesActual?: Cesium.Cartesian3[]
 }
 
 export default class CEntity extends Cesium.Entity {
@@ -24,13 +24,13 @@ export default class CEntity extends Cesium.Entity {
         this.requirePointCount = Infinity;
         this.children = [];
         this._coordinatesVirtual = [];
-        this._coordinatesReal = options.coordinatesR ?? options.coordinates;
+        this._coordinatesReal = options.coordinatesActual ?? options.coordinates;
         this.positionType = options.positionType ?? PositionType.Constant;
 
         // options.makeCallback && this.makeCallback()
         this.makePositionType(this.positionType);
         this.coordinatesVirtual = Cesium.defaultValue(options.coordinates, []);
-        if(options.coordinatesR) this.coordinatesReal = options.coordinatesR;
+        if(options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
     }
 
     get geometryType() {

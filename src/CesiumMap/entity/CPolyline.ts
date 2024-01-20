@@ -14,8 +14,6 @@ export default class CPolyline extends CEntity {
             ...options
         }
         super(options)
-        this.coordinatesVirtual = options.coordinates;
-        if (options.coordinatesR) this.coordinatesReal = options.coordinatesR;   // 必须在virtual 后面执行
         this.plotType = PlotType.POLYLINE;
         this.requirePointCount = Infinity;
     }
@@ -52,30 +50,6 @@ export default class CPolyline extends CEntity {
             default: {
                 this.polyline!.positions = new Cesium.ConstantProperty(this._coordinatesReal)
             }
-        }
-    }
-
-    updateChildren(positions: Cesium.Cartesian3[]) {    // 更新 children
-        // super.updateChildren(positions);
-        if (Cesium.defined(this.entityCollection)) { // 需要更新
-            positions.forEach((position, index) => {
-                if (this.children[index]) {  // 没有child创建child 有child更新位置就行
-                    this.children[index].coordinatesVirtual = [position]
-                } else { //
-                    const entity = new CEntity({
-                        coordinates: [position],
-                        parent: this,
-                        point: {
-                            disableDepthTestDistance: Number.MAX_VALUE,
-                            pixelSize: 10
-                        },
-                        positionType: this.positionType
-                        // makeCallback: (this.polygon?.hierarchy instanceof Cesium.CallbackProperty)
-                    })
-                    this.children.push(entity)
-                    this.entityCollection.add(entity)
-                }
-            })
         }
     }
 

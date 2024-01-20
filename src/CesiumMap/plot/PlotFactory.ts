@@ -1,5 +1,4 @@
-import * as Cesium from 'cesium'
-import CEntity from "@/CesiumMap/entity/CEntity";
+import CEntity, {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import PlotType from "@/CesiumMap/entity/PlotType";
 import AssaultDirection from "@/CesiumMap/entity/Arrow/AssaultDirection";
 import CPolyline from "@/CesiumMap/entity/CPolyline";
@@ -19,15 +18,8 @@ import ArrowFine from "@/CesiumMap/entity/Arrow/ArrowFine";
 import SquadCombat from "@/CesiumMap/entity/Arrow/SquadCombat";
 
 
-export function getEntityFromType(plotType: PlotType, positions: Cesium.Cartesian3[],positionType?: PositionType,positionsReal?: Cesium.Cartesian3[]) {
+export function getEntityFromType(plotType: PlotType,options: CEntityOption) {
     let plottingEntity: CEntity | undefined;
-    // console.log(plotType)
-    const options = {
-        coordinates: positions,
-        positionType: positionType ?? PositionType.Constant,
-        coordinatesR: positionsReal
-        // makeCallback: true
-    }
     if (plotType === PlotType.AttackArrow) {
         plottingEntity = new ArrowAttack(options)
     } else if (plotType === PlotType.DOUBLE_ARROW) {
@@ -66,10 +58,11 @@ export function loadEntityFromJsonObj(obj: any): CEntity | undefined {
     }
     const points: Point[] = obj['properties']['points'];
     const pointsR: Point[] = obj['geometry']['coordinates'];
-    return getEntityFromType(obj['properties']['type'],
-        lonlats2cartesians(points),
-        PositionType.Callback,
-        lonlats2cartesians(pointsR));
+    return getEntityFromType(obj['properties']['type'],{
+        coordinates: lonlats2cartesians(points),
+        positionType: PositionType.Callback,
+        coordinatesActual: lonlats2cartesians(pointsR)
+    });
 }
 
 export function saveEntityToJsonObj(entity: CEntity) {
