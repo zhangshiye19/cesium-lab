@@ -77,7 +77,6 @@ export default class CEntity extends Cesium.Entity {
     }
 
     get coordinatesReal() {
-        console.log(this._coordinatesReal)
         return this._coordinatesReal;
     }
 

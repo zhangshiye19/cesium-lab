@@ -2,6 +2,8 @@
 enum PlotType {
     AttackArrow = "AttackArrow",
     TEXTAREA = 'TextArea', // 文本标绘（特殊）
+    RECTINCLINED1 = 'RectInclined1',
+    RECTINCLINED2 = 'RectInclined2',
     ARC = 'Arc',
     CURVE = 'Curve',
     GATHERING_PLACE = 'GatheringPlace',

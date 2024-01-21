@@ -1,5 +1,5 @@
 import CPolygon from "@/CesiumMap/entity/CPolygon";
-import CEntity, {CEntityOption} from "@/CesiumMap/entity/CEntity";
+import  {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import PlotType from "@/CesiumMap/entity/PlotType";
 import Cesium from "cesium";
 import {cartesians2mercators, mercators2cartesians} from "@/CesiumMap/entity/marsutils/pointconvert";

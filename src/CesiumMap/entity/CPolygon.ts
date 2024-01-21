@@ -2,6 +2,7 @@ import CEntity, {CEntityOption} from "./CEntity";
 import * as Cesium from "cesium";
 import PlotType from "./PlotType";
 import PositionType from "./PositionType";
+import CPoint from "@/CesiumMap/entity/CPoint";
 // import PositionType from "./PositionType";
 
 
@@ -73,13 +74,9 @@ export default class CPolygon extends CEntity {
             if(this.children[index]) {  // 没有child创建child 有child更新位置就行
                 this.children[index].coordinatesVirtual = [position]
             }else { //
-                const entity = new CEntity({
+                const entity = new CPoint({
                     coordinates: [position],
                     parent: this,
-                    point: {
-                        disableDepthTestDistance: Number.MAX_VALUE,
-                        pixelSize: 10
-                    },
                     positionType: this.positionType
                     // makeCallback: (this.polygon?.hierarchy instanceof Cesium.CallbackProperty)
                 })

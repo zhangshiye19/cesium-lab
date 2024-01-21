@@ -1,10 +1,10 @@
-import {CEntityOption} from "./CEntity";
+import {CEntityOption} from "../CEntity";
 import * as Cesium from "cesium";
-import PlotType from "./PlotType";
-import {Point} from "./core/algorithm";
+import PlotType from "../PlotType";
+import {Point} from "../core/algorithm";
 import * as pointconvert from '@/CesiumMap/entity/marsutils/pointconvert'
-import CPolygon from "./CPolygon";
-import * as algorithm from './core/algorithm'
+import CPolygon from "../CPolygon";
+import * as algorithm from '../core/algorithm'
 
 export default class Lune extends CPolygon {
     headHeightFactor = 0.18;

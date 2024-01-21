@@ -2,12 +2,12 @@ import CEntity, {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import PlotType from "@/CesiumMap/entity/PlotType";
 import AssaultDirection from "@/CesiumMap/entity/Arrow/AssaultDirection";
 import CPolyline from "@/CesiumMap/entity/CPolyline";
-import GatheringPlace from "@/CesiumMap/entity/GatheringPlace";
-import CloseCurve from "@/CesiumMap/entity/CloseCurve";
+import GatheringPlace from "@/CesiumMap/entity/Polygon/GatheringPlace";
+import CloseCurve from "@/CesiumMap/entity/Polygon/CloseCurve";
 import {cartesians2lonlats, lonlats2cartesians} from "@/CesiumMap/entity/marsutils/pointconvert";
 import {type Point} from "@/CesiumMap/entity/core/algorithm";
-import Lune from "@/CesiumMap/entity/Lune";
-import Sector from "@/CesiumMap/entity/Sector";
+import Lune from "@/CesiumMap/entity/Polygon/Lune";
+import Sector from "@/CesiumMap/entity/Polygon/Sector";
 import SquadCombatSwallowTailed from "@/CesiumMap/entity/Arrow/SquadCombatSwallowTailed";
 import ArrowAttackSwallowTailed from "@/CesiumMap/entity/Arrow/ArrowAttackSwallowTailed";
 import StraightArrow from "@/CesiumMap/entity/Arrow/StraightArrow";
@@ -19,6 +19,12 @@ import SquadCombat from "@/CesiumMap/entity/Arrow/SquadCombat";
 import {Arc} from "@/CesiumMap/entity/Arc/Arc";
 import Ellipse from "@/CesiumMap/entity/Circle/Ellipse";
 import Circle from "@/CesiumMap/entity/Circle/Circle";
+import Curve from "@/CesiumMap/entity/Polyline/Curve";
+import FreeHandLine from "@/CesiumMap/entity/Polyline/FreeHandLine";
+import Rectinclined1 from "@/CesiumMap/entity/Polygon/Rectinclined";
+import Rectinclined2 from "@/CesiumMap/entity/Polygon/Rectinclined2";
+import Rectangle from "@/CesiumMap/entity/Polygon/Rectangle";
+import CPoint from "@/CesiumMap/entity/CPoint";
 
 
 export function getEntityFromType(plotType: PlotType,options: CEntityOption) {
@@ -55,6 +61,18 @@ export function getEntityFromType(plotType: PlotType,options: CEntityOption) {
         plottingEntity = new Circle(options)
     }else if(plotType === PlotType.ELLIPSE) {
         plottingEntity = new Ellipse(options)
+    }else if(plotType === PlotType.CURVE) {
+        plottingEntity = new Curve(options)
+    }else if(plotType === PlotType.FREEHANDLINE) {
+        plottingEntity = new FreeHandLine(options)
+    }else if(plotType === PlotType.RECTINCLINED1) {
+        plottingEntity = new Rectinclined1(options)
+    }else if(plotType === PlotType.RECTINCLINED2) {
+        plottingEntity = new Rectinclined2(options)
+    }else if(plotType === PlotType.RECTANGLE) {
+        plottingEntity = new Rectangle(options)
+    }else if(plotType === PlotType.POINT) {
+        plottingEntity = new CPoint(options)
     }
     return plottingEntity;
 }
