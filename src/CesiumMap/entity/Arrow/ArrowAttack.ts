@@ -19,8 +19,8 @@ export default class ArrowAttack extends ArrowParent {
     }
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {
-        super.mapToCoordinates(positions);
-        this.coordinatesReal = this.getGeometry(positions)
+        // super.mapToCoordinates(positions);
+        return this.getGeometry(positions)
     }
 
     getGeometry(positions: Cesium.Cartesian3[]): Cesium.Cartesian3[] {

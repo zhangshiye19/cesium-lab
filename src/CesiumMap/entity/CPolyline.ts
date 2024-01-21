@@ -56,12 +56,6 @@ export default class CPolyline extends CEntity {
         }
     }
 
-    mapToCoordinates(positions: Cesium.Cartesian3[]) {
-        super.mapToCoordinates(positions);
-
-        this.coordinatesReal = positions;
-    }
-
     updateChildren(positions: Cesium.Cartesian3[]) {    // 更新 children
         positions.forEach((position,index) => {
             if(this.children[index]) {  // 没有child创建child 有child更新位置就行

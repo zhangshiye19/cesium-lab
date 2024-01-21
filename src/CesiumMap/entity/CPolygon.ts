@@ -89,9 +89,4 @@ export default class CPolygon extends CEntity {
         })
     }
 
-    mapToCoordinates(positions: Cesium.Cartesian3[]) {
-        super.mapToCoordinates(positions);
-
-        this.coordinatesReal = positions;
-    }
 }

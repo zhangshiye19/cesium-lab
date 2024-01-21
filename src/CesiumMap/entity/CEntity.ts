@@ -68,7 +68,7 @@ export default class CEntity extends Cesium.Entity {
 
     set coordinatesVirtual(coordinates: Cesium.Cartesian3[]) {
         this.updateChildren(coordinates)
-        this.mapToCoordinates(coordinates)
+        this.coordinatesReal = this.mapToCoordinates(coordinates)
         this._coordinatesVirtual = coordinates
     }
 
@@ -109,8 +109,9 @@ export default class CEntity extends Cesium.Entity {
     /**
      * 更新位置
      */
-    protected mapToCoordinates(positions: Cesium.Cartesian3[]) {
-        this.coordinatesReal = positions;
+    protected mapToCoordinates(positions: Cesium.Cartesian3[]): Cesium.Cartesian3[] {
+        // this.coordinatesReal = positions;
+        return positions;
     }
 
     makeCallback() {

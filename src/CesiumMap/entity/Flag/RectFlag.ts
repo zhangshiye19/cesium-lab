@@ -3,8 +3,6 @@ import * as Cesium from "cesium";
 import PlotType from "../PlotType";
 import {Point} from "../core/algorithm";
 import * as pointconvert from '@/CesiumMap/entity/marsutils/pointconvert'
-import CPolygon from "../CPolygon";
-import * as algorithm from '../core/algorithm'
 import {mercators2cartesians} from "@/CesiumMap/entity/marsutils/pointconvert";
 import CPolyline from "@/CesiumMap/entity/CPolyline";
 
@@ -17,7 +15,7 @@ export default class RectFlag extends CPolyline {
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {
         super.mapToCoordinates(positions);
-        this.coordinatesReal = this.getGeometry(positions)
+        return this.getGeometry(positions)
     }
 
     getGeometry(positions: Cesium.Cartesian3[]): Cesium.Cartesian3[] {

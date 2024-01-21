@@ -23,7 +23,7 @@ export default class ArrowFine extends CPolygon {
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {
         super.mapToCoordinates(positions);
-        this.coordinatesReal = this.getGeometry(positions)
+        return this.getGeometry(positions)
     }
 
 

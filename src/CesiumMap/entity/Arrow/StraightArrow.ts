@@ -21,7 +21,7 @@ export default class StraightArrow extends CPolyline {
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {
         super.mapToCoordinates(positions);
-        this.coordinatesReal = this.getGeometry(positions)
+        return this.getGeometry(positions)
     }
 
     getGeometry(positions: Cesium.Cartesian3[]):Cesium.Cartesian3[] {

@@ -1,6 +1,5 @@
 import {CEntityOption} from "@/CesiumMap/entity/CEntity";
 import PlotType from "@/CesiumMap/entity/PlotType";
-import * as Cesium from "cesium";
 import {type Point} from "@/CesiumMap/entity/core/algorithm";
 import CPolygon from "@/CesiumMap/entity/CPolygon";
 import * as algorithm from '../core/algorithm'
@@ -17,12 +16,6 @@ export default class ArrowParent extends CPolygon {
         super(options);
         this.plotType = PlotType.AttackArrow;
     }
-
-
-    mapToCoordinates(positions: Cesium.Cartesian3[]) {
-        super.mapToCoordinates(positions);
-    }
-
 
     getArrowHeadPoints(points: Point[], tailLeft: Point, tailRight: Point): Point[] {
         let len = algorithm.getBaseLength(points);
