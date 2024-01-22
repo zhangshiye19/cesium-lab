@@ -1,9 +1,8 @@
-import PlotType from "@/CesiumMap/entity/PlotType";
+import PlotType, {getEntityFromType} from "@/CesiumMap/entity/PlotType";
 import * as Cesium from "cesium";
 import CesiumMap from "@/CesiumMap/CesiumMap";
 import CEntity from "@/CesiumMap/entity/CEntity";
 import PlotEdit from "@/CesiumMap/plot/PlotEdit";
-import {getEntityFromType} from "@/CesiumMap/plot/PlotFactory";
 import PositionType from "@/CesiumMap/entity/PositionType";
 import utils from "@/CesiumMap/entity/core/utils";
 

@@ -1,5 +1,4 @@
 import {Col, Row} from "antd";
-import SvgAttackArrow from '@/static/svg/攻击箭头.svg'
 import SvgRightArrow from '@/static/svg/细直箭头.svg'
 import PlotItem from "@/pages/Toolbar/component/PlotComponent/PlotItem";
 import PlotType from "@/CesiumMap/entity/PlotType";
