@@ -96,7 +96,7 @@ export default class CEntity extends Cesium.Entity {
                     this.entityCollection.add(entity)
                 }
             })
-            this.children.get(key)
+            this.children.get(key)  // 赋予新value
         })
     }
 

@@ -17,6 +17,7 @@ export default class CPolyline extends CEntity {
         super(options)
         this.plotType = PlotType.POLYLINE;
         this.requirePointCount = Infinity;
+        this.setChildrenUpdateCallback('anchor',this.updateChildOfAnchor)
     }
 
     get geometryType() {
@@ -25,12 +26,12 @@ export default class CPolyline extends CEntity {
 
     active(): void {
         super.active()
-        this.children.forEach(child => child.show = true)
+        this.children.forEach(({entities}) => entities.forEach(entity => (entity.show = true)))
     }
 
     deactive(): void {
         super.deactive()
-        this.children.forEach(child => child.show = false)
+        this.children.forEach(({entities}) => entities.forEach(entity => (entity.show = false)))
     }
 
     get coordinatesReal() {
@@ -56,23 +57,4 @@ export default class CPolyline extends CEntity {
         }
     }
 
-    updateChildren() {    // 更新 children
-        this.coordinatesVirtual.forEach((position,index) => {
-            if(this.children[index]) {  // 没有child创建child 有child更新位置就行
-                this.children[index].coordinatesVirtual = [position]
-            }else { //
-                const entity = new CPoint({
-                    coordinates: [position],
-                    parent: this,
-                    positionType: this.positionType
-                    // makeCallback: (this.polygon?.hierarchy instanceof Cesium.CallbackProperty)
-                })
-                this.children.push(entity)
-                // this.entityCollection.add(entity)
-            }
-            if(this.entityCollection && !this.entityCollection.getById(this.children[index].id)) {
-                this.entityCollection.add(this.children[index])
-            }
-        })
-    }
 }

@@ -57,10 +57,12 @@ export default class PlotEdit {
             const cartesian = utils.getCartesianFromScreen(this.viewer, event.endPosition);
             if (this.pressed && cartesian && this.editingEntity && this.selectedAnchorPoint) {  // 鼠标按下
                 const coordV = this.editingEntity.coordinatesVirtual;
-                const index = this.editingEntity.children.findIndex(entity => entity.id === this.selectedAnchorPoint?.id);
-                if(index !== -1) {
-                    coordV[index] = cartesian;
-                    this.editingEntity.coordinatesVirtual = coordV;
+                if(this.editingEntity.children.get('anchor')) {
+                    const index = this.editingEntity.children.get('anchor')!.entities.findIndex(entity => entity.id === this.selectedAnchorPoint?.id);
+                    if(index !== -1) {
+                        coordV[index] = cartesian;
+                        this.editingEntity.coordinatesVirtual = coordV;
+                    }
                 }
             }
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE)
