@@ -16,6 +16,9 @@ export default class ArrowAttack extends ArrowParent {
     constructor(options: CEntityOption) {
         super(options);
         this.plotType = PlotType.AttackArrow;
+
+        this.coordinatesVirtual = options.coordinates ?? [];
+        if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
     }
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {

@@ -20,6 +20,9 @@ export class Arc extends CPolyline {
 
         this.plotType = PlotType.ARC
         this.requirePointCount = 3
+
+        this.coordinatesVirtual = options.coordinates ?? [];
+        if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
     }
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {

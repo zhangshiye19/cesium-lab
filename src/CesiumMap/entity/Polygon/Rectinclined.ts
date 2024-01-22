@@ -11,6 +11,9 @@ export default class Rectinclined1 extends CPolygon {
         super(options);
         this.plotType = PlotType.RECTINCLINED1;
         this.requirePointCount = 3;
+
+        this.coordinatesVirtual = options.coordinates ?? [];
+        if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
     }
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {

@@ -17,6 +17,9 @@ export default class Lune extends CPolygon {
         super(options);
         this.plotType = PlotType.LUNE;
         this.requirePointCount = 3;
+
+        this.coordinatesVirtual = options.coordinates ?? [];
+        if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
     }
 
 

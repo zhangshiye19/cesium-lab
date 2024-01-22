@@ -29,9 +29,7 @@ export default class CEntity extends Cesium.Entity {
         this._coordinatesReal = options.coordinatesActual ?? options.coordinates;
         this.positionType = options.positionType ?? PositionType.Constant;
 
-        this.makePositionType(this.positionType);
-        this.coordinatesVirtual = Cesium.defaultValue(options.coordinates, []);
-        if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
+        this.makePositionType(this.positionType);   //默认没有任何映射关系
     }
 
     get geometryType() {
@@ -65,6 +63,7 @@ export default class CEntity extends Cesium.Entity {
     }
 
     protected updateChildren() {
+        console.log(this.plotType)
         this.children.forEach(({entities, updateCallback}, key) => {
             const updatedEntities = updateCallback(entities, {
                 coordinates: this.coordinatesVirtual,

@@ -18,6 +18,9 @@ export default class SquadCombatSwallowTailed extends ArrowAttack {
     constructor(options: CEntityOption) {
         super(options);
         this.plotType = PlotType.TAILED_SQUAD_COMBAT;
+
+        this.coordinatesVirtual = options.coordinates ?? [];
+        if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
     }
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {

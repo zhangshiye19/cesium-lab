@@ -11,6 +11,9 @@ export default class CloseCurve extends CPolygon {
         super(options);
         this.plotType = PlotType.CLOSED_CURVE;
         this.requirePointCount = Infinity;
+
+        this.coordinatesVirtual = options.coordinates ?? [];
+        if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
     }
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {

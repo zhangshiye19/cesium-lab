@@ -26,6 +26,7 @@ import Rectinclined2 from "@/CesiumMap/entity/Polygon/Rectinclined2";
 import Rectangle from "@/CesiumMap/entity/Polygon/Rectangle";
 import CPoint from "@/CesiumMap/entity/CPoint";
 import RectFlag from "@/CesiumMap/entity/Flag/RectFlag";
+import CPolygon from "@/CesiumMap/entity/CPolygon";
 
 
 export function getEntityFromType(plotType: PlotType,options: CEntityOption) {
@@ -76,6 +77,8 @@ export function getEntityFromType(plotType: PlotType,options: CEntityOption) {
         plottingEntity = new CPoint(options)
     }else if (plotType === PlotType.RECTFLAG) {
         plottingEntity = new RectFlag(options)
+    }else if(plotType === PlotType.POLYGON) {
+        plottingEntity = new CPolygon(options)
     }
     return plottingEntity;
 }

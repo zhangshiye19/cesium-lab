@@ -17,6 +17,9 @@ export default class StraightArrow extends CPolyline {
         super(options);
         this.plotType = PlotType.STRAIGHT_ARROW;
         this.requirePointCount = 2;
+
+        this.coordinatesVirtual = options.coordinates ?? [];
+        if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
     }
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {

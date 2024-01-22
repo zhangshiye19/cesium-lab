@@ -22,6 +22,9 @@ export default class ArrowAttackSwallowTailed extends ArrowParent {
     constructor(options: CEntityOption) {
         super(options);
         this.plotType = PlotType.TAILED_ATTACK_ARROW;
+
+        this.coordinatesVirtual = options.coordinates ?? [];
+        if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
     }
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {

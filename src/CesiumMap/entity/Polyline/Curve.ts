@@ -14,6 +14,10 @@ export default class Curve extends CPolyline {
         super(options);
         this.plotType = PlotType.CURVE
         this.requirePointCount = Infinity
+
+        // 等到一切属性初始化完成后开始执行
+        this.coordinatesVirtual = options.coordinates ?? [];
+        if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
     }
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {

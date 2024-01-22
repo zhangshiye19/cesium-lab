@@ -12,6 +12,9 @@ export default class Circle extends CPolygon {
         super(options);
         this.plotType = PlotType.CIRCLE
         this.requirePointCount = 2
+
+        this.coordinatesVirtual = options.coordinates ?? [];
+        if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
     }
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {

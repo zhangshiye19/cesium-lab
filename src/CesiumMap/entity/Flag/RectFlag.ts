@@ -11,6 +11,9 @@ export default class RectFlag extends CPolyline {
         super(options);
         this.plotType = PlotType.RECTFLAG;
         this.requirePointCount = 2;
+
+        this.coordinatesVirtual = options.coordinates ?? [];
+        if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
     }
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {

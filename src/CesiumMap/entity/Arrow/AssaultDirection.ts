@@ -15,6 +15,9 @@ export default class AssaultDirection extends ArrowFine {
         super(options);
         this.plotType = PlotType.ASSAULT_DIRECTION;
         this.requirePointCount = 2;
+
+        this.coordinatesVirtual = options.coordinates ?? [];
+        if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
     }
 
     mapToCoordinates(positions: Cesium.Cartesian3[]) {

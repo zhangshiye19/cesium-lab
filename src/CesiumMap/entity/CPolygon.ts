@@ -22,10 +22,9 @@ export default class CPolygon extends CEntity {
             ...options
         }
         super(options);
-        // this.updatePosition(options.coordinates)
-        // this.coordinatesVirtual = options.coordinates;
-        // if(options.coordinatesR) this.coordinatesReal = options.coordinatesR;
+
         this.plotType = PlotType.POLYGON;
+        this.requirePointCount = Infinity;
         this.setChildrenUpdateCallback('anchor',this.updateChildOfAnchor);
     }
 
