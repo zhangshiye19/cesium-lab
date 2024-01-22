@@ -69,8 +69,8 @@ export default class CPolygon extends CEntity {
         }
     }
 
-    updateChildren(positions: Cesium.Cartesian3[]) {    // 更新 children
-        positions.forEach((position,index) => {
+    updateChildren() {    // 更新 children
+        this.coordinatesVirtual.forEach((position,index) => {
             if(this.children[index]) {  // 没有child创建child 有child更新位置就行
                 this.children[index].coordinatesVirtual = [position]
             }else { //

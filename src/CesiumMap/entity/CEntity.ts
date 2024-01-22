@@ -56,20 +56,20 @@ export default class CEntity extends Cesium.Entity {
     }
 
     active() {
-        this.updateChildren(this.coordinatesVirtual)
+        this.updateChildren()
     }
 
     deactive() {
-        this.updateChildren(this.coordinatesVirtual)
+        this.updateChildren()
     }
 
-    protected updateChildren(positions: Cesium.Cartesian3[]) {
+    protected updateChildren() {
     }
 
     set coordinatesVirtual(coordinates: Cesium.Cartesian3[]) {
         this._coordinatesVirtual = coordinates
         this.coordinatesReal = this.mapToCoordinates(coordinates)
-        this.updateChildren(coordinates)
+        this.updateChildren()
     }
 
     get coordinatesVirtual() {
