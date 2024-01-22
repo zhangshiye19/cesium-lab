@@ -10,7 +10,8 @@ export default class CloseCurve extends CPolygon {
     constructor(options: CEntityOption) {
         super(options);
         this.plotType = PlotType.CLOSED_CURVE;
-        this.requirePointCount = Infinity;
+        this.maxRequiredPointCount = Infinity;
+        this.minRequiredPointCount = 3;
 
         this.coordinatesVirtual = options.coordinates ?? [];
         if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
@@ -23,7 +24,7 @@ export default class CloseCurve extends CPolygon {
 
 
     getGeometry(positions: Cesium.Cartesian3[]) {
-        if(positions.length < 3) {
+        if(positions.length < this.minRequiredPointCount) {
             return []
         }
         //@ts-ignore

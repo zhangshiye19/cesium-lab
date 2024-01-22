@@ -14,7 +14,8 @@ export type CEntityUpdateCallbackType = (child: CEntity[], options: CEntityOptio
 export default class CEntity extends Cesium.Entity {
 
     plotType: PlotType;
-    requirePointCount: number;
+    maxRequiredPointCount: number;
+    minRequiredPointCount: number;
     children: Map<string, { entities: CEntity[], updateCallback: CEntityUpdateCallbackType }>;
     protected _coordinatesReal: Cesium.Cartesian3[]; // 不能和options里面名字重名字，real可以，没有设置set属性
     protected _coordinatesVirtual: Cesium.Cartesian3[];
@@ -23,7 +24,8 @@ export default class CEntity extends Cesium.Entity {
     constructor(options: CEntityOption) {
         super(options);
         this.plotType = PlotType.ENTITY;
-        this.requirePointCount = Infinity;
+        this.maxRequiredPointCount = Infinity;  // 构成此实体最多能用多少个点
+        this.minRequiredPointCount = 1; // 构成此实体最少要多少个点
         this.children = new Map();
         this._coordinatesVirtual = [];
         this._coordinatesReal = options.coordinatesActual ?? options.coordinates;
@@ -63,7 +65,6 @@ export default class CEntity extends Cesium.Entity {
     }
 
     protected updateChildren() {
-        console.log(this.plotType)
         this.children.forEach(({entities, updateCallback}, key) => {
             const updatedEntities = updateCallback(entities, {
                 coordinates: this.coordinatesVirtual,

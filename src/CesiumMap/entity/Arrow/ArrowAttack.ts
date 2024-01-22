@@ -16,6 +16,8 @@ export default class ArrowAttack extends ArrowParent {
     constructor(options: CEntityOption) {
         super(options);
         this.plotType = PlotType.AttackArrow;
+        this.minRequiredPointCount = 3;
+        this.maxRequiredPointCount = Infinity;
 
         this.coordinatesVirtual = options.coordinates ?? [];
         if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
@@ -27,7 +29,7 @@ export default class ArrowAttack extends ArrowParent {
     }
 
     getGeometry(positions: Cesium.Cartesian3[]): Cesium.Cartesian3[] {
-        if(positions.length < 3) return []
+        if(positions.length < this.minRequiredPointCount) return []
         let pnts = pointconvert.cartesians2mercators(positions);
         let _ref = [pnts[0], pnts[1]],
             tailLeft = _ref[0],

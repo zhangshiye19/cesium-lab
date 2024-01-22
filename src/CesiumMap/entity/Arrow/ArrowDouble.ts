@@ -16,7 +16,8 @@ export default class ArrowDouble extends CPolygon {
     constructor(options: CEntityOption) {
         super(options);
         this.plotType = PlotType.DOUBLE_ARROW;
-        this.requirePointCount = 5;
+        this.maxRequiredPointCount = 5;
+        this.minRequiredPointCount = 3;
 
         this.coordinatesVirtual = options.coordinates ?? [];
         if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
@@ -30,7 +31,7 @@ export default class ArrowDouble extends CPolygon {
 
 
     getGeometry(positions: Cesium.Cartesian3[]): Cesium.Cartesian3[] {
-        if (positions.length < 3) {
+        if (positions.length < this.minRequiredPointCount) {
             return []
         }
         //@ts-ignore

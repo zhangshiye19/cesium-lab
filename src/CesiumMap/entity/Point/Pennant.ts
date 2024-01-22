@@ -9,7 +9,7 @@ export default class Pennant extends CPoint {
     constructor(options: CEntityOption) {
         super(options);
 
-        this.plotType = PlotType.PENNANT
+        this.plotType = PlotType.PENNANT    // 尚未实现
 
         this.coordinatesVirtual = options.coordinates ?? [];
         if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;

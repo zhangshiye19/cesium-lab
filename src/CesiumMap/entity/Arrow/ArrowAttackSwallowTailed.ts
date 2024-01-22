@@ -22,6 +22,8 @@ export default class ArrowAttackSwallowTailed extends ArrowParent {
     constructor(options: CEntityOption) {
         super(options);
         this.plotType = PlotType.TAILED_ATTACK_ARROW;
+        this.minRequiredPointCount = 3;
+        this.maxRequiredPointCount = Infinity;
 
         this.coordinatesVirtual = options.coordinates ?? [];
         if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
@@ -33,7 +35,7 @@ export default class ArrowAttackSwallowTailed extends ArrowParent {
     }
 
     getGeometry(positions: Cesium.Cartesian3[]): Cesium.Cartesian3[] {
-        if(positions.length < 3) return []
+        if(positions.length < this.minRequiredPointCount) return []
         //@ts-ignore
         let pnts:Point[] = pointconvert.cartesians2mercators(positions);
 

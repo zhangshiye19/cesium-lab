@@ -10,7 +10,8 @@ export default class RectFlag extends CPolyline {
     constructor(options: CEntityOption) {
         super(options);
         this.plotType = PlotType.RECTFLAG;
-        this.requirePointCount = 2;
+        this.maxRequiredPointCount = 2;
+        this.minRequiredPointCount = 2;
 
         this.coordinatesVirtual = options.coordinates ?? [];
         if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
@@ -22,7 +23,7 @@ export default class RectFlag extends CPolyline {
     }
 
     getGeometry(positions: Cesium.Cartesian3[]): Cesium.Cartesian3[] {
-        if(positions.length < 2) return []
+        if(positions.length < this.minRequiredPointCount) return []
 
         //@ts-ignore
         let points:Point[] = pointconvert.cartesians2mercators(positions);

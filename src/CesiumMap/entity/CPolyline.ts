@@ -3,7 +3,6 @@ import {CEntityOption} from './CEntity'
 import * as Cesium from 'cesium'
 import PositionType from './PositionType'
 import PlotType from "./PlotType";
-import CPoint from "@/CesiumMap/entity/CPoint";
 
 export default class CPolyline extends CEntity {
     constructor(options: CEntityOption) {
@@ -16,8 +15,8 @@ export default class CPolyline extends CEntity {
         }
         super(options)
         this.plotType = PlotType.POLYLINE;
-        this.requirePointCount = Infinity;
-
+        this.maxRequiredPointCount = Infinity;
+        this.minRequiredPointCount = 2;
         this.setChildrenUpdateCallback('anchor',this.updateChildOfAnchor)
     }
 
@@ -40,7 +39,7 @@ export default class CPolyline extends CEntity {
     }
 
     protected set coordinatesReal(positions: Cesium.Cartesian3[]) {
-        if (positions.length < 2) return
+        if (positions.length < this.minRequiredPointCount) return
         this._coordinatesReal = positions;
         switch (this.positionType) {
             case PositionType.Callback: {

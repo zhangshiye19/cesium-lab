@@ -13,7 +13,8 @@ export default class Curve extends CPolyline {
     constructor(options: CEntityOption) {
         super(options);
         this.plotType = PlotType.CURVE
-        this.requirePointCount = Infinity
+        this.maxRequiredPointCount = Infinity
+        this.minRequiredPointCount = 2;
 
         // 等到一切属性初始化完成后开始执行
         this.coordinatesVirtual = options.coordinates ?? [];
@@ -26,8 +27,8 @@ export default class Curve extends CPolyline {
     }
 
     getGeometry(positions: Cesium.Cartesian3[]) {
-        if (positions.length < 2) return []
-        if (positions.length === 2) return positions
+        if (positions.length < this.minRequiredPointCount) return []
+        if (positions.length === this.minRequiredPointCount) return positions
         //@ts-ignore
         const points: Point[] = cartesians2mercators(positions)
         return mercators2cartesians(getCurvePoints(this.t, points))

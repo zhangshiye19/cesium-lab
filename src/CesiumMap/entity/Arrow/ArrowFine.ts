@@ -18,7 +18,8 @@ export default class ArrowFine extends CPolygon {
     constructor(options: CEntityOption) {
         super(options);
         this.plotType = PlotType.FINE_ARROW;
-        this.requirePointCount = 2;
+        this.maxRequiredPointCount = 2;
+        this.minRequiredPointCount = 2;
 
         this.coordinatesVirtual = options.coordinates ?? [];
         if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
@@ -31,7 +32,7 @@ export default class ArrowFine extends CPolygon {
 
 
     getGeometry(positions: Cesium.Cartesian3[]) {
-        if(positions.length < 2) {
+        if(positions.length < this.minRequiredPointCount) {
             return []
         }
         //@ts-ignore

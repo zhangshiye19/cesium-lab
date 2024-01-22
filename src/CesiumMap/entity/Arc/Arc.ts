@@ -19,7 +19,7 @@ export class Arc extends CPolyline {
         super(options);
 
         this.plotType = PlotType.ARC
-        this.requirePointCount = 3
+        this.maxRequiredPointCount = 3
 
         this.coordinatesVirtual = options.coordinates ?? [];
         if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;

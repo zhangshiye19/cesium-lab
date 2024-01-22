@@ -18,6 +18,8 @@ export default class SquadCombatSwallowTailed extends ArrowAttack {
     constructor(options: CEntityOption) {
         super(options);
         this.plotType = PlotType.TAILED_SQUAD_COMBAT;
+        this.minRequiredPointCount = 2;
+        this.maxRequiredPointCount = Infinity;
 
         this.coordinatesVirtual = options.coordinates ?? [];
         if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;
@@ -29,7 +31,7 @@ export default class SquadCombatSwallowTailed extends ArrowAttack {
     }
 
     getGeometry(positions: Cesium.Cartesian3[]): Cesium.Cartesian3[] {
-        if (positions.length < 2) return []
+        if (positions.length < this.minRequiredPointCount) return []
 
         //@ts-ignore
         const pnts: Point[] = pointconvert.cartesians2mercators(positions);

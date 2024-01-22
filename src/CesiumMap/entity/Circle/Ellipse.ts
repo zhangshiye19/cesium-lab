@@ -11,7 +11,7 @@ export default class Ellipse extends CPolygon {
     constructor(options: CEntityOption) {
         super(options);
         this.plotType = PlotType.ELLIPSE
-        this.requirePointCount = 2
+        this.maxRequiredPointCount = 2
 
         this.coordinatesVirtual = options.coordinates ?? [];
         if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;

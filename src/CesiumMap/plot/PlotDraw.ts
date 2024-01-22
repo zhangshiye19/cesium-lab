@@ -50,7 +50,7 @@ export default class PlotDraw {
                     positionType: PositionType.Callback
                 });
                 if(this.plottingEntity) {
-                    required_point_count = this.plottingEntity.requirePointCount;    // 没有值就赋予-1，代表找不到这种类型
+                    required_point_count = this.plottingEntity.maxRequiredPointCount;    // 没有值就赋予-1，代表找不到这种类型
                     CesiumMap.viewer.entities.add(this.plottingEntity)
                     //@ts-ignore
                     this.eventDrawStart.raiseEvent(this.plottingEntity)
