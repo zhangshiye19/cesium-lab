@@ -17,11 +17,9 @@ export default class CPolyline extends CEntity {
         this.plotType = PlotType.POLYLINE;
         this.maxRequiredPointCount = Infinity;
         this.minRequiredPointCount = 2;
-        this.setChildrenUpdateCallback('anchor',this.updateChildOfAnchor)
-    }
+        this.geometryType = 'Polyline';
 
-    get geometryType() {
-        return 'Polyline'
+        this.setChildrenUpdateCallback('anchor',this.updateChildOfAnchor)
     }
 
     active(): void {

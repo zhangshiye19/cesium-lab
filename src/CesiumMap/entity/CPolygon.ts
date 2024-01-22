@@ -25,11 +25,9 @@ export default class CPolygon extends CEntity {
         this.plotType = PlotType.POLYGON;
         this.maxRequiredPointCount = Infinity;
         this.minRequiredPointCount = 3;
-        this.setChildrenUpdateCallback('anchor',this.updateChildOfAnchor);
-    }
+        this.geometryType = 'Polygon';
 
-    get geometryType() {
-        return 'Polygon'
+        this.setChildrenUpdateCallback('anchor',this.updateChildOfAnchor);
     }
 
     active(): void {

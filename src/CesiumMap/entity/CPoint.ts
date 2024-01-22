@@ -18,9 +18,6 @@ export default class CPoint extends CEntity {
         this.plotType = PlotType.POINT;
         this.maxRequiredPointCount = 1;
         this.minRequiredPointCount = 1;
-    }
-
-    get geometryType() {
-        return 'Point'
+        this.geometryType = 'Point';
     }
 }

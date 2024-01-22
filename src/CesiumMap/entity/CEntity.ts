@@ -16,6 +16,7 @@ export default class CEntity extends Cesium.Entity {
     plotType: PlotType;
     maxRequiredPointCount: number;
     minRequiredPointCount: number;
+    geometryType: string;
     children: Map<string, { entities: CEntity[], updateCallback: CEntityUpdateCallbackType }>;
     protected _coordinatesReal: Cesium.Cartesian3[]; // 不能和options里面名字重名字，real可以，没有设置set属性
     protected _coordinatesVirtual: Cesium.Cartesian3[];
@@ -30,12 +31,9 @@ export default class CEntity extends Cesium.Entity {
         this._coordinatesVirtual = [];
         this._coordinatesReal = options.coordinatesActual ?? options.coordinates;
         this.positionType = options.positionType ?? PositionType.Constant;
+        this.geometryType = 'Entity';
 
         this.makePositionType(this.positionType);   //默认没有任何映射关系
-    }
-
-    get geometryType() {
-        return 'Point'
     }
 
     makePositionType(positionType: PositionType) {
