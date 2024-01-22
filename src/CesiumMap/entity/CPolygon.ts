@@ -26,7 +26,7 @@ export default class CPolygon extends CEntity {
         // this.coordinatesVirtual = options.coordinates;
         // if(options.coordinatesR) this.coordinatesReal = options.coordinatesR;
         this.plotType = PlotType.POLYGON;
-        this.setChildrenUpdateCallback('anchor',this.updateChildOfAnchor.bind(this));
+        this.setChildrenUpdateCallback('anchor',this.updateChildOfAnchor);
     }
 
     get geometryType() {

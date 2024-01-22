@@ -1,7 +1,6 @@
 import * as Cesium from "cesium";
 import PositionType from "./PositionType";
 import PlotType from "./PlotType";
-import CPoint from "@/CesiumMap/entity/CPoint";
 
 
 export type CEntityOption = Cesium.Entity.ConstructorOptions & {
@@ -10,7 +9,7 @@ export type CEntityOption = Cesium.Entity.ConstructorOptions & {
     coordinatesActual?: Cesium.Cartesian3[]
 }
 
-export type CEntityUpdateCallbackType = (child: CEntity[], vCoordinates: Cesium.Cartesian3[], rCoordinates: Cesium.Cartesian3[]) => CEntity[]
+export type CEntityUpdateCallbackType = (child: CEntity[], options: CEntityOption) => CEntity[]
 
 export default class CEntity extends Cesium.Entity {
 
@@ -67,7 +66,11 @@ export default class CEntity extends Cesium.Entity {
 
     protected updateChildren() {
         this.children.forEach(({entities, updateCallback}, key) => {
-            const updatedEntities = updateCallback(entities, this.coordinatesVirtual, this.coordinatesReal)
+            const updatedEntities = updateCallback(entities, {
+                coordinates: this.coordinatesVirtual,
+                coordinatesActual: this.coordinatesVirtual,
+                positionType: this.positionType
+            })
             const removedEntities: CEntity[] = [];
             const mergedEntities: CEntity[] = []
 
@@ -96,6 +99,7 @@ export default class CEntity extends Cesium.Entity {
                 }
             })
             mergedEntities.forEach(entity => {
+                entity.parent = this;   // parent关系赋予
                 if(this.entityCollection && !this.entityCollection.getById(entity.id)) {    // 没有就加入
                     this.entityCollection.add(entity)
                 }
@@ -163,8 +167,8 @@ export default class CEntity extends Cesium.Entity {
     }
 
     // 如果要可编辑，必须要实现此方法
-    updateChildOfAnchor(entities: CEntity[], vCoordinates: Cesium.Cartesian3[], rCoordinates: Cesium.Cartesian3[]): CEntity[] {
-        vCoordinates.forEach((position, index) => {
+    updateChildOfAnchor(entities: CEntity[], options: CEntityOption): CEntity[] {
+        options.coordinates.forEach((position, index) => {
             if (entities[index]) {  // 没有child创建child 有child更新位置就行
                 entities[index].coordinatesVirtual = [position]
             } else { //
@@ -174,8 +178,7 @@ export default class CEntity extends Cesium.Entity {
                         disableDepthTestDistance: Number.MAX_VALUE
                     },
                     coordinates: [position],
-                    parent: this,
-                    positionType: this.positionType
+                    positionType: options.positionType
                     // makeCallback: (this.polygon?.hierarchy instanceof Cesium.CallbackProperty)
                 })
                 entities.push(entity)
