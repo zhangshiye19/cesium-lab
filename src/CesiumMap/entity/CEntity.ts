@@ -78,12 +78,16 @@ export default class CEntity extends Cesium.Entity {
                     removedEntities.push(entities[i])
                 }
                 mergedEntities.push(updatedEntities[j])
+                i++;
+                j++;
             }
             while (i < entities.length) {    // 锚点变少
                 removedEntities.push(entities[i])
+                i++;
             }
             while(j < updatedEntities.length) { // 锚点变多
                 entities.push(updatedEntities[j])
+                j++;
             }
 
             removedEntities.forEach(entity => {
@@ -158,12 +162,17 @@ export default class CEntity extends Cesium.Entity {
         this.children.set(childGroup, children)
     }
 
+    // 如果要可编辑，必须要实现此方法
     updateChildOfAnchor(entities: CEntity[], vCoordinates: Cesium.Cartesian3[], rCoordinates: Cesium.Cartesian3[]): CEntity[] {
         vCoordinates.forEach((position, index) => {
             if (entities[index]) {  // 没有child创建child 有child更新位置就行
                 entities[index].coordinatesVirtual = [position]
             } else { //
-                const entity = new CPoint({
+                const entity = new CEntity({    // 递归引用了
+                    point: {
+                        pixelSize: 10,
+                        disableDepthTestDistance: Number.MAX_VALUE
+                    },
                     coordinates: [position],
                     parent: this,
                     positionType: this.positionType
@@ -171,9 +180,6 @@ export default class CEntity extends Cesium.Entity {
                 })
                 entities.push(entity)
                 // this.entityCollection.add(entity)
-            }
-            if (this.entityCollection && !this.entityCollection.getById(entities[index].id)) {
-                this.entityCollection.add(entities[index])
             }
         })
 
