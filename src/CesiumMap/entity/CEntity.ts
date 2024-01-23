@@ -28,7 +28,7 @@ export default class CEntity extends Cesium.Entity {
         this.maxRequiredPointCount = Infinity;  // 构成此实体最多能用多少个点
         this.minRequiredPointCount = 1; // 构成此实体最少要多少个点
         this.children = new Map();
-        this._coordinatesVirtual = [];
+        this._coordinatesVirtual = options.coordinates ?? [];
         this._coordinatesReal = options.coordinatesActual ?? options.coordinates;
         this.positionType = options.positionType ?? PositionType.Constant;
         this.geometryType = 'Entity';

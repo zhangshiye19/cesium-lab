@@ -6,6 +6,8 @@ import utils from "@/CesiumMap/entity/core/utils";
 export default class PlotEdit {
     static instance: PlotEdit;
 
+    readonly eventStartEdit: Cesium.Event;
+    readonly eventEndEdit: Cesium.Event;
     private editingEntity: CEntity | undefined;
     private handle: Cesium.ScreenSpaceEventHandler | undefined;
     private viewer: Cesium.Viewer;
@@ -15,6 +17,9 @@ export default class PlotEdit {
     constructor(viewer: Cesium.Viewer) {
         this.viewer = viewer;
         this.pressed = false;
+
+        this.eventStartEdit = new Cesium.Event()
+        this.eventEndEdit = new Cesium.Event()
     }
 
     active(entity: CEntity) {
@@ -41,6 +46,9 @@ export default class PlotEdit {
         // 鼠标抬起
         this.handle.setInputAction(() => {
             this.pressed = false;
+            if (this.editingEntity && this.selectedAnchorPoint) { // @ts-ignore
+                this.eventEndEdit.raiseEvent(this.editingEntity)    // 鼠标释放事件
+            }
             // this.deactive()
         }, Cesium.ScreenSpaceEventType.LEFT_UP)
         // 鼠标按下
@@ -49,6 +57,9 @@ export default class PlotEdit {
             this.selectedAnchorPoint = this.viewer.scene.pick(event.position)?.id;
             if(!this.selectedAnchorPoint) {
                 this.deactive()
+            }else {
+                // @ts-ignore
+                this.eventStartEdit.raiseEvent(this.editingEntity)  // 正在编辑的Entity
             }
         }, Cesium.ScreenSpaceEventType.LEFT_DOWN)
         // 鼠标移动
