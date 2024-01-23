@@ -3,7 +3,7 @@
 .draw-container {
     width: 410px;
     height: 600px;
-    /*overflow-y: scroll;*/
+    overflow-y: scroll;
     /*display: flex;*/
 }
 
