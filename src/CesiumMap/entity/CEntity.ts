@@ -11,13 +11,15 @@ export type CEntityOption = Cesium.Entity.ConstructorOptions & {
 
 export type CEntityUpdateCallbackType = (child: CEntity[], options: CEntityOption) => CEntity[]
 
+export type CEntityChildrenValue = {entities: CEntity[], updateCallback: CEntityUpdateCallbackType}
+
 export default class CEntity extends Cesium.Entity {
 
     plotType: PlotType;
     maxRequiredPointCount: number;
     minRequiredPointCount: number;
     geometryType: string;
-    children: Map<string, { entities: CEntity[], updateCallback: CEntityUpdateCallbackType }>;
+    children: Map<string, CEntityChildrenValue>;
     protected _coordinatesReal: Cesium.Cartesian3[]; // 不能和options里面名字重名字，real可以，没有设置set属性
     protected _coordinatesVirtual: Cesium.Cartesian3[];
     protected positionType: PositionType;

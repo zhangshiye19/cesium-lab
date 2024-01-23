@@ -6,6 +6,7 @@ import Toolbar from './pages/Toolbar/toolbar';
 import {loadEntityFromJsonObj, saveEntityToJsonObj} from "@/CesiumMap/plot/PlotFactory";
 import PlotDraw from "@/CesiumMap/plot/PlotDraw";
 import CEntity from "@/CesiumMap/entity/CEntity";
+import PlotEdit from "@/CesiumMap/plot/PlotEdit";
 
 function App() {
 
