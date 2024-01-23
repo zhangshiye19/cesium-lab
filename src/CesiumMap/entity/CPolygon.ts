@@ -32,7 +32,9 @@ export default class CPolygon extends CEntity {
 
     active(): void {
         super.active()
-        this.children.forEach(({entities}) => entities.forEach(entity => (entity.show = true)))
+        this.children.forEach(({entities}) => entities.forEach(entity => {
+            entity.show = true
+        }))
     }
 
     deactive(): void {

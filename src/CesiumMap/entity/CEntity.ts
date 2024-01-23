@@ -34,7 +34,6 @@ export default class CEntity extends Cesium.Entity {
         this.geometryType = 'Entity';
 
         this.makePositionType(this.positionType);   //默认没有任何映射关系
-        if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;    // 默认加载coordinatesActual，涉及一个映射
     }
 
     makePositionType(positionType: PositionType) {
@@ -53,6 +52,8 @@ export default class CEntity extends Cesium.Entity {
                 this.makeConstant()
             }
         }
+        // 无赋值意义，仅作为更新属性类型使用
+        this.coordinatesReal = this._coordinatesReal
     }
 
     active() {
@@ -88,7 +89,7 @@ export default class CEntity extends Cesium.Entity {
                 i++;
             }
             while(j < updatedEntities.length) { // 锚点变多
-                entities.push(updatedEntities[j])
+                mergedEntities.push(updatedEntities[j])
                 j++;
             }
 
@@ -103,7 +104,8 @@ export default class CEntity extends Cesium.Entity {
                     this.entityCollection.add(entity)
                 }
             })
-            this.children.get(key)  // 赋予新value
+            // 新值
+            this.children.get(key)!.entities = mergedEntities
         })
     }
 
