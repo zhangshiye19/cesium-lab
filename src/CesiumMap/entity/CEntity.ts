@@ -34,6 +34,7 @@ export default class CEntity extends Cesium.Entity {
         this.geometryType = 'Entity';
 
         this.makePositionType(this.positionType);   //默认没有任何映射关系
+        if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;    // 默认加载coordinatesActual，涉及一个映射
     }
 
     makePositionType(positionType: PositionType) {
