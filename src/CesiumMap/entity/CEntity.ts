@@ -88,7 +88,7 @@ export default class CEntity extends Cesium.Entity {
                 i++;
             }
             while(j < updatedEntities.length) { // 锚点变多
-                entities.push(updatedEntities[j])
+                mergedEntities.push(updatedEntities[j])
                 j++;
             }
 
@@ -103,7 +103,8 @@ export default class CEntity extends Cesium.Entity {
                     this.entityCollection.add(entity)
                 }
             })
-            this.children.get(key)  // 赋予新value
+            const childrenNode = this.children.get(key)  // 赋予新value
+            childrenNode!.entities = mergedEntities
         })
     }
 
