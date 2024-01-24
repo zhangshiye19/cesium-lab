@@ -11,13 +11,15 @@ export type CEntityOption = Cesium.Entity.ConstructorOptions & {
 
 export type CEntityUpdateCallbackType = (child: CEntity[], options: CEntityOption) => CEntity[]
 
+export type CEntityChildrenValue = {entities: CEntity[], updateCallback: CEntityUpdateCallbackType}
+
 export default class CEntity extends Cesium.Entity {
 
     plotType: PlotType;
     maxRequiredPointCount: number;
     minRequiredPointCount: number;
     geometryType: string;
-    children: Map<string, { entities: CEntity[], updateCallback: CEntityUpdateCallbackType }>;
+    children: Map<string, CEntityChildrenValue>;
     protected _coordinatesReal: Cesium.Cartesian3[]; // 不能和options里面名字重名字，real可以，没有设置set属性
     protected _coordinatesVirtual: Cesium.Cartesian3[];
     protected positionType: PositionType;
@@ -34,7 +36,6 @@ export default class CEntity extends Cesium.Entity {
         this.geometryType = 'Entity';
 
         this.makePositionType(this.positionType);   //默认没有任何映射关系
-        if (options.coordinatesActual) this.coordinatesReal = options.coordinatesActual;    // 默认加载coordinatesActual，涉及一个映射
     }
 
     makePositionType(positionType: PositionType) {
@@ -53,6 +54,8 @@ export default class CEntity extends Cesium.Entity {
                 this.makeConstant()
             }
         }
+        // 无赋值意义，仅作为更新属性类型使用
+        this.coordinatesReal = this._coordinatesReal
     }
 
     active() {
@@ -103,8 +106,8 @@ export default class CEntity extends Cesium.Entity {
                     this.entityCollection.add(entity)
                 }
             })
-            const childrenNode = this.children.get(key)  // 赋予新value
-            childrenNode!.entities = mergedEntities
+            // 新值
+            this.children.get(key)!.entities = mergedEntities
         })
     }
 

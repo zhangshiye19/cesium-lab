@@ -1,7 +1,7 @@
 import {Col, Row} from "antd";
 import SvgRightArrow from '@/static/svg/细直箭头.svg'
 import PlotItem from "@/pages/Toolbar/component/PlotComponent/PlotItem";
-import PlotType from "@/CesiumMap/entity/PlotType";
+import PlotType, {getDescription} from "@/CesiumMap/entity/PlotType";
 
 export default function PlotMilitary() {
 
@@ -13,7 +13,7 @@ export default function PlotMilitary() {
 
                         return (
                             <Col span={24/4} key={key}>
-                                <PlotItem icon={<SvgRightArrow/>} plotType={value} title={value}/>
+                                <PlotItem icon={<SvgRightArrow/>} plotType={value} title={getDescription(value)}/>
                             </Col>
                         )
                     })
